@@ -1,5 +1,6 @@
-package dis1;
+package Vista;
 
+import Modelo.Registro;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class FrameTemperaturas extends javax.swing.JFrame {
     public FrameTemperaturas() {
         initComponents();
         this.setLocationRelativeTo(null);
-        temperaturas = new ArrayList<RegistroTemperatura>();
+        temperaturas = new ArrayList<Registro>();
     }
 
     @SuppressWarnings("unchecked")
@@ -123,9 +124,9 @@ public class FrameTemperaturas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAnadir)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,7 +143,6 @@ public class FrameTemperaturas extends javax.swing.JFrame {
         );
 
         jpRegistro.getAccessibleContext().setAccessibleName("");
-        jpRegistro.getAccessibleContext().setAccessibleParent(null);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -158,14 +158,14 @@ public class FrameTemperaturas extends javax.swing.JFrame {
         // Si la temperatura es correcta, calcula las estadísticas
         if(comprobarTemperatura(s)){
             // Añade la nueva temperatura
-            temperaturas.add(new RegistroTemperatura(Float.parseFloat(s), 
+            temperaturas.add(new Registro(Float.parseFloat(s), 
                                                      LocalDate.now()));
             // Actualiza las estadísticas
             double maxima = temperaturas.get(0).getTemperatura();
             double minima = temperaturas.get(0).getTemperatura();
             double suma = 0.0f;
             
-            for(RegistroTemperatura temp : temperaturas){
+            for(Registro temp : temperaturas){
                 if (temp.getTemperatura() < minima) 
                     minima = temp.getTemperatura();
                 else if (temp.getTemperatura() > maxima) 
@@ -258,7 +258,7 @@ public class FrameTemperaturas extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     // Temperaturas
-    private ArrayList<RegistroTemperatura> temperaturas;
+    private ArrayList<Registro> temperaturas;
     private final int NUM_DECIMALES = 3;
     private final double CERO_ABSOLUTO = -273.15f;
 
