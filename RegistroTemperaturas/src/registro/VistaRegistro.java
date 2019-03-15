@@ -30,6 +30,7 @@ public class VistaRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupoBotonesTemperatura = new javax.swing.ButtonGroup();
         jpRegistro = new javax.swing.JPanel();
         maxima = new javax.swing.JLabel();
         minima = new javax.swing.JLabel();
@@ -38,6 +39,9 @@ public class VistaRegistro extends javax.swing.JFrame {
         valorMinima = new javax.swing.JLabel();
         valorMedia = new javax.swing.JLabel();
         botonAnadir = new javax.swing.JButton();
+        botonCelsius = new javax.swing.JRadioButton();
+        botonFahrenheit = new javax.swing.JRadioButton();
+        botonKelvin = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,18 +116,55 @@ public class VistaRegistro extends javax.swing.JFrame {
             }
         });
 
+        grupoBotonesTemperatura.add(botonCelsius);
+        botonCelsius.setSelected(true);
+        botonCelsius.setText("Celsius");
+        botonCelsius.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCelsiusActionPerformed(evt);
+            }
+        });
+
+        grupoBotonesTemperatura.add(botonFahrenheit);
+        botonFahrenheit.setText("Fahrenheit");
+        botonFahrenheit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonFahrenheitActionPerformed(evt);
+            }
+        });
+
+        grupoBotonesTemperatura.add(botonKelvin);
+        botonKelvin.setText("Kelvin");
+        botonKelvin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonKelvinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(botonAnadir)
-                .addContainerGap(45, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(botonAnadir)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botonCelsius)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonFahrenheit)
+                        .addGap(32, 32, 32)
+                        .addComponent(botonKelvin)
+                        .addGap(28, 28, 28))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +173,12 @@ public class VistaRegistro extends javax.swing.JFrame {
                 .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(botonAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonCelsius)
+                    .addComponent(botonFahrenheit)
+                    .addComponent(botonKelvin))
+                .addContainerGap())
         );
 
         jpRegistro.getAccessibleContext().setAccessibleName("");
@@ -150,6 +196,18 @@ public class VistaRegistro extends javax.swing.JFrame {
 
         controlador.añadirNuevaTemperatura(temp, "0");
     }//GEN-LAST:event_botonAnadirActionPerformed
+
+    private void botonFahrenheitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFahrenheitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonFahrenheitActionPerformed
+
+    private void botonCelsiusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCelsiusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonCelsiusActionPerformed
+
+    private void botonKelvinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonKelvinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonKelvinActionPerformed
 
     /**
      * Muestra un dialogo de confirmación con el valor y unidad de la temperatura.
@@ -236,6 +294,10 @@ public class VistaRegistro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadir;
+    private javax.swing.JRadioButton botonCelsius;
+    private javax.swing.JRadioButton botonFahrenheit;
+    private javax.swing.JRadioButton botonKelvin;
+    private javax.swing.ButtonGroup grupoBotonesTemperatura;
     private javax.swing.JPanel jpRegistro;
     private javax.swing.JLabel maxima;
     private javax.swing.JLabel media;
