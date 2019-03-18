@@ -1,4 +1,4 @@
-package registro;
+package registro.modelo;
 
 /**
  * Representa un valor de temperatura con la unidad correspondiente.
@@ -11,8 +11,8 @@ public class Temperatura {
     public static final float TEMPERATURA_MAXIMA = 200;
     public static final float TEMPERATURA_MINIMA = UtilTemperaturas.CERO_ABS;
     
-    private float valor;
-    private int unidad; /* Ver constantes en la clase UnidadTemperatura */
+    private final float valor;
+    private final int unidad; /* Ver constantes en la clase UnidadTemperatura */
 
     /**
      * Construye un objeto Temperatura con el valor y unidad especificados.

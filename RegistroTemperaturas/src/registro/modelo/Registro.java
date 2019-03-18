@@ -1,8 +1,9 @@
-package registro;
+package registro.modelo;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
+import registro.persistencia.Fachada;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -10,8 +11,7 @@ import java.util.HashMap;
  * @author Roberto García Antoranz    (robegar)
  */
 public class Registro {
-    private String nombre;
-    private HashMap<LocalDateTime, Temperatura> mediciones;
+    private final String nombre;
     private int UNIDAD_ACTUAL = UtilTemperaturas.CELSIUS; // Por defecto
     
     /**
@@ -21,16 +21,6 @@ public class Registro {
      */
     public Registro(String nombre) {
         this.nombre = nombre;
-        mediciones = new HashMap<>();
-    }
-
-    /**
-     * Agrega una temperatura a la estructura de datos según una clave temporal.
-     * @param momento Momento de la temperatura
-     * @param nueva Temperatura a añadir
-     */
-    private void agregar(LocalDateTime momento, Temperatura nueva) {
-        mediciones.put(momento, nueva);
     }
 
     /**
@@ -39,9 +29,9 @@ public class Registro {
      * @param temperatura Valor de la temperatura
      * @param unidad Unidad de medida
      */
-    public void añadirTemperatura(LocalDateTime momento, float temperatura, int unidad) {
+    public void añadirTemperatura(LocalDateTime momento, float temperatura, int unidad) throws SQLException {
         Temperatura nueva = new Temperatura(temperatura, unidad);
-        agregar(momento, nueva);
+        Fachada.agrega(momento, nueva);
     }
 
     /**
@@ -49,7 +39,7 @@ public class Registro {
      * @return Temperatura media del registro
      */
     public Temperatura getTemperaturaMedia() {
-        Collection<Temperatura> temperaturas = mediciones.values();
+        ArrayList<Temperatura> temperaturas = Fachada.getTemperaturas();
         float total = 0;
         for (Temperatura t : temperaturas) {
             total += convertirAActual(t).getValor();
@@ -63,7 +53,7 @@ public class Registro {
      * @return Temperatura máxima del registro
      */
     public Temperatura getTemperaturaMaxima() {
-        Collection<Temperatura> temperaturas = mediciones.values();
+        ArrayList<Temperatura> temperaturas = Fachada.getTemperaturas();
         Temperatura max = null;
         Temperatura temp;
         // Para cada temperatura, la transforma a Celsius y comprueba si
@@ -83,7 +73,7 @@ public class Registro {
      * @return Temperatura mínima del registro
      */
     public Temperatura getTemperaturaMinima() {
-        Collection<Temperatura> temperaturas = mediciones.values();
+        ArrayList<Temperatura> temperaturas = Fachada.getTemperaturas();
         Temperatura min = null;
         Temperatura temp;
         // Para cada temperatura, la transforma a Celsius y comprueba si

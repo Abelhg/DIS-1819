@@ -1,10 +1,12 @@
-package registro;
+package registro.vista;
 
 import java.awt.Font;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import registro.modelo.Registro;
+import registro.modelo.UtilTemperaturas;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -13,7 +15,7 @@ import javax.swing.UIManager;
  */
 public class VistaRegistro extends javax.swing.JFrame {
     
-    private ControladorRegistro controlador;
+    private ControladorVista controlador;
     private Registro modelo;
     
     /**
@@ -22,7 +24,7 @@ public class VistaRegistro extends javax.swing.JFrame {
     public VistaRegistro() {
         initComponents();
         modelo = new Registro("Ejemplo");
-        controlador = new ControladorRegistro(modelo, this);
+        controlador = new ControladorVista(modelo, this);
         this.setLocationRelativeTo(null);
     }
 
@@ -44,6 +46,7 @@ public class VistaRegistro extends javax.swing.JFrame {
         botonKelvin = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jpRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registro de temperaturas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Rubik", 1, 18), new java.awt.Color(0, 153, 255))); // NOI18N
         jpRegistro.setToolTipText("");
@@ -149,22 +152,20 @@ public class VistaRegistro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(botonAnadir)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botonAnadir)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonCelsius)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botonFahrenheit)
-                        .addGap(32, 32, 32)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(botonKelvin)
-                        .addGap(28, 28, 28))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,19 +195,19 @@ public class VistaRegistro extends javax.swing.JFrame {
                 "Introduce una temperatura", null, JOptionPane.QUESTION_MESSAGE, 
                 null, null, null);
 
-        controlador.añadirNuevaTemperatura(temp, "0");
+        controlador.añadirNuevaTemperatura(temp, modelo.getUnidadActual());
     }//GEN-LAST:event_botonAnadirActionPerformed
 
     private void botonFahrenheitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFahrenheitActionPerformed
-        // TODO add your handling code here:
+        controlador.fahrenheitSeleccionado();
     }//GEN-LAST:event_botonFahrenheitActionPerformed
 
     private void botonCelsiusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCelsiusActionPerformed
-        // TODO add your handling code here:
+        controlador.celsiusSeleccionado();
     }//GEN-LAST:event_botonCelsiusActionPerformed
 
     private void botonKelvinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonKelvinActionPerformed
-        // TODO add your handling code here:
+        controlador.kelvinSeleccionado();
     }//GEN-LAST:event_botonKelvinActionPerformed
 
     /**

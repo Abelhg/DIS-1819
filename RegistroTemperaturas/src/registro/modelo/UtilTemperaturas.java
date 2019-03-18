@@ -1,4 +1,4 @@
-package registro;
+package registro.modelo;
 
 /**
  * Clase utilidad que declara las unidades de medida de temperaturas y
@@ -31,7 +31,7 @@ public class UtilTemperaturas {
                 c = 5*(temp.getValor() - 32) / 9;
                 break;
             case KELVIN:
-                c = temp.getValor() - CERO_ABS;
+                c = temp.getValor() + CERO_ABS;
                 break;
             default:
                 System.out.println("[!] Constante no conocida: " + temp.getUnidad());
@@ -56,7 +56,7 @@ public class UtilTemperaturas {
                 f = temp.getValor();
                 break;
             case KELVIN:
-                f = (9 * (temp.getValor() - CERO_ABS)) / 5 + 32;
+                f = (9 * (temp.getValor() + CERO_ABS)) / 5 + 32;
                 break;
             default:
                 System.out.println("[!] Constante no conocida: " + temp.getUnidad());
@@ -75,10 +75,10 @@ public class UtilTemperaturas {
         float k;
         switch(temp.getUnidad()){
             case CELSIUS:
-                k = temp.getValor() + CERO_ABS;
+                k = temp.getValor() - CERO_ABS;
                 break;
             case FAHRENHEIT:
-                k = 5 * (temp.getValor() - 32) / 9 + CERO_ABS;
+                k = 5 * (temp.getValor() - 32) / 9 - CERO_ABS;
                 break;
             case KELVIN:
                 k = temp.getValor();
