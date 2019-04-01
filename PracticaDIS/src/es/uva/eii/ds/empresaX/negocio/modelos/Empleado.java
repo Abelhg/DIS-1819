@@ -1,9 +1,7 @@
 package es.uva.eii.ds.empresaX.negocio.modelos;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.TreeMap;
