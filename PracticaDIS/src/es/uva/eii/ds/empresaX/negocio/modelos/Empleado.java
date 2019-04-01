@@ -11,15 +11,18 @@ public class Empleado {
     private String dni;
     private LocalDate fechaInicioEnEmpresa;
     private TreeMap<LocalDate, TipoRol> rolesEnLaEmpresa;
+    private TreeMap<LocalDate, VinculacionConLaEmpresa> estadoDeVinculacion;
+    private TreeMap<LocalDate, Disponibilidad> estadoDeDisponibilidad;
     
     /**
      * Ejemplo de jsonString: 
-     * { "empleado" : [
-     *      "nombre"        : "Hermenegildo Ruipérez",
-     *      "dni"           : "12345678Z",
-     *      "fechaInicio"   : "01-04-2019",
-     *      "rolesEmpresa"  : // TODO 
-     *   ]
+     * { "nombre"        : "Hermenegildo Ruipérez",
+     *   "dni"           : "12345678Z",
+     *   "fechaInicio"   : "01-04-2019",
+     *   "roles"         : // TODO  ,
+     *   "vinculaciones" : // TODO  ,
+     *   "estados"       : // TODO  ,
+     * }
      * @param jsonString 
      */
     public Empleado(String jsonString) {
@@ -43,12 +46,16 @@ public class Empleado {
     }
     
     public boolean estaActivo() {
-        // TODO
-        return false;
+        boolean activoDisponible  = estadoDeDisponibilidad.lastEntry().
+                                    getValue().estaEnActivo();
+        boolean activoVinculacion = estadoDeVinculacion.lastEntry().
+                                    getValue().estaEnActivo();
+        
+        return activoDisponible && activoVinculacion;
     }
     
     public TipoRol obtenerRolActual() {
-        return null;
+        return rolesEnLaEmpresa.lastEntry().getValue();
     }
     
 }
