@@ -12,7 +12,7 @@ public class Empleado {
     private String nombre;
     private String dni;
     private LocalDate fechaInicioEnEmpresa;
-    private TreeMap<LocalDate, TipoDeRol> rolesEnLaEmpresa;
+    private TreeMap<LocalDate, TipoRol> rolesEnLaEmpresa;
     
     /**
      * Ejemplo de jsonString: 
@@ -49,7 +49,7 @@ public class Empleado {
         return false;
     }
     
-    public TipoDeRol obtenerRolActual() {
+    public TipoRol obtenerRolActual() {
         return null;
     }
     
