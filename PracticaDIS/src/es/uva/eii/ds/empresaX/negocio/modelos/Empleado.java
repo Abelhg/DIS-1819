@@ -5,6 +5,11 @@ import com.google.gson.JsonObject;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
+/**
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
+ */
 public class Empleado {
     private String nombre;
     private String dni;

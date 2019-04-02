@@ -1,5 +1,10 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
+/**
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
+ */
 public class VistaIdentificarse extends javax.swing.JFrame {
 
     private final CtrlVistaIdentificarse controlador;

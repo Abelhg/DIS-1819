@@ -1,5 +1,10 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.rol1;
 
+/**
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
+ */
 public class VentanaGestionEmpleados extends javax.swing.JFrame {
 
     public VentanaGestionEmpleados() {

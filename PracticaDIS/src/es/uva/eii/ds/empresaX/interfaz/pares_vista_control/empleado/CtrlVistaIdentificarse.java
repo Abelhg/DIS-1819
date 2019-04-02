@@ -1,7 +1,15 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
+/**
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
+ */
 public class CtrlVistaIdentificarse {
     private VistaIdentificarse vista;
+    
+    // MENSAJES DE ERROR
+    private static final String ERROR_CAMPOS_VACIOS = "No puede haber campos vacíos";
     
     public CtrlVistaIdentificarse(VistaIdentificarse vista) {
         this.vista = vista;
@@ -17,14 +25,9 @@ public class CtrlVistaIdentificarse {
         // Obtiene los datos introducidos y comprueba no vacío
         String dni  = vista.getDNI();
         String pass = vista.getPassword();
-        if(dni == null  || dni.isEmpty()) {
+        if(dni == null  || dni.isEmpty() || pass == null || pass.isEmpty()) {
             // Muestra mensaje de error correspondiente
-            // TODO
-            return;
-        }
-        if(pass == null || pass.isEmpty()) {
-            // Muestra mensaje de error correspondiente
-            // TODO
+            vista.mostrarMensajeError(ERROR_CAMPOS_VACIOS);
             return;
         }
         

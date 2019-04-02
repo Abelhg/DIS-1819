@@ -5,6 +5,11 @@ import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentif
 import java.util.Stack;
 import javax.swing.JFrame;
 
+/**
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
+ */
 public class GestorDeInterfazDeUsuario { 
     private Stack<JFrame> anteriores;
     private JFrame actual;
