@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.CtrlVistaIdentificarse;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class FachadaBD {
+public class FachadaPersistenciaEmpleado {
     
     private static final String QUERY_LOGIN_PASS = "SELECT * FROM Empleados WHERE nif = (?) AND password = (?)";
     private static final String QUERY_NIF = "SELECT * FROM Empleados WHERE nif = (?)";
@@ -151,16 +152,16 @@ public class FachadaBD {
                 rs = conn.consulta(pst);
                 if(rs.next()) {
                     // NIF existe -> Password incorrecta
-                    jo.addProperty("error", "Contraseña incorrecta");
+                    jo.addProperty("error", CtrlVistaIdentificarse.ERROR_PASS_INCORRECTA);
                 }else{
                     // NIF no existe
-                    jo.addProperty("error", "El DNI no existe");
+                    jo.addProperty("error", CtrlVistaIdentificarse.ERROR_DNI_NO_EXISTENTE);
                 }
             }
         }catch(ClassNotFoundException | SQLException ex){
-            Logger.getLogger(FachadaBD.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             jo = new JsonObject(); // Borra posibles valores
-            jo.addProperty("error", "Error inesperado");
+            jo.addProperty("error", CtrlVistaIdentificarse.ERROR_INESPERADO);
         }
         
         return jo.toString();
