@@ -13,6 +13,21 @@ import java.util.TreeMap;
  */
 public class Empleado {
     
+    public static final String JSON_DNI = "dni";
+    public static final String JSON_NOMBRE = "nombre";
+    public static final String JSON_APELLIDOS = "apellidos";
+    public static final String JSON_FECHA_INICIO = "fechaInicio";
+    public static final String JSON_COMIENZO = "comienzo";
+    public static final String JSON_FINAL_PREVISTO = "finalPrevisto";
+    public static final String JSON_ROLES = "roles";
+    public static final String JSON_ROL = "rol";
+    public static final String JSON_VINCULACIONES = "vinculaciones";
+    public static final String JSON_VINCULACION = "vinculacion";
+    public static final String JSON_DISPONIBILIDADES = "disponibilidades";
+    public static final String JSON_DISPONIBILIDAD = "disponibilidad";
+
+    public static final String JSON_ERROR = "error";
+    
     private String dni;
     private String nombre;
     private String apellidos;
@@ -30,18 +45,18 @@ public class Empleado {
      *   "apellidos"        : "Ruipérez Núñez",
      *   "fechaInicio"      : "2014-02-25",
      *   "roles"            : [
-     *      { "rol" : "DEPENDIENTE", "comienzo" : "2014-02-25" },
-     *      { "rol" : "ENCARGADO"  , "comienzo" : "2015-04-14" }
+     *      { "rol" : "Dependiente", "comienzo" : "2014-02-25" },
+     *      { "rol" : "Supervisor"  , "comienzo" : "2015-04-14" }
      *   ],
      *   "vinculaciones"    : [
-     *      { "vinculacion" : "CONTRATADO", "comienzo" : "2014-02-25" }
+     *      { "vinculacion" : "Contratado", "comienzo" : "2014-02-25" }
      *   ],
      *   "disponibilidades" : [
-     *      { "disponibilidad" : "TRABAJANDO"  , "comienzo" : "2014-02-25" },
-     *      { "disponibilidad" : "VACACIONES"  , "comienzo" : "2014-06-23", "finalPrevisto" : "2014-08-29" },
-     *      { "disponibilidad" : "TRABAJANDO"  , "comienzo" : "2014-08-29" },
-     *      { "disponibilidad" : "BAJATEMPORAL", "comienzo" : "2014-11-05", "finalPrevisto" : "2015-02-05" },
-     *      { "disponibilidad" : "TRABAJANDO"  , "comienzo" : "2015-02-12" }
+     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2014-02-25" },
+     *      { "disponibilidad" : "Vacaciones"  , "comienzo" : "2014-06-23", "finalPrevisto" : "2014-08-29" },
+     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2014-08-29" },
+     *      { "disponibilidad" : "BajaTemporal", "comienzo" : "2014-11-05", "finalPrevisto" : "2015-02-05" },
+     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2015-02-12" }
      *   ]
      * }
      * @param jsonString 
@@ -50,11 +65,11 @@ public class Empleado {
         try {
             JsonObject jo = new Gson().fromJson(jsonString, JsonObject.class);
             // NOMBRE, APELLIDOS Y DNI
-            nombre = jo.get("nombre").getAsString();
-            apellidos = jo.get("apellidos").getAsString();
-            dni = jo.get("dni").getAsString();
+            nombre = jo.get(JSON_NOMBRE).getAsString();
+            apellidos = jo.get(JSON_APELLIDOS).getAsString();
+            dni = jo.get(JSON_DNI).getAsString();
             // FECHA DE INICIO
-            String[] fechaI = jo.get("fechaInicio").getAsString().split("-");
+            String[] fechaI = jo.get(JSON_FECHA_INICIO).getAsString().split("-");
             fechaInicioEnEmpresa = LocalDate.of(
                     Integer.valueOf(fechaI[0]), // YYYY
                     Integer.valueOf(fechaI[1]), // MM

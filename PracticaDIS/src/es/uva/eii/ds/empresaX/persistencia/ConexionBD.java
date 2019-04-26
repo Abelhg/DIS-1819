@@ -19,12 +19,13 @@ public class ConexionBD {
     private final String password;
     private Connection connection;
     
-    private ConexionBD() throws ClassNotFoundException {
+    private ConexionBD() throws ClassNotFoundException, SQLException {
         url = "jdbc:derby://localhost:1527/bd_pasteleria";
         usuario = "temp";
         password = "temp";
         
         Class.forName("org.apache.derby.jdbc.ClientDriver");
+        openConnection();
     }
     
     
@@ -40,13 +41,12 @@ public class ConexionBD {
         return connection.prepareStatement(sql);
     }
     
-    /*
     public void inserta(String query) throws SQLException {
         openConnection();
         Statement s = connection.createStatement();
         s.execute(query);
         closeConnection();
-    }*/
+    }
     
     public ResultSet consulta(String query) throws SQLException {
         openConnection();
@@ -54,15 +54,10 @@ public class ConexionBD {
         s.execute(query);
         return s.getResultSet();
     }
-    
-    public ResultSet consulta(PreparedStatement pst) throws SQLException {
-        return pst.executeQuery();
-    }
-    
 
     /** Alcance de clase **/
     private static ConexionBD theInstance;
-    public static ConexionBD getInstancia() throws ClassNotFoundException {
+    public static ConexionBD getInstancia() throws ClassNotFoundException, SQLException {
         if(theInstance == null){
             theInstance = new ConexionBD();
         }
