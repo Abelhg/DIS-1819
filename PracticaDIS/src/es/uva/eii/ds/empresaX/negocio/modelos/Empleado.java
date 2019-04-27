@@ -1,6 +1,8 @@
 package es.uva.eii.ds.empresaX.negocio.modelos;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import java.time.LocalDate;
@@ -45,21 +47,22 @@ public class Empleado {
      *   "apellidos"        : "Ruipérez Núñez",
      *   "fechaInicio"      : "2014-02-25",
      *   "roles"            : [
-     *      { "rol" : "Dependiente", "comienzo" : "2014-02-25" },
-     *      { "rol" : "Supervisor"  , "comienzo" : "2015-04-14" }
+     *      { "comienzo" : "2014-02-25", "rol" : "Dependiente" },
+     *      { "comienzo" : "2015-04-14", "rol" : "Supervisor" }
      *   ],
      *   "vinculaciones"    : [
-     *      { "vinculacion" : "Contratado", "comienzo" : "2014-02-25" }
+     *      { "comienzo" : "2014-02-25", "vinculacion" : "Contratado" }
      *   ],
      *   "disponibilidades" : [
-     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2014-02-25" },
-     *      { "disponibilidad" : "Vacaciones"  , "comienzo" : "2014-06-23", "finalPrevisto" : "2014-08-29" },
-     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2014-08-29" },
-     *      { "disponibilidad" : "BajaTemporal", "comienzo" : "2014-11-05", "finalPrevisto" : "2015-02-05" },
-     *      { "disponibilidad" : "Trabajando"  , "comienzo" : "2015-02-12" }
+     *      { "comienzo" : "2014-02-25", "disponibilidad" : "Trabajando" },
+     *      { "comienzo" : "2014-06-23", "finalPrevisto" : "2014-08-29", "disponibilidad" : "Vacaciones" },
+     *      { "comienzo" : "2014-08-29", "disponibilidad" : "Trabajando" },
+     *      { "comienzo" : "2014-11-05", "finalPrevisto" : "2015-02-05", "disponibilidad" : "BajaTemporal" },
+     *      { "comienzo" : "2015-02-12", "disponibilidad" : "Trabajando" }
      *   ]
      * }
-     * @param jsonString 
+     * 
+     * @param jsonString Cadena JSON
      */
     public Empleado(String jsonString) {
         try {
@@ -75,18 +78,77 @@ public class Empleado {
                     Integer.valueOf(fechaI[1]), // MM
                     Integer.valueOf(fechaI[2])  // DD
             );
-            // ROLES
-                // TODO
-            // VINCULACIONES
-                // TODO
-            // DISPONIBILIDADES
-                // TODO
+            
+            configuraRoles(jo);
+            configuraVinculaciones(jo);
+            configuraDisponibilidades(jo);
         } catch(JsonSyntaxException | NumberFormatException e) {
             // Especificar excepciones
             System.out.println("[!] Excepción al crear Empleado:");
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Obtiene los roles y los añade a la lista.
+     * @param jo Objeto JSON
+     */
+    private void configuraRoles(JsonObject jo) {
+        rolesEnLaEmpresa = new TreeMap<>();
+        JsonArray jRoles = jo.getAsJsonArray(JSON_ROLES);
+        for(JsonElement jr : jRoles) {
+            JsonObject jRol = new Gson().fromJson(jr.toString(), JsonObject.class);
+            String[] fechaComienzo = jRol.get(JSON_COMIENZO).getAsString().split("-");
+            LocalDate comienzo = LocalDate.of(
+                Integer.valueOf(fechaComienzo[0]), // YYYY
+                Integer.valueOf(fechaComienzo[1]), // MM
+                Integer.valueOf(fechaComienzo[2])  // DD
+            );
+            Rol rol = new Rol(TipoRol.valueOf(jRol.get(JSON_ROL).getAsString()));
+            rolesEnLaEmpresa.put(comienzo, rol);
+        }
+    }
+    
+    /**
+     * Obtiene las vinculaciones y las añade a la lista.
+     * @param jo Objeto JSON
+     */
+    private void configuraVinculaciones(JsonObject jo) {
+        estadoDeVinculacion = new TreeMap<>();
+        JsonArray jVinculaciones = jo.getAsJsonArray(JSON_VINCULACIONES);
+        for(JsonElement jv : jVinculaciones) {
+            JsonObject jVinculacion = new Gson().fromJson(jv.toString(), JsonObject.class);
+            String[] fechaComienzo = jVinculacion.get(JSON_COMIENZO).getAsString().split("-");
+            LocalDate comienzo = LocalDate.of(
+                Integer.valueOf(fechaComienzo[0]), // YYYY
+                Integer.valueOf(fechaComienzo[1]), // MM
+                Integer.valueOf(fechaComienzo[2])  // DD
+            );
+            VinculacionConLaEmpresa vinculacion = new VinculacionConLaEmpresa(TipoVinculacion.valueOf(jVinculacion.get(JSON_VINCULACION).getAsString()));
+            estadoDeVinculacion.put(comienzo, vinculacion);
+        }
+    }
+    
+    /**
+     * Obtiene las disponibilidades y las añade a la lista.
+     * @param jo Objeto JSON
+     */
+    private void configuraDisponibilidades(JsonObject jo) {
+        estadoDeDisponibilidad = new TreeMap<>();
+        JsonArray jDisponibilidades = jo.getAsJsonArray(JSON_DISPONIBILIDADES);
+        for(JsonElement jd : jDisponibilidades) {
+            JsonObject jDisponibilidad = new Gson().fromJson(jd.toString(), JsonObject.class);
+            String[] fechaComienzo = jDisponibilidad.get(JSON_COMIENZO).getAsString().split("-");
+            LocalDate comienzo = LocalDate.of(
+                Integer.valueOf(fechaComienzo[0]), // YYYY
+                Integer.valueOf(fechaComienzo[1]), // MM
+                Integer.valueOf(fechaComienzo[2])  // DD
+            );
+            Disponibilidad disponibilidad = new Disponibilidad(TipoDisponibilidad.valueOf(jDisponibilidad.get(JSON_DISPONIBILIDAD).getAsString()));
+            estadoDeDisponibilidad.put(comienzo, disponibilidad);
+        }
+    }
+    
 
     /**
      * Devuelve el DNI del empleado, que actúa como identificador único.

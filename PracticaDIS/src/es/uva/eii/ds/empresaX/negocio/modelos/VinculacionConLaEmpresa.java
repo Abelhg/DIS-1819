@@ -25,11 +25,11 @@ public class VinculacionConLaEmpresa {
         boolean activo = false;
         
         switch(tipo) {
-            case CONTRATADO:
+            case Contratado:
                 activo = true;
                 break;
-            case DESPEDIDO:
-            case ENERTE:
+            case Despedido:
+            case EnERTE:
             default:
                 activo = false;
                 break;

@@ -25,11 +25,11 @@ public class Disponibilidad {
         boolean activo = false;
         
         switch(tipo) {
-            case TRABAJANDO:
+            case Trabajando:
                 activo = true;
                 break;
-            case BAJATEMPORAL:
-            case VACACIONES:
+            case BajaTemporal:
+            case Vacaciones:
             default:
                 activo = false;
                 break;

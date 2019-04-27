@@ -6,5 +6,5 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  * @author Roberto García Antoranz    (robegar)
  */
 public enum TipoDisponibilidad {
-    VACACIONES,BAJATEMPORAL,TRABAJANDO;
+    Vacaciones,BajaTemporal,Trabajando;
 }

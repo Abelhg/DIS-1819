@@ -2,6 +2,8 @@ package es.uva.eii.ds.empresaX.interfaz;
 
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.rol1.VentanaGestionEmpleados;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
+import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
 import java.util.Stack;
 import javax.swing.JFrame;
 
@@ -17,20 +19,34 @@ public class GestorDeInterfazDeUsuario {
     private static GestorDeInterfazDeUsuario instancia;
     
     private GestorDeInterfazDeUsuario() {
+        anteriores = new Stack<>();
         // Muestra la pantalla principal
-        login();
+        vistaIdentificarse();
     }
     
     /**
      * Muestra la ventana con el formulario de conexión de los empleados.
      */
-    public void login() {
+    private void vistaIdentificarse() {
         guardaActual();
         
         java.awt.EventQueue.invokeLater(() -> {
             actual = new VistaIdentificarse();
             actual.setVisible(true);
         });  
+    }
+    
+    /**
+     * Muestra la ventana con la lista de opciones del usuario según su rol.
+     * @param rol Rol del usuario
+     */
+    public void empleadoIdentificado(TipoRol rol) {
+        guardaActual(); // ¿Guarda actual? Si cierra, ¿vuelve a la ventana de login?
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            actual = new VistaListaOpciones(rol);
+            actual.setVisible(true);
+        }); 
     }
 
     /**
@@ -73,8 +89,6 @@ public class GestorDeInterfazDeUsuario {
     public static GestorDeInterfazDeUsuario getInstanciaSingleton() {
         if(instancia == null){
             instancia = new GestorDeInterfazDeUsuario();
-        }else{
-            System.out.println("[!] Ya existe una instancia de GestorDeInterfazDeUsuario.");
         }
         
         return instancia;

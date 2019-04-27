@@ -30,7 +30,7 @@ public class ConexionBD {
     
     
     public void openConnection() throws SQLException {
-         connection = DriverManager.getConnection(url, usuario, password);
+        connection = DriverManager.getConnection(url, usuario, password);
     }
     
     public void closeConnection() throws SQLException {

@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
+import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUIdentificarse;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 
@@ -62,8 +63,9 @@ public class CtrlVistaIdentificarse {
             // No existe el empleado
             vista.mostrarMensajeError(ERROR_CREDENCIALES_INVALIDAS);
         } else {
-            // Empleado conectado con éxito
-            vista.mostrarMensajeError(ERROR_CREDENCIALES_VALIDAS);
+            // Empleado conectado con éxito, le muestra ventana con las opciones
+            GestorDeInterfazDeUsuario.getInstanciaSingleton().
+                    empleadoIdentificado(empleado.obtenerRolActual().getTipo());
         }
         
     }
