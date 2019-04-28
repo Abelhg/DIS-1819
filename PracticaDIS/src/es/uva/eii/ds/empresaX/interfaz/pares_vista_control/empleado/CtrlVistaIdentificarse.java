@@ -2,9 +2,11 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUIdentificarse;
-import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
+import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 
 /**
+ * Controlador de la vista de identificación.
+ * 
  * @author Abel Herrero Gómez         (abeherr)
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
@@ -15,13 +17,14 @@ public class CtrlVistaIdentificarse {
     
     // MENSAJES DE ERROR
     public static final String ERROR_CAMPOS_VACIOS = "No puede haber campos vacíos";
-    public static final String ERROR_CREDENCIALES_INVALIDAS = "DNI o contraseña incorrectos"; // Mensaje general
-    public static final String ERROR_PASS_INCORRECTA = "Contraseña incorrecta";               // Mensajes específicos
+    public static final String ERROR_PASS_INCORRECTA = "Contraseña incorrecta";
     public static final String ERROR_DNI_NO_EXISTENTE = "El DNI no existe";
     public static final String ERROR_INESPERADO = "Error inesperado";
-    public static final String ERROR_CREDENCIALES_VALIDAS = "¡Conectado!";
     
-    
+    /**
+     * Inicializa el controlador.
+     * @param v Vista que controla
+     */
     public CtrlVistaIdentificarse(VistaIdentificarse v) {
         vista = v;
         // Oculta el mensaje de error
@@ -56,16 +59,17 @@ public class CtrlVistaIdentificarse {
             return;
         }
         
-        Empleado empleado = ControladorCUIdentificarse.getInstanciaSingleton().
+        String error = ControladorCUIdentificarse.getInstanciaSingleton().
                                     identificarEmpleado(dni, pass);
 
-        if(empleado == null) {
-            // No existe el empleado
-            vista.mostrarMensajeError(ERROR_CREDENCIALES_INVALIDAS);
+        Sesion sesion = Sesion.getInstanciaSingleton();
+        if(error != null && sesion.getEmpleado() == null) {
+            // No existe el empleado. Muestra el correspondiente error.
+            vista.mostrarMensajeError(error);
         } else {
             // Empleado conectado con éxito, le muestra ventana con las opciones
             GestorDeInterfazDeUsuario.getInstanciaSingleton().
-                    empleadoIdentificado(empleado.obtenerRolActual().getTipo());
+                    empleadoIdentificado(sesion.getEmpleado().obtenerRolActual().getTipo());
         }
         
     }

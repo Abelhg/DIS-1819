@@ -39,8 +39,8 @@ create table TIPODEROL
 
 INSERT INTO TIPODEROL
 VALUES  (1,'Supervisor'),
-        (2,'Administrativo'),
-        (3,'Operario'),
+        (2,'Encargado'),
+        (3,'EmpleadoDeHorno'),
         (4,'Dependiente');
 
 -- Enum
@@ -311,7 +311,7 @@ VALUES ('2014-02-25',
         4),
        ('2015-04-14',
         '12345678Z',
-        1);
+        2);
 
 INSERT INTO VINCULACIONCONLAEMPRESA
 VALUES ('2014-02-25',

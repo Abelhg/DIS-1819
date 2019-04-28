@@ -6,5 +6,5 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  * @author Roberto García Antoranz    (robegar)
  */
 public enum TipoRol {
-    Supervisor,Administrativo,Operario,Dependiente;
+    Supervisor,Encargado,EmpleadoDeHorno,Dependiente;
 }
