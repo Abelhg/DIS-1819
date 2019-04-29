@@ -1,8 +1,9 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
-import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
+import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUIdentificarse;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 
 /**
  * Controlador de la vista de identificación.
@@ -16,10 +17,7 @@ public class CtrlVistaIdentificarse {
     private final VistaIdentificarse vista;
     
     // MENSAJES DE ERROR
-    public static final String ERROR_CAMPOS_VACIOS = "No puede haber campos vacíos";
-    public static final String ERROR_PASS_INCORRECTA = "Contraseña incorrecta";
-    public static final String ERROR_DNI_NO_EXISTENTE = "El DNI no existe";
-    public static final String ERROR_INESPERADO = "Error inesperado";
+    private static final String ERROR_CAMPOS_VACIOS = "No puede haber campos vacíos";
     
     /**
      * Inicializa el controlador.
@@ -59,17 +57,17 @@ public class CtrlVistaIdentificarse {
             return;
         }
         
-        String error = ControladorCUIdentificarse.getInstanciaSingleton().
-                                    identificarEmpleado(dni, pass);
-
-        Sesion sesion = Sesion.getInstanciaSingleton();
-        if(error != null && sesion.getEmpleado() == null) {
-            // No existe el empleado. Muestra el correspondiente error.
-            vista.mostrarMensajeError(error);
-        } else {
+        try {
+            // Realiza el caso de uso
+            ControladorCUIdentificarse.getInstanciaSingleton().
+                    identificarEmpleado(dni, pass);
             // Empleado conectado con éxito, le muestra ventana con las opciones
-            GestorDeInterfazDeUsuario.getInstanciaSingleton().
-                    empleadoIdentificado(sesion.getEmpleado().obtenerRolActual().getTipo());
+            GestorUI.getInstanciaSingleton().
+                    empleadoIdentificado(Sesion.getInstanciaSingleton().
+                            getEmpleado().obtenerRolActual().getTipo());
+        } catch (MessageException ex) {
+            // Ha ocurrido un error
+            vista.mostrarMensajeError(ex.getMessage());
         }
         
     }

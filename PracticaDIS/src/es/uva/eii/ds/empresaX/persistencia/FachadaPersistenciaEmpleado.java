@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.CtrlVistaIdentificarse;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,6 @@ import java.util.logging.Logger;
 public class FachadaPersistenciaEmpleado {
     
     private static final String QUERY_NIF_PASS = "SELECT * FROM Empleado WHERE nif = (?) AND password = (?)";
-    private static final String QUERY_NIF = "SELECT * FROM Empleado WHERE nif = (?)";
     private static final String QUERY_ROLES = "SELECT * FROM RolesEnEmpresa WHERE empleado = (?)";
     private static final String QUERY_NOMBRE_TIPO_1 = "SELECT nombreTipo FROM ";
     private static final String QUERY_NOMBRE_TIPO_2 = " WHERE idTipo = (?)";
@@ -155,9 +155,10 @@ public class FachadaPersistenciaEmpleado {
      * Devuelve una String JSON con los atributos de un empleado, o bien un mensaje de error.
      * @param nif DNI del empleado
      * @param password Contraseña utilizada
-     * @return JSON con atributos del empleado o mensaje de error
+     * @return JSON con atributos del empleado
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error inesperado al hacer la consulta
      */
-    public static String consultaEmpleadoPorLoginYPassword(String nif, String password) {
+    public static String consultaEmpleadoPorLoginYPassword(String nif, String password) throws MessageException {
         JsonObject jo = new JsonObject();
         
         try {
@@ -167,6 +168,7 @@ public class FachadaPersistenciaEmpleado {
             pst.setString(2, password);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
+                // Credenciales válidas
                 jo.addProperty(Empleado.JSON_DNI, rs.getString(EMPL_NIF));
                 jo.addProperty(Empleado.JSON_NOMBRE, rs.getString(EMPL_NOMBRE));
                 jo.addProperty(Empleado.JSON_APELLIDOS, rs.getString(EMPL_APELLIDOS));
@@ -175,27 +177,12 @@ public class FachadaPersistenciaEmpleado {
                 jo.add(Empleado.JSON_VINCULACIONES, obtenerVinculacionesEmpleado(conn, nif));
                 jo.add(Empleado.JSON_DISPONIBILIDADES, obtenerDisponibilidadesEmpleado(conn, nif));
             } else {
-                // COMENTAR CON YANIA SI SERÍA MEJOR UN MENSAJE UNIFICADO
-                // PARA EVITAR ENUMERACIÓN DE DNIS.
-                
-                // Y TAMBIÉN QUIÉN DEBE ALMACENAR LAS STRINGS DE ERROR, SI LA FACHADA O EL CONTROLADOR
-                
-                // Comprueba si el NIF existe
-                pst = conn.prepareStatement(QUERY_NIF);
-                pst.setString(1, nif);
-                rs = pst.executeQuery();
-                if(rs.next()) {
-                    // NIF existe -> Password incorrecta
-                    jo.addProperty(Empleado.JSON_ERROR, CtrlVistaIdentificarse.ERROR_PASS_INCORRECTA);
-                }else{
-                    // NIF no existe
-                    jo.addProperty(Empleado.JSON_ERROR, CtrlVistaIdentificarse.ERROR_DNI_NO_EXISTENTE);
-                }
+                // Credenciales inválidas
+                throw new MessageException("Credenciales inválidas");
             }
         } catch(ClassNotFoundException | SQLException ex){
             Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-            jo = new JsonObject(); // Por si hay posibles valores
-            jo.addProperty(Empleado.JSON_ERROR, CtrlVistaIdentificarse.ERROR_INESPERADO);
+            throw new MessageException("Error inesperado");
         }
         
         return jo.toString();

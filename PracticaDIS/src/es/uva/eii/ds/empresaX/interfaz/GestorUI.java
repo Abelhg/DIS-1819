@@ -3,8 +3,10 @@ package es.uva.eii.ds.empresaX.interfaz;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.rol1.VentanaGestionEmpleados;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
+import java.util.EnumMap;
 import java.util.Stack;
 import javax.swing.JFrame;
 
@@ -13,21 +15,101 @@ import javax.swing.JFrame;
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class GestorDeInterfazDeUsuario { 
+public class GestorUI { 
     private final Stack<JFrame> anteriores;
     private JFrame actual;
     
-    private static GestorDeInterfazDeUsuario instancia;
+    private static GestorUI instancia;
+    private EnumMap<CasosDeUso, String> stringsCasos;
     
-    private GestorDeInterfazDeUsuario() {
+    // Enumerado de casos de uso
+    public enum CasosDeUso {
+        // SUPERVISOR
+        // ENCARGADO
+        COMPROBAR_TRANSFERENCIAS,
+        CONSULTAR_FACTURAS_PENDIENTES,
+        // EMPLEADO DE HORNO
+        PREPARAR_PEDIDO_HORNO,
+        INFORMAR_PREVISION_MATERIA,
+        // DEPENDIENTE
+        ENTREGAR_PEDIDO_CLIENTE, 
+        REGISTRAR_VENTA_DIRECTA
+    }
+    
+    private GestorUI() {
         anteriores = new Stack<>();
+        configurarMapaCU();
         // Muestra la pantalla principal
         vistaIdentificarse();
+    }
+    
+    /**
+     * Configura el mapa entre los casos de uso y el texto que aparece
+     * en el botón asociado.
+     */
+    private void configurarMapaCU() {
+        stringsCasos = new EnumMap<>(CasosDeUso.class);
+        
+        // SUPERVISOR
+        // ENCARGADO
+        stringsCasos.put(CasosDeUso.COMPROBAR_TRANSFERENCIAS, 
+                    "<html><center>COMPROBAR<br>TRANSFERENCIAS</center></html>");
+        stringsCasos.put(CasosDeUso.CONSULTAR_FACTURAS_PENDIENTES, 
+                    "<html><center>CONSULTAR FACTURAS<br>PENDIENTES DE PAGO</center></html>");
+        // EMPLEADO DE HORNO
+        stringsCasos.put(CasosDeUso.PREPARAR_PEDIDO_HORNO, 
+                    "<html><center>PREPARAR PEDIDO<br>DE HORNO</center></html>");
+        stringsCasos.put(CasosDeUso.INFORMAR_PREVISION_MATERIA, 
+                    "<html><center>INFORMAR DE PREVISIÓN DE<br>MATERIA PRIMA NECESARIA</center></html>");
+        // DEPENDIENTE
+        stringsCasos.put(CasosDeUso.ENTREGAR_PEDIDO_CLIENTE, 
+                    "<html><center>ENTREGAR PEDIDO<br>A CLIENTE</center></html>");
+        stringsCasos.put(CasosDeUso.REGISTRAR_VENTA_DIRECTA,
+                    "<html><center>REGISTRAR<br>VENTA DIRECTA</center></html>");
+    }
+    
+    /**
+     * Devuelve la string asociada al enumerado de CU.
+     * @param cu Caso de uso
+     * @return Cadena asociada
+     */
+    public String getStringCU(CasosDeUso cu) {
+        return stringsCasos.get(cu);
     }
     
             /***********************************
              *              VISTAS             *
              ***********************************/
+    /**
+     * Gestiona la vista de una opción.
+     * @param opcion 
+     */
+    public void gestionaVistaOpcion(GestorUI.CasosDeUso opcion) {
+        switch(opcion) {
+            // ENCARGADO
+            case COMPROBAR_TRANSFERENCIAS:
+                vistaComprobarTransferencias();
+                break;
+            case CONSULTAR_FACTURAS_PENDIENTES:
+                vistaConsultarFacturas();
+                break;
+            // EMPLEADO DE HORNO
+            case PREPARAR_PEDIDO_HORNO:
+                vistaPrepararPedido();
+                break;
+            case INFORMAR_PREVISION_MATERIA:
+                vistaInformarPrevision();
+                break;
+            // DEPENDIENTE
+            case ENTREGAR_PEDIDO_CLIENTE:
+                vistaEntregarPedido();
+                break; 
+            case REGISTRAR_VENTA_DIRECTA:
+                vistaRegistrarVenta();
+                break;
+        }
+    }
+    
     /**
      * Muestra la ventana con el formulario de conexión de los empleados.
      */
@@ -59,7 +141,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana para entregar un pedido a un cliente.
      */
-    public void vistaEntregarPedido() {
+    private void vistaEntregarPedido() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -71,7 +153,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana para registrar una venta directa.
      */
-    public void vistaRegistrarVenta() {
+    private void vistaRegistrarVenta() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -85,7 +167,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana para preparar un pedido..
      */
-    public void vistaPrepararPedido() {
+    private void vistaPrepararPedido() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -97,7 +179,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana para informar de previsión de materia prima necesaria..
      */
-    public void vistaInformarPrevision() {
+    private void vistaInformarPrevision() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -112,11 +194,11 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana con la lista de facturas pendientes de pago.
      */
-    public void vistaConsultarFacturas() {
+    private void vistaConsultarFacturas() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
-            actual = new VistaNoImplementada();                     // -------------------------- TODO
+            actual = new VistaConsultarFacturas();
             actual.setVisible(true);
         });
     }
@@ -124,7 +206,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana con la lista de facturas pendientes de pago.
      */
-    public void vistaComprobarTransferencias() {
+    private void vistaComprobarTransferencias() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -136,7 +218,7 @@ public class GestorDeInterfazDeUsuario {
     /**
      * Muestra la ventana con el panel de gestión de los empleados.
      */
-    public void gestionarEmpleados() {
+    private void gestionarEmpleados() {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -175,9 +257,9 @@ public class GestorDeInterfazDeUsuario {
      * Devuelve una instancia única para la clase.
      * @return Instancia única
      */
-    public static GestorDeInterfazDeUsuario getInstanciaSingleton() {
+    public static GestorUI getInstanciaSingleton() {
         if(instancia == null){
-            instancia = new GestorDeInterfazDeUsuario();
+            instancia = new GestorUI();
         }
         
         return instancia;

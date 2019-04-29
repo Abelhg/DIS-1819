@@ -1,6 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
-import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
+import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
@@ -13,7 +13,7 @@ import javax.swing.JButton;
 public class VistaListaOpciones extends javax.swing.JFrame {
 
     private final CtrlVistaListaOpciones controlador;
-    private String opcionSeleccionada = null;
+    private GestorUI.CasosDeUso opcionSeleccionada = null;
     
     public VistaListaOpciones(TipoRol rol) {
         initComponents();
@@ -71,19 +71,20 @@ public class VistaListaOpciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        GestorDeInterfazDeUsuario.getInstanciaSingleton().atras();
+        controlador.procesaCierre();
     }//GEN-LAST:event_formWindowClosing
     
     /**
      * Añade una opcion a la lista con el texto especificado.
+     * @param identificador Identificador de CU
      * @param texto Texto del botón
      */
-    public void anadirOpcion(String texto) {
+    public void anadirOpcion(GestorUI.CasosDeUso identificador, String texto) {
         JButton botonOpcion = new JButton();
         botonOpcion.setFont(new java.awt.Font("Ebrima", 1, 24)); // NOI18N
         botonOpcion.setText(texto);
         botonOpcion.addActionListener((java.awt.event.ActionEvent evt) -> {
-            opcionSeleccionada = texto;
+            opcionSeleccionada = identificador;
             controlador.procesaClickOpcion();
         });
         
@@ -101,7 +102,7 @@ public class VistaListaOpciones extends javax.swing.JFrame {
      * Devuelve la opción seleccionada.
      * @return Opción seleccionada
      */
-    public String getOpcionSeleccionada() {
+    public GestorUI.CasosDeUso getOpcionSeleccionada() {
         return opcionSeleccionada;
     }
     
