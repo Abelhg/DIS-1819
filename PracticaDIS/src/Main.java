@@ -1,9 +1,9 @@
 
-import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
+import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 
 
 public class Main {
     public static void main(String[] args){
-        GestorDeInterfazDeUsuario gestorIU = GestorDeInterfazDeUsuario.getInstanciaSingleton();
+        GestorUI gestorIU = GestorUI.getInstanciaSingleton();
     }
 }

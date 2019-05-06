@@ -1,6 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
-import es.uva.eii.ds.empresaX.interfaz.GestorDeInterfazDeUsuario;
+import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
 import javax.swing.JFrame;
 
@@ -12,19 +12,7 @@ import javax.swing.JFrame;
 public class CtrlVistaListaOpciones {
     
     private final VistaListaOpciones vista;
-    
-    // OPCIONES DEPENDIENTE
-    private final String DEPENDIENTE_ENTREGAR = "<html><center>ENTREGAR PEDIDO<br>A CLIENTE</center></html>";
-    private final String DEPENDIENTE_REGISTRAR = "<html><center>REGISTRAR<br>VENTA DIRECTA</center></html>";
-    
-    // OPCIONES EMPLEADO DE HORNO
-    private final String EMPLEADO_HORNO_PREPARAR = "<html><center>PREPARAR PEDIDO<br>DE HORNO</center></html>";
-    private final String EMPLEADO_HORNO_INFORMAR = "<html><center>INFORMAR DE PREVISIÓN DE<br>MATERIA PRIMA NECESARIA</center></html>";
-    
-    // OPCIONES ENCARGADO
-    private final String ENCARGADO_CONSULTAR = "<html><center>CONSULTAR FACTURAS<br>PENDIENTES DE PAGO</center></html>";
-    private final String ENCARGADO_COMPROBAR = "<html><center>COMPROBAR<br>TRANSFERENCIAS</center></html>";
-    
+        
     public CtrlVistaListaOpciones(VistaListaOpciones v, TipoRol rol) {
         vista = v;
         // Asigna el titulo de la ventana
@@ -36,49 +24,44 @@ public class CtrlVistaListaOpciones {
         
         switch(rol) {
             case Supervisor:
-                // No aparece nada en el modelo (?)
                 break;
             case Dependiente:
-                vista.anadirOpcion(DEPENDIENTE_ENTREGAR);
-                vista.anadirOpcion(DEPENDIENTE_REGISTRAR);
+                anadeOpcion(GestorUI.CasosDeUso.ENTREGAR_PEDIDO_CLIENTE);
+                anadeOpcion(GestorUI.CasosDeUso.REGISTRAR_VENTA_DIRECTA);
                 break;
             case EmpleadoDeHorno:
-                vista.anadirOpcion(EMPLEADO_HORNO_PREPARAR);
-                vista.anadirOpcion(EMPLEADO_HORNO_INFORMAR);
+                anadeOpcion(GestorUI.CasosDeUso.PREPARAR_PEDIDO_HORNO);
+                anadeOpcion(GestorUI.CasosDeUso.INFORMAR_PREVISION_MATERIA);
                 break;
             case Encargado:
-                vista.anadirOpcion(ENCARGADO_CONSULTAR);
-                vista.anadirOpcion(ENCARGADO_COMPROBAR);
+                anadeOpcion(GestorUI.CasosDeUso.CONSULTAR_FACTURAS_PENDIENTES);
+                anadeOpcion(GestorUI.CasosDeUso.COMPROBAR_TRANSFERENCIAS);
                 break;
         }
     }
     
+    /**
+     * Añade la opción especificada a la vista.
+     * @param opcion Opción de CU
+     */
+    public void anadeOpcion(GestorUI.CasosDeUso opcion) {
+        vista.anadirOpcion(opcion, GestorUI.getInstanciaSingleton().getStringCU(opcion));
+    }
     
+    /**
+     * Procesa el click en una de las opciones, mostrando la pantalla correspondiente.
+     */
     public void procesaClickOpcion() {
-        // Obtiene cuál ha sido la opción seleccionada
-        switch(vista.getOpcionSeleccionada()) {
-            // DEPENDIENTE
-            case DEPENDIENTE_ENTREGAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaEntregarPedido();
-                break;
-            case DEPENDIENTE_REGISTRAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaRegistrarVenta();
-                break;
-            // EMPLEADO DE HORNO
-            case EMPLEADO_HORNO_PREPARAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaPrepararPedido();
-                break;
-            case EMPLEADO_HORNO_INFORMAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaInformarPrevision();
-                break;
-            // ENCARGADO
-            case ENCARGADO_CONSULTAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaConsultarFacturas();
-                break;
-            case ENCARGADO_COMPROBAR:
-                GestorDeInterfazDeUsuario.getInstanciaSingleton().vistaComprobarTransferencias();
-                break;
-        }
+        // Obtiene cuál ha sido la opción seleccionada y se la manda al gestor de interfaz
+        GestorUI.getInstanciaSingleton().gestionaVistaOpcion(vista.getOpcionSeleccionada());
+    }
+    
+    
+    /**
+     * Cuando se cierra la ventana, se vuelve a la anterior.
+     */
+    public void procesaCierre() {
+        GestorUI.getInstanciaSingleton().atras();
     }
     
 }

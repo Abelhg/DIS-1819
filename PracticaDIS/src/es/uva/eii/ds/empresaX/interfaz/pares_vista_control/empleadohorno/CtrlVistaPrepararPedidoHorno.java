@@ -1,17 +1,25 @@
-package es.uva.eii.ds.empresaX.interfaz;
+package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
+import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import javax.swing.JFrame;
 
+
 /**
+ * Controlador de la vista de consulta de facturas pendientes de pago.
+ * 
  * @author Abel Herrero Gómez         (abeherr)
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class CtrlVistaNoImplementada {
+public class CtrlVistaPrepararPedidoHorno {
     
-    private final VistaNoImplementada vista;
+    private final VistaPrepararPedidoHorno vista;
     
-    public CtrlVistaNoImplementada(VistaNoImplementada v) {
+    /**
+     * Inicializa el controlador.
+     * @param v Vista que controla
+     */
+    public CtrlVistaPrepararPedidoHorno(VistaPrepararPedidoHorno v) {
         vista = v;
         // Evita que termine el programa al cerrar la ventana
         vista.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -20,7 +28,7 @@ public class CtrlVistaNoImplementada {
     }
     
     /**
-     * Vuelve a la pantalla anterior.
+     * Cuando se cierra la ventana, se vuelve a la anterior.
      */
     public void procesaCierre() {
         GestorUI.getInstanciaSingleton().atras();

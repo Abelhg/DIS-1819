@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleado;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 
 public class ControladorCUIdentificarse {
     
@@ -15,8 +16,9 @@ public class ControladorCUIdentificarse {
      * @param dni DNI del empleado
      * @param password Password del empleado
      * @return Mensaje de error (null si no hay)
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error
      */
-    public String identificarEmpleado(String dni, String password) {
+    public String identificarEmpleado(String dni, String password) throws MessageException {
         String res = null;
         String resultado = FachadaPersistenciaEmpleado.consultaEmpleadoPorLoginYPassword(dni, password);
         JsonObject json = new Gson().fromJson(resultado, JsonObject.class);
