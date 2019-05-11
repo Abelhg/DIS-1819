@@ -1,14 +1,6 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
-import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
