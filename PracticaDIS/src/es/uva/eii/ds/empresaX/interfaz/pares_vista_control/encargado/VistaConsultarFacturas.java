@@ -93,11 +93,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         inputDiaI.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
         inputDiaI.setMinimumSize(new java.awt.Dimension(60, 30));
         inputDiaI.setPreferredSize(new java.awt.Dimension(60, 30));
-        inputDiaI.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                inputDiaIItemStateChanged(evt);
-            }
-        });
 
         inputMesI.setFont(new java.awt.Font("Ebrima", 1, 18)); // NOI18N
         inputMesI.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
@@ -130,11 +125,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         inputDiaF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7" }));
         inputDiaF.setMinimumSize(new java.awt.Dimension(60, 30));
         inputDiaF.setPreferredSize(new java.awt.Dimension(60, 30));
-        inputDiaF.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                inputDiaFItemStateChanged(evt);
-            }
-        });
 
         inputMesF.setFont(new java.awt.Font("Ebrima", 1, 18)); // NOI18N
         inputMesF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
@@ -364,20 +354,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             controlador.procesaCambioProveedor();
         }
     }//GEN-LAST:event_inputProveedorKeyReleased
-
-    private void inputDiaIItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inputDiaIItemStateChanged
-        if(evt.getStateChange() == ItemEvent.SELECTED) {
-            // Solo se procesa la seleccion, no la deselección
-            controlador.procesaCambioFechaInicio();
-        }
-    }//GEN-LAST:event_inputDiaIItemStateChanged
-
-    private void inputDiaFItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_inputDiaFItemStateChanged
-        if(evt.getStateChange() == ItemEvent.SELECTED) {
-            // Solo se procesa la seleccion, no la deselección
-            controlador.procesaCambioFechaFin();
-        }
-    }//GEN-LAST:event_inputDiaFItemStateChanged
     
     
     /**

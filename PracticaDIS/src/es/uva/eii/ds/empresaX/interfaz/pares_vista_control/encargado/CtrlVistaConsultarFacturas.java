@@ -90,6 +90,9 @@ public class CtrlVistaConsultarFacturas {
      * Procesa el evento de click en el botón de generación de la consulta.
      */
     public void procesaClickConsultar() {
+        vista.ocultaErrorFechas();
+        vista.ocultarErrorProveedor();
+        
         if(vista.facturasAnioActual()) {
             // Opción de facturas del año actual marcada.
             // TODO
@@ -116,6 +119,12 @@ public class CtrlVistaConsultarFacturas {
             } catch (DateTimeException e) {
                 // La fecha de fin no es válida
                 vista.muestraErrorFechas("La fecha de fin no es válida");
+                return;
+            }
+            
+            // Comprueba que las fechas están ordenadas
+            if(fechaI.isAfter(fechaF)) {
+                vista.muestraErrorFechas("La fecha de fin debe ser posterior a la de inicio");
                 return;
             }
         }
@@ -146,13 +155,6 @@ public class CtrlVistaConsultarFacturas {
         int mes = vista.getMesInicio();
         int anio = vista.getAnioInicio();
         vista.cambiaDiasInicio(getDiasMes(mes, anio));
-        // Comprueba si ha adelantado a la de fin
-        int diaF = vista.getDiaFin();
-        int mesF = vista.getMesFin();
-        int anioF = vista.getAnioFin();
-        if(anio > anioF || (anio == anioF && mes > mesF) || (anio == anioF && mes == mesF && dia > diaF)) {
-            vista.setFechaFin(dia, mes, anio);
-        }
     }
     
     /**
