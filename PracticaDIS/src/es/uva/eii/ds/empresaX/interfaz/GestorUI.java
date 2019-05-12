@@ -1,6 +1,5 @@
 package es.uva.eii.ds.empresaX.interfaz;
 
-import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.rol1.VentanaGestionEmpleados;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
@@ -211,18 +210,6 @@ public class GestorUI {
        
         java.awt.EventQueue.invokeLater(() -> {
             actual = new VistaNoImplementada();                     // -------------------------- TODO
-            actual.setVisible(true);
-        });
-    }
-    
-    /**
-     * Muestra la ventana con el panel de gestión de los empleados.
-     */
-    private void gestionarEmpleados() {
-        guardaActual();
-       
-        java.awt.EventQueue.invokeLater(() -> {
-            actual = new VentanaGestionEmpleados();
             actual.setVisible(true);
         });
     }
