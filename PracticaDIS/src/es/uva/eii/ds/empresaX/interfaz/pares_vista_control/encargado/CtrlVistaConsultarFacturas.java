@@ -1,9 +1,12 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
+import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
+import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 
@@ -37,12 +40,9 @@ public class CtrlVistaConsultarFacturas {
      * y el más alto.
      */
     public void cargaAnios() {
-        // Consulta en la BD el año más bajo
-        // TODO
-        int minAnio = 1970;
-        // Consulta en la BD el año más alto
-        // TODO
-        int maxAnio = 2019;
+        // Consulta en la BD el año más bajo y el más alto
+        int minAnio = FachadaPersistenciaEncargado.getMinAnioFacturas();
+        int maxAnio = FachadaPersistenciaEncargado.getMaxAnioFacturas();
         
         // Obtiene los años entre medias y los mete en un array
         String[] anios = new String[maxAnio-minAnio+1];
@@ -93,16 +93,21 @@ public class CtrlVistaConsultarFacturas {
         vista.ocultaErrorFechas();
         vista.ocultarErrorProveedor();
         
+        LocalDate fechaI;
+        LocalDate fechaF;
         if(vista.facturasAnioActual()) {
             // Opción de facturas del año actual marcada.
-            // TODO
+            int anioActual = LocalDate.now().getYear();
+            fechaI = LocalDate.of(anioActual, 1, 1);    // Primer día del año
+            fechaF = LocalDate.of(anioActual, 12, 31);  // Último día del año
         } else if(vista.facturasTodas()) {
             // Opción de todas las facturas
-            // TODO
+            int anioMin = FachadaPersistenciaEncargado.getMinAnioFacturas();
+            int anioMax = FachadaPersistenciaEncargado.getMaxAnioFacturas();
+            fechaI = LocalDate.of(anioMin, 1, 1);
+            fechaF = LocalDate.of(anioMax, 12, 31);
         } else {
-            // Obtiene las fechas y comprueba que son válidas
-            LocalDate fechaI;
-            LocalDate fechaF;
+            // Obtiene las fechas de la vista y comprueba que son válidas
             try {
                 fechaI = LocalDate.of(vista.getAnioInicio(), 
                                       vista.getMesInicio(), 
@@ -136,8 +141,9 @@ public class CtrlVistaConsultarFacturas {
             // TODO
             boolean existe = false;
             if(existe) {
-                // Busca las facturas en la BD
-                // TODO
+                // Busca las facturas en la BD y las muestra en la vista
+                ArrayList<Factura> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, proveedor);
+                vista.muestraFacturasPendientes(facturasPendientes);
             } else {
                 vista.mostrarErrorProveedor("Proveedor no existente");
             }

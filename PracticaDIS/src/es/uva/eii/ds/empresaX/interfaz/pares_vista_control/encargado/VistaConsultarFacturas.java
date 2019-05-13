@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
+import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
@@ -601,6 +602,14 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     public void deshabilitaBotonConsultar() {
         btnConsultar.setEnabled(false);
         btnConsultar.setBackground(new Color(204, 204, 204));
+    }
+    
+    
+        /****************************************
+         *          LISTA DE FACTURAS           *
+         ****************************************/
+    public void muestraFacturasPendientes(ArrayList<Factura> pendientes) {
+        // TODO
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
