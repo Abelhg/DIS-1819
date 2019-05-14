@@ -1,11 +1,17 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
-import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
+import es.uva.eii.ds.empresaX.negocio.modelos.FacturaPendiente;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -15,6 +21,9 @@ import javax.swing.JLabel;
 public class VistaConsultarFacturas extends javax.swing.JFrame {
 
     private final CtrlVistaConsultarFacturas controlador;
+
+    private JPanel fillerLista; // Panel para rellenar el final de la lista
+    private int y = 0; // Coordenada y actual del ultimo elemento de la lista
     
     public VistaConsultarFacturas() {
         initComponents();
@@ -50,7 +59,14 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         inputProveedor = new javax.swing.JTextField();
         errorProveedor = new javax.swing.JLabel();
         btnConsultar = new javax.swing.JButton();
+        cabeceraLista = new javax.swing.JPanel();
+        lRealizacion = new javax.swing.JLabel();
+        lEmision = new javax.swing.JLabel();
         spResultados = new javax.swing.JScrollPane();
+        listaResultados = new javax.swing.JPanel();
+        lNombre = new javax.swing.JLabel();
+        lNumero = new javax.swing.JLabel();
+        lImporte = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -182,6 +198,51 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             }
         });
 
+        lRealizacion.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lRealizacion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lRealizacion.setText("Fecha de realización");
+
+        lEmision.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lEmision.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lEmision.setText("Fecha de emisión");
+
+        javax.swing.GroupLayout cabeceraListaLayout = new javax.swing.GroupLayout(cabeceraLista);
+        cabeceraLista.setLayout(cabeceraListaLayout);
+        cabeceraListaLayout.setHorizontalGroup(
+            cabeceraListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cabeceraListaLayout.createSequentialGroup()
+                .addComponent(lRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(lEmision, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        cabeceraListaLayout.setVerticalGroup(
+            cabeceraListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cabeceraListaLayout.createSequentialGroup()
+                .addGroup(cabeceraListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lRealizacion)
+                    .addComponent(lEmision))
+                .addGap(5, 5, 5))
+        );
+
+        spResultados.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        spResultados.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        listaResultados.setLayout(new java.awt.GridBagLayout());
+        spResultados.setViewportView(listaResultados);
+
+        lNombre.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lNombre.setText("Proveedor");
+
+        lNumero.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lNumero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lNumero.setText("Número de pedido");
+
+        lImporte.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lImporte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lImporte.setText("Importe de factura");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,56 +250,66 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             .addComponent(lTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(spResultados)
-                .addGap(60, 60, 60))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lDiaI)
-                    .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lMesI)
-                    .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lInicio))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lAnioI)
-                    .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lDiaF)
-                    .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lMesF)
-                    .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lFin))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lAnioF)
-                    .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btnConsultar)
-                    .addComponent(errorProveedor)
-                    .addComponent(inputProveedor)
-                    .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(243, 243, 243)
-                        .addComponent(errorFechas))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lDiaI)
+                            .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lMesI)
+                            .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lInicio))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lAnioI)
+                            .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lDiaF)
+                            .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lMesF)
+                            .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lFin))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(lAnioF)
+                            .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(100, 100, 100)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(btnConsultar)
+                            .addComponent(errorProveedor)
+                            .addComponent(inputProveedor)
+                            .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(checkAnioActual)
-                        .addGap(18, 18, 18)
-                        .addComponent(checkTodas)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(243, 243, 243)
+                                .addComponent(errorFechas))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(checkAnioActual)
+                                .addGap(18, 18, 18)
+                                .addComponent(checkTodas))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(lImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, 0)
+                                        .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,11 +364,18 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lDiaI)
                                     .addComponent(lMesI))))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(errorFechas)))
                 .addGap(18, 18, 18)
-                .addComponent(spResultados, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                .addGap(30, 30, 30))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lNombre)
+                        .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lImporte)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -373,8 +451,9 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         ocultarErrorProveedor();
         // Pide al controlador que le cargue los años
         controlador.cargaAnios();
+        // Lista de resultados
+        configuraFillerLista();
     }
-    
     
         /****************************************
          *          CASILLAS DE OPCIÓN          *
@@ -608,12 +687,99 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         /****************************************
          *          LISTA DE FACTURAS           *
          ****************************************/
-    public void muestraFacturasPendientes(ArrayList<Factura> pendientes) {
-        // TODO
+    /**
+     * Configura el relleno de la lista de resultados, para que aparezcan alineados
+     * arriba del contenedor.
+     */
+    private void configuraFillerLista() {
+        fillerLista = new JPanel();
+        fillerLista.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weighty = 1;
+        gbc.gridy = y;
+        listaResultados.add(fillerLista, gbc);
+    }
+    
+    /**
+     * Actualiza la lista de facturas pendientes con las especificadas.
+     * @param pendientes Facturas a mostrar
+     */
+    public void muestraFacturasPendientes(ArrayList<FacturaPendiente> pendientes) {
+        // Borra cualquier elemento anterior
+        listaResultados.removeAll();
+        
+        if(pendientes.size() > 0) {
+            GridBagConstraints gbc;
+            for(FacturaPendiente factura : pendientes) {
+                // Crea y configura la fila
+                JPanel nFila = new JPanel();
+                nFila.setLayout(new BoxLayout(nFila, BoxLayout.LINE_AXIS));
+                // Nombre de proveedor
+                JLabel lNombreProveedor = new JLabel();
+                configuraCasillaLista(lNombreProveedor, factura.getNombreProveedor());
+                nFila.add(lNombreProveedor);
+                // Número de pedido
+                JLabel lNumeroPedido = new JLabel();
+                configuraCasillaLista(lNumeroPedido, Long.toString(factura.getNumeroPedido()));
+                nFila.add(lNumeroPedido);
+                // Importe de factura
+                JLabel lImporteFactura = new JLabel();
+                configuraCasillaLista(lImporteFactura, String.format("%.02f", factura.getImporte()));
+                nFila.add(lImporteFactura);
+                // Fecha de pedido
+                JLabel lFechaPedido = new JLabel();
+                configuraCasillaLista(lFechaPedido, factura.getFechaPedido().toString());
+                nFila.add(lFechaPedido);
+                // Fecha de emisión
+                JLabel lFechaEmision = new JLabel();
+                configuraCasillaLista(lFechaEmision, factura.getFechaEmision().toString());
+                nFila.add(lFechaEmision);
+
+                // Añade la fila
+                gbc = new GridBagConstraints();
+                gbc.gridy = y++;
+                gbc.weightx = 1;
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                listaResultados.add(nFila, gbc);
+            }
+            
+            configuraFillerLista();
+        } else {
+            // No hay facturas
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridy = 0;
+            gbc.weightx = 1;
+            gbc.weighty = 1;
+            gbc.fill = GridBagConstraints.BOTH;
+            JLabel lNoHay = new JLabel();
+            lNoHay.setFont(new Font("Ebrima", Font.BOLD, 16)); // NOI18N
+            lNoHay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            lNoHay.setText("No hay facturas para ese filtro");
+            listaResultados.add(lNoHay, gbc);
+        }
+
+        // Actualiza la vista
+        revalidate();
+        repaint();
+    }
+    
+    /**
+     * Configura una casilla para la lista de facturas pendientes.
+     * @param casilla Casilla a configurar
+     */
+    private void configuraCasillaLista(JLabel casilla, String texto) {
+        casilla.setFont(new Font("Ebrima", Font.BOLD, 16)); // NOI18N
+        casilla.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        casilla.setText(texto);
+        casilla.setMaximumSize(new java.awt.Dimension(180, 25));
+        casilla.setMinimumSize(new java.awt.Dimension(180, 25));
+        casilla.setPreferredSize(new java.awt.Dimension(180, 25));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
+    private javax.swing.JPanel cabeceraLista;
     private javax.swing.JCheckBox checkAnioActual;
     private javax.swing.JCheckBox checkTodas;
     private javax.swing.JLabel errorFechas;
@@ -630,13 +796,19 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     private javax.swing.JLabel lAnioI;
     private javax.swing.JLabel lDiaF;
     private javax.swing.JLabel lDiaI;
+    private javax.swing.JLabel lEmision;
     private javax.swing.JLabel lFecha;
     private javax.swing.JLabel lFin;
+    private javax.swing.JLabel lImporte;
     private javax.swing.JLabel lInicio;
     private javax.swing.JLabel lMesF;
     private javax.swing.JLabel lMesI;
+    private javax.swing.JLabel lNombre;
+    private javax.swing.JLabel lNumero;
     private javax.swing.JLabel lProveedor;
+    private javax.swing.JLabel lRealizacion;
     private javax.swing.JLabel lTitulo;
+    private javax.swing.JPanel listaResultados;
     private javax.swing.JScrollPane spResultados;
     // End of variables declaration//GEN-END:variables
 }

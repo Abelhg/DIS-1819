@@ -133,8 +133,8 @@ create table USOENPASOSDERECETA
     Cantidad SMALLINT,
     MateriaPrima VARCHAR(20),
     ProductoDeHorno VARCHAR(20),
-        FOREIGN KEY MateriaPrima REFERENCES PRODUCTO(Codigo),
-        FOREIGN KEY ProductoDeHorno REFERENCES PRODUCTO(Codigo)
+        FOREIGN KEY (MateriaPrima) REFERENCES PRODUCTO(Codigo),
+        FOREIGN KEY (ProductoDeHorno) REFERENCES PRODUCTO(Codigo)
 );
 
 -- Entity
@@ -337,3 +337,17 @@ VALUES ('2014-02-25',
         NULL,
         '12345678Z',
         3);
+
+INSERT INTO PROVEEDOR
+VALUES  ('15264859N', 'Panusa', '942335708', 'comercial@panusa.es'),
+        ('35246857R', 'Ogiberri', '943721983', 'comercial@ogiberri.es');
+
+INSERT INTO PEDIDOAPROVEEDOR
+VALUES  (1, '2015-05-13', 'N', '15264859N'),
+        (2, '2017-12-22', 'N', '15264859N'),
+        (3, '2019-04-14', 'N', '15264859N');
+
+INSERT INTO FACTURA
+VALUES  (1, '2015-05-14', 123.45, 'ES-...', 1, NULL),
+        (2, '2017-12-25', 666.66, 'ES-...', 2, NULL),
+        (3, '2019-04-14', 96.69, 'ES-...', 3, NULL);

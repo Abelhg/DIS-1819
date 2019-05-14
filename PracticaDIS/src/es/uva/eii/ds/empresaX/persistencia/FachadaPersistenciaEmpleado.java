@@ -2,7 +2,6 @@ package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.CtrlVistaIdentificarse;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.PreparedStatement;

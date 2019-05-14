@@ -1,11 +1,10 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
-import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
+import es.uva.eii.ds.empresaX.negocio.modelos.FacturaPendiente;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
@@ -128,7 +127,7 @@ public class CtrlVistaConsultarFacturas {
             }
             
             // Comprueba que las fechas están ordenadas
-            if(fechaI.isAfter(fechaF)) {
+            if(fechaF.isBefore(fechaI)) {
                 vista.muestraErrorFechas("La fecha de fin debe ser posterior a la de inicio");
                 return;
             }
@@ -138,11 +137,10 @@ public class CtrlVistaConsultarFacturas {
         String proveedor = vista.getProveedor();
         if(proveedor != null && !proveedor.isEmpty()) {
             // Comprueba que el proveedor especificado existe
-            // TODO
-            boolean existe = false;
-            if(existe) {
+            String cifProveedor = FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
+            if(cifProveedor != null) {
                 // Busca las facturas en la BD y las muestra en la vista
-                ArrayList<Factura> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, proveedor);
+                ArrayList<FacturaPendiente> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, cifProveedor);
                 vista.muestraFacturasPendientes(facturasPendientes);
             } else {
                 vista.mostrarErrorProveedor("Proveedor no existente");
@@ -157,7 +155,6 @@ public class CtrlVistaConsultarFacturas {
      * los días válidos para dicho mes.
      */
     public void procesaCambioFechaInicio() {
-        int dia = vista.getDiaInicio();
         int mes = vista.getMesInicio();
         int anio = vista.getAnioInicio();
         vista.cambiaDiasInicio(getDiasMes(mes, anio));
