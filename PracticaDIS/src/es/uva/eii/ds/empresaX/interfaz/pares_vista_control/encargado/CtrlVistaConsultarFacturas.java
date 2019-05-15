@@ -61,7 +61,8 @@ public class CtrlVistaConsultarFacturas {
         if(vista.facturasAnioActual()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
-            vista.desmarcaTodas();       // Desmarca la otra opción
+            vista.desmarcaProveedor();       // Desmarca la otra opción
+            vista.desmarcaTodas();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
@@ -71,19 +72,39 @@ public class CtrlVistaConsultarFacturas {
     
     /**
      * Procesa el evento de click en la casilla de selección de todas las 
-     * facturas pendientes.
+     * facturas pendientes del proveedor.
      */
-    public void procesaClickTodas() {
-        if(vista.facturasTodas()) {
+    public void procesaClickProveedor() {
+        if(vista.facturasProveedor()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaAnioActual();  // Desmarca la otra opción
+            vista.desmarcaTodas();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
             vista.habilitaFechas();
         }
     }
+    
+    /**
+     * Procesa el evento de click en la casilla de selección de todas las facturas pendientes.
+     */
+    public void procesaClickTodas(){
+        if(vista.facturasTodas()) {
+            // Marcada -> inhabilita la selección de fechas
+            vista.inhabilitaFechas();
+            vista.desmarcaAnioActual();
+            vista.desmarcaProveedor();// Desmarca la otra opción
+            vista.focusProveedor(false); // Solo focus
+            vista.habilitaBotonConsultar();
+        } else {
+            // Desmarcada -> habilita la selección de fechas
+            vista.habilitaFechas();
+            vista.deshabilitaBotonConsultar();
+        }
+    }
+    
     
     /**
      * Procesa el evento de click en el botón de generación de la consulta.
@@ -99,7 +120,7 @@ public class CtrlVistaConsultarFacturas {
             int anioActual = LocalDate.now().getYear();
             fechaI = LocalDate.of(anioActual, 1, 1);    // Primer día del año
             fechaF = LocalDate.of(anioActual, 12, 31);  // Último día del año
-        } else if(vista.facturasTodas()) {
+        } else if(vista.facturasProveedor() || vista.facturasTodas()) {
             // Opción de todas las facturas
             int anioMin = FachadaPersistenciaEncargado.getMinAnioFacturas();
             int anioMax = FachadaPersistenciaEncargado.getMaxAnioFacturas();
@@ -145,6 +166,9 @@ public class CtrlVistaConsultarFacturas {
             } else {
                 vista.mostrarErrorProveedor("Proveedor no existente");
             }
+        } else if(vista.facturasTodas()){
+            ArrayList<FacturaPendiente> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, null);
+                vista.muestraFacturasPendientes(facturasPendientes);
         }
         
     }

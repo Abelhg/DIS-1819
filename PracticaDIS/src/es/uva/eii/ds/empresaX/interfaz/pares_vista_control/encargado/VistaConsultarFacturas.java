@@ -39,7 +39,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lFecha = new javax.swing.JLabel();
         checkAnioActual = new javax.swing.JCheckBox();
-        checkTodas = new javax.swing.JCheckBox();
+        checkProveedor = new javax.swing.JCheckBox();
         lInicio = new javax.swing.JLabel();
         lFin = new javax.swing.JLabel();
         inputDiaI = new javax.swing.JComboBox<>();
@@ -67,6 +67,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lNombre = new javax.swing.JLabel();
         lNumero = new javax.swing.JLabel();
         lImporte = new javax.swing.JLabel();
+        checkTotal = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -92,11 +93,11 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             }
         });
 
-        checkTodas.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
-        checkTodas.setText("Todas las facturas");
-        checkTodas.addActionListener(new java.awt.event.ActionListener() {
+        checkProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
+        checkProveedor.setText("Todas las facturas");
+        checkProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkTodasActionPerformed(evt);
+                checkProveedorActionPerformed(evt);
             }
         });
 
@@ -243,6 +244,15 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lImporte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lImporte.setText("Importe de factura");
 
+        checkTotal.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+        checkTotal.setText("Todas las facturas de todos los proveedores");
+        checkTotal.setName("checkTotal"); // NOI18N
+        checkTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkTotalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -290,13 +300,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                                 .addGap(243, 243, 243)
                                 .addComponent(errorFechas))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(checkAnioActual)
-                                .addGap(18, 18, 18)
-                                .addComponent(checkTodas))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(55, 55, 55)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
@@ -307,7 +310,16 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                                         .addComponent(lImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, 0)
                                         .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(checkAnioActual)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(checkTotal)
+                                    .addComponent(checkProveedor))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -317,13 +329,15 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkAnioActual)
-                            .addComponent(checkTodas)
+                            .addComponent(checkProveedor)
                             .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -389,9 +403,9 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         controlador.procesaClickAnioActual();
     }//GEN-LAST:event_checkAnioActualActionPerformed
 
-    private void checkTodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTodasActionPerformed
-        controlador.procesaClickTodas();
-    }//GEN-LAST:event_checkTodasActionPerformed
+    private void checkProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkProveedorActionPerformed
+        controlador.procesaClickProveedor();
+    }//GEN-LAST:event_checkProveedorActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
        controlador.procesaClickConsultar();
@@ -433,6 +447,10 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             controlador.procesaCambioProveedor();
         }
     }//GEN-LAST:event_inputProveedorKeyReleased
+
+    private void checkTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTotalActionPerformed
+        controlador.procesaClickTodas();
+    }//GEN-LAST:event_checkTotalActionPerformed
     
     
     /**
@@ -467,11 +485,19 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     }
     
     /**
-     * Devuelve true si está marcada la opción de todas las facturas.
+     * Devuelve true si está marcada la opción de todas las facturas del proveedor.
      * @return True si está marcada la opción
      */
-    public boolean facturasTodas() {
-        return checkTodas.isSelected();
+    public boolean facturasProveedor() {
+        return checkProveedor.isSelected();
+    }
+    
+    /**
+     * Devuelve true si esta marcada la opcion de todas las facturas.
+     * @return True si está marcada la opción
+     */
+    public boolean facturasTodas(){
+        return checkTotal.isSelected();
     }
     
     /**
@@ -482,10 +508,17 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     }
     
     /**
+     * Desmarca la opción de todas las facturas del proveedor.
+     */
+    public void desmarcaProveedor() {
+        checkProveedor.setSelected(false);
+    }
+    
+    /**
      * Desmarca la opción de todas las facturas.
      */
     public void desmarcaTodas() {
-        checkTodas.setSelected(false);
+        checkTotal.setSelected(false);
     }
     
     
@@ -781,7 +814,8 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultar;
     private javax.swing.JPanel cabeceraLista;
     private javax.swing.JCheckBox checkAnioActual;
-    private javax.swing.JCheckBox checkTodas;
+    private javax.swing.JCheckBox checkProveedor;
+    private javax.swing.JCheckBox checkTotal;
     private javax.swing.JLabel errorFechas;
     private javax.swing.JLabel errorProveedor;
     private javax.swing.JComboBox<String> inputAnioF;
