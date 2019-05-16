@@ -2,13 +2,9 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 
 public class Proveedor {
-    // JSON
-    public static String JSON_NOMBRE = "nombre";
-    public static String JSON_TELEFONO = "telefono";
-    public static String JSON_EMAIL = "email";
-    
     // ATRIBUTOS
     private final String nombre;
     private final String telefono;
@@ -20,9 +16,9 @@ public class Proveedor {
      */
     public Proveedor(String jsonProveedor) {
         JsonObject jo = new Gson().fromJson(jsonProveedor, JsonObject.class);
-        nombre = jo.get(JSON_NOMBRE).getAsString();
-        telefono = jo.get(JSON_TELEFONO).getAsString();
-        email = jo.get(JSON_EMAIL).getAsString();
+        nombre = jo.get(JSONHelper.JSON_NOMBRE).getAsString();
+        telefono = jo.get(JSONHelper.JSON_TELEFONO).getAsString();
+        email = jo.get(JSONHelper.JSON_EMAIL).getAsString();
     }
 
     public String getNombre() {

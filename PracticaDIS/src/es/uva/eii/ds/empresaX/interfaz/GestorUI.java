@@ -39,8 +39,8 @@ public class GestorUI {
         anteriores = new Stack<>();
         configurarMapaCU();
         // Muestra la pantalla principal
-        //vistaIdentificarse();
-        vistaConsultarFacturas();
+        vistaIdentificarse();
+        //vistaConsultarFacturas();
     }
     
     /**

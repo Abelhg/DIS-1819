@@ -30,59 +30,59 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lDiaI" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputDiaI" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lMesI" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputMesI" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="lInicio" alignment="2" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lAnioI" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputAnioI" alignment="2" min="-2" pref="80" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lDiaF" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputDiaF" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lMesF" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputMesF" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="lFin" alignment="2" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="lAnioF" alignment="2" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputAnioF" alignment="2" min="-2" pref="80" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
-                      <Component id="errorFechas" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="inputProveedor" alignment="2" min="-2" pref="197" max="-2" attributes="0"/>
-                  <Component id="checkProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="lProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="errorProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
-              </Group>
-          </Group>
           <Component id="lTitulo" max="32767" attributes="0"/>
           <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lDiaI" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputDiaI" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lMesI" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputMesI" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lInicio" alignment="2" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lAnioI" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputAnioI" alignment="2" min="-2" pref="80" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lDiaF" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputDiaF" alignment="2" min="-2" pref="60" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lMesF" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputMesF" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lFin" alignment="2" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="2" attributes="0">
+                                  <Component id="lAnioF" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="inputAnioF" alignment="2" min="-2" pref="80" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
+                              <Component id="errorFechas" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="2" attributes="0">
+                          <Component id="inputProveedor" alignment="2" min="-2" pref="197" max="-2" attributes="0"/>
+                          <Component id="checkProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="lProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
+                          <Component id="errorProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -544,6 +544,7 @@
           <Font name="Ebrima" size="24" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="CONSULTAR"/>
+        <Property name="focusPainted" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsultarActionPerformed"/>

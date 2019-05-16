@@ -63,7 +63,6 @@ public class CtrlVistaConsultarFacturas {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaTodas();       // Desmarca la otra opción
-            vista.desmarcaProveedor();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
@@ -80,7 +79,6 @@ public class CtrlVistaConsultarFacturas {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaAnioActual();  // Desmarca la otra opción
-            vista.desmarcaProveedor();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
@@ -165,7 +163,7 @@ public class CtrlVistaConsultarFacturas {
             }
             
             // Comprueba que existe el proveedor
-            String cifProveedor = FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
+            String cifProveedor = ControladorCUConsultarFacturas.getCIFProveedor(proveedor);
             if(cifProveedor == null) {
                 vista.muestraErrorProveedor("Proveedor no existente");
                 return;

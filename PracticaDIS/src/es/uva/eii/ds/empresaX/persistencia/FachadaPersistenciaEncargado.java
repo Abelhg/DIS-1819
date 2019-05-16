@@ -1,17 +1,14 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
-import es.uva.eii.ds.empresaX.negocio.modelos.PedidoAProveedor;
-import es.uva.eii.ds.empresaX.negocio.modelos.Proveedor;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +37,7 @@ public class FachadaPersistenciaEncargado {
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
     }
-
+    
     /**
      * Devuelve el año de la primera factura.
      *
@@ -69,6 +66,7 @@ public class FachadaPersistenciaEncargado {
      */
     public static String getCIFProveedor(String proveedor) {
         String cif = null;
+
         try {
             ConexionBD conn = conectarse();
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_PROVEEDOR);
@@ -96,6 +94,7 @@ public class FachadaPersistenciaEncargado {
     public static String getFacturasPendientesDePago(LocalDate fechaI, LocalDate fechaF, String proveedor) {
         // Obtiene la lista de facturas
         JsonArray arrayFacturas = new JsonArray();
+        
         try {
             ConexionBD conn = conectarse();
             String query = QUERY_FACTURAS_PEND;
@@ -113,10 +112,10 @@ public class FachadaPersistenciaEncargado {
             while (rs.next()) {
                 JsonObject factura = new JsonObject();
                 // Atributos directos de la factura
-                factura.addProperty(Factura.JSON_FECHA_EMISION, rs.getDate("FECHADEEMISION").toString());
-                factura.addProperty(Factura.JSON_IMPORTE, rs.getDouble("IMPORTE"));
-                factura.addProperty(Factura.JSON_CUENTA_BANCARIA, rs.getString("CUENTABANCARIA"));
-                factura.add(Factura.JSON_PEDIDO, getPedido(rs)); // Añade el pedido
+                factura.addProperty(JSONHelper.JSON_FECHA_EMISION, rs.getDate("FECHADEEMISION").toString());
+                factura.addProperty(JSONHelper.JSON_IMPORTE, rs.getDouble("IMPORTE"));
+                factura.addProperty(JSONHelper.JSON_CUENTA_BANCARIA, rs.getString("CUENTABANCARIA"));
+                factura.add(JSONHelper.JSON_PEDIDO, getPedido(rs)); // Añade el pedido
 
                 // Añade la factura a la lista
                 arrayFacturas.add(factura);
@@ -129,7 +128,7 @@ public class FachadaPersistenciaEncargado {
 
         // Construye el objeto resultado
         JsonObject facturasPendientes = new JsonObject();
-        facturasPendientes.add("facturasPendientes", arrayFacturas);
+        facturasPendientes.add(JSONHelper.JSON_FACTURAS_PENDIENTES, arrayFacturas);
         
         return facturasPendientes.toString();
     }
@@ -143,11 +142,11 @@ public class FachadaPersistenciaEncargado {
     private static JsonObject getPedido(ResultSet rs) throws SQLException {
         JsonObject pedido = new JsonObject();
         
-        pedido.addProperty(PedidoAProveedor.JSON_NUM_PEDIDO, rs.getLong("NUMERODEPEDIDO"));
-        pedido.addProperty(PedidoAProveedor.JSON_FECHA_REALIZACION, rs.getDate("FECHADEREALIZACION").toString());
-        pedido.addProperty(PedidoAProveedor.JSON_PENDIENTE, rs.getString("ESTAPENDIENTE"));
+        pedido.addProperty(JSONHelper.JSON_NUM_PEDIDO, rs.getLong("NUMERODEPEDIDO"));
+        pedido.addProperty(JSONHelper.JSON_FECHA_REALIZACION, rs.getDate("FECHADEREALIZACION").toString());
+        pedido.addProperty(JSONHelper.JSON_PENDIENTE, rs.getString("ESTAPENDIENTE"));
         // Proveedor
-        pedido.add(PedidoAProveedor.JSON_PROVEEDOR, getProveedor(rs));
+        pedido.add(JSONHelper.JSON_PROVEEDOR, getProveedor(rs));
         
         return pedido;
     }
@@ -161,9 +160,9 @@ public class FachadaPersistenciaEncargado {
     private static JsonObject getProveedor(ResultSet rs) throws SQLException {
         JsonObject proveedor = new JsonObject();
         
-        proveedor.addProperty(Proveedor.JSON_NOMBRE, rs.getString("NOMBRE"));
-        proveedor.addProperty(Proveedor.JSON_TELEFONO, rs.getString("TELEFONO"));
-        proveedor.addProperty(Proveedor.JSON_EMAIL, rs.getString("EMAIL"));
+        proveedor.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+        proveedor.addProperty(JSONHelper.JSON_TELEFONO, rs.getString("TELEFONO"));
+        proveedor.addProperty(JSONHelper.JSON_EMAIL, rs.getString("EMAIL"));
         
         return proveedor;
     }

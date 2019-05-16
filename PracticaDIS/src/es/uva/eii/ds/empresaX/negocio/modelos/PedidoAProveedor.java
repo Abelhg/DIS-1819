@@ -2,16 +2,11 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import java.sql.Date;
 import java.time.LocalDate;
 
 public class PedidoAProveedor {
-    // JSON
-    public static String JSON_NUM_PEDIDO = "numeroPedido";
-    public static String JSON_FECHA_REALIZACION = "fechaRealizacion";
-    public static String JSON_PENDIENTE = "estaPendiente";
-    public static String JSON_PROVEEDOR = "proveedor";
-    
     // ATRIBUTOS
     private final long numeroDePedido;
     private final LocalDate fechaDeRealizacion;
@@ -24,10 +19,10 @@ public class PedidoAProveedor {
      */
     public PedidoAProveedor(String jsonPedido) {
         JsonObject jo = new Gson().fromJson(jsonPedido, JsonObject.class);
-        numeroDePedido = jo.get(JSON_NUM_PEDIDO).getAsLong();
-        fechaDeRealizacion = Date.valueOf(jo.get(JSON_FECHA_REALIZACION).getAsString()).toLocalDate();
-        estaPendiente = jo.get(JSON_PENDIENTE).getAsBoolean();
-        proveedor = new Proveedor(jo.get(JSON_PROVEEDOR).toString());
+        numeroDePedido = jo.get(JSONHelper.JSON_NUM_PEDIDO).getAsLong();
+        fechaDeRealizacion = Date.valueOf(jo.get(JSONHelper.JSON_FECHA_REALIZACION).getAsString()).toLocalDate();
+        estaPendiente = jo.get(JSONHelper.JSON_PENDIENTE).getAsBoolean();
+        proveedor = new Proveedor(jo.get(JSONHelper.JSON_PROVEEDOR).toString());
     }
 
     public long getNumeroDePedido() {

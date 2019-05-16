@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -29,12 +30,21 @@ public class ControladorCUConsultarFacturas {
         
         // Genera los objetos
         JsonObject jo = new Gson().fromJson(jsonFacturas, JsonObject.class);
-        JsonArray facturasPendientes = jo.getAsJsonArray("facturasPendientes");
+        JsonArray facturasPendientes = jo.getAsJsonArray(JSONHelper.JSON_FACTURAS_PENDIENTES);
         for(JsonElement factura : facturasPendientes) {
             pendientes.add(new Factura(factura.toString()));
         }
         
         return pendientes;
+    }
+    
+    /**
+     * Devuelve el CIF para el nombre de un proveedor dado.
+     * @param proveedor Nombre del proveedor
+     * @return CIF del proveedor
+     */
+    public static String getCIFProveedor(String proveedor) {
+        return FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
     }
     
     
