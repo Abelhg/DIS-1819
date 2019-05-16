@@ -59,7 +59,7 @@ public class CtrlVistaConsultarFacturas {
      * en el año actual. Inhabilita los selectores de fechas.
      */
     public void procesaClickAnioActual() {
-        if(vista.facturasAnioActual()) {
+        if(vista.estaMarcadaAnioActual()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaTodas();       // Desmarca la otra opción
@@ -76,7 +76,7 @@ public class CtrlVistaConsultarFacturas {
      * facturas pendientes independientemente de la fecha de emisión.
      */
     public void procesaClickTodas() {
-        if(vista.facturasTodas()) {
+        if(vista.estaMarcadaTodas()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaAnioActual();  // Desmarca la otra opción
@@ -93,7 +93,7 @@ public class CtrlVistaConsultarFacturas {
      * de cualquier proveedor.
      */
     public void procesaClickProveedor(){
-        if(vista.facturasCualquierProveedor()) {
+        if(vista.estaMarcadaCualquier()) {
             // Marcada -> inhabilita la entrada de un proveedor
             vista.inhabilitaProveedor();
             vista.clearProveedor(); // Borra cualquier contenido
@@ -116,12 +116,12 @@ public class CtrlVistaConsultarFacturas {
         // Primero obtiene las fechas con las que tratar
         LocalDate fechaI;
         LocalDate fechaF;
-        if(vista.facturasAnioActual()) {
+        if(vista.estaMarcadaAnioActual()) {
             // Opción de facturas del año actual marcada.
             int anioActual = LocalDate.now().getYear();
             fechaI = LocalDate.of(anioActual, 1, 1);    // Primer día del año
             fechaF = LocalDate.of(anioActual, 12, 31);  // Último día del año
-        } else if(vista.facturasTodas()) {
+        } else if(vista.estaMarcadaTodas()) {
             // Opción de todas las facturas
             int anioMin = FachadaPersistenciaEncargado.getMinAnioFacturas();
             int anioMax = FachadaPersistenciaEncargado.getMaxAnioFacturas();
@@ -157,7 +157,7 @@ public class CtrlVistaConsultarFacturas {
         
         // Luego obtiene el proveedor
         String proveedor = null;
-        if(!vista.facturasCualquierProveedor()) {
+        if(!vista.estaMarcadaCualquier()) {
             proveedor = vista.getProveedor();
             if(proveedor == null || proveedor.isEmpty()) {
                 vista.muestraErrorProveedor("Introduce un proveedor");

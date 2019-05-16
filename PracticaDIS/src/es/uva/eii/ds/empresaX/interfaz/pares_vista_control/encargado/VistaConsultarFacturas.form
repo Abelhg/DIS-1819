@@ -78,7 +78,6 @@
                   <Component id="lProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="errorProveedor" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
           </Group>
           <Component id="lTitulo" max="32767" attributes="0"/>
           <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>

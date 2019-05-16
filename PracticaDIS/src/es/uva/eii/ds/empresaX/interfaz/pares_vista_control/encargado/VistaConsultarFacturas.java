@@ -486,7 +486,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * Devuelve true si está marcada la opción de facturas solo del año actual.
      * @return True si está marcada la opción
      */
-    public boolean facturasAnioActual() {
+    public boolean estaMarcadaAnioActual() {
         return checkAnioActual.isSelected();
     }
     
@@ -495,7 +495,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * de la fecha de emisión.
      * @return True si está marcada la opción
      */
-    public boolean facturasTodas() {
+    public boolean estaMarcadaTodas() {
         return checkTodas.isSelected();
     }
     
@@ -503,7 +503,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * Devuelve true si esta marcada la opcion de cualquier proveedor.
      * @return True si está marcada la opción
      */
-    public boolean facturasCualquierProveedor(){
+    public boolean estaMarcadaCualquier(){
         return checkProveedor.isSelected();
     }
     
