@@ -15,6 +15,7 @@ import java.util.TreeMap;
  */
 public class Empleado {
     
+    // JSON
     public static final String JSON_DNI = "dni";
     public static final String JSON_NOMBRE = "nombre";
     public static final String JSON_APELLIDOS = "apellidos";
@@ -27,7 +28,6 @@ public class Empleado {
     public static final String JSON_VINCULACION = "vinculacion";
     public static final String JSON_DISPONIBILIDADES = "disponibilidades";
     public static final String JSON_DISPONIBILIDAD = "disponibilidad";
-
     public static final String JSON_ERROR = "error";
     
     private String dni;

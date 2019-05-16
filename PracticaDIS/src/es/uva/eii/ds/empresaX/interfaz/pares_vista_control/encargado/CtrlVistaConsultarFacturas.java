@@ -1,7 +1,8 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
-import es.uva.eii.ds.empresaX.negocio.modelos.FacturaPendiente;
+import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUConsultarFacturas;
+import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -61,8 +62,8 @@ public class CtrlVistaConsultarFacturas {
         if(vista.facturasAnioActual()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
-            vista.desmarcaProveedor();       // Desmarca la otra opción
-            vista.desmarcaTodas();
+            vista.desmarcaTodas();       // Desmarca la otra opción
+            vista.desmarcaProveedor();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
@@ -72,14 +73,14 @@ public class CtrlVistaConsultarFacturas {
     
     /**
      * Procesa el evento de click en la casilla de selección de todas las 
-     * facturas pendientes del proveedor.
+     * facturas pendientes independientemente de la fecha de emisión.
      */
-    public void procesaClickProveedor() {
-        if(vista.facturasProveedor()) {
+    public void procesaClickTodas() {
+        if(vista.facturasTodas()) {
             // Marcada -> inhabilita la selección de fechas
             vista.inhabilitaFechas();
             vista.desmarcaAnioActual();  // Desmarca la otra opción
-            vista.desmarcaTodas();
+            vista.desmarcaProveedor();
             vista.focusProveedor(false); // Solo focus
         } else {
             // Desmarcada -> habilita la selección de fechas
@@ -88,20 +89,19 @@ public class CtrlVistaConsultarFacturas {
     }
     
     /**
-     * Procesa el evento de click en la casilla de selección de todas las facturas pendientes.
+     * Procesa el evento de click en la casilla de selección de facturas
+     * de cualquier proveedor.
      */
-    public void procesaClickTodas(){
-        if(vista.facturasTodas()) {
-            // Marcada -> inhabilita la selección de fechas
-            vista.inhabilitaFechas();
-            vista.desmarcaAnioActual();
-            vista.desmarcaProveedor();// Desmarca la otra opción
-            vista.focusProveedor(false); // Solo focus
+    public void procesaClickProveedor(){
+        if(vista.facturasCualquierProveedor()) {
+            // Marcada -> inhabilita la entrada de un proveedor
+            vista.inhabilitaProveedor();
+            vista.clearProveedor(); // Borra cualquier contenido
             vista.habilitaBotonConsultar();
         } else {
-            // Desmarcada -> habilita la selección de fechas
-            vista.habilitaFechas();
-            vista.deshabilitaBotonConsultar();
+            // Desmarcada -> habilita la entrada de un proveedor
+            vista.habilitaProveedor();
+            vista.focusProveedor(false); // Solo focus
         }
     }
     
@@ -111,8 +111,9 @@ public class CtrlVistaConsultarFacturas {
      */
     public void procesaClickConsultar() {
         vista.ocultaErrorFechas();
-        vista.ocultarErrorProveedor();
+        vista.ocultaErrorProveedor();
         
+        // Primero obtiene las fechas con las que tratar
         LocalDate fechaI;
         LocalDate fechaF;
         if(vista.facturasAnioActual()) {
@@ -120,7 +121,7 @@ public class CtrlVistaConsultarFacturas {
             int anioActual = LocalDate.now().getYear();
             fechaI = LocalDate.of(anioActual, 1, 1);    // Primer día del año
             fechaF = LocalDate.of(anioActual, 12, 31);  // Último día del año
-        } else if(vista.facturasProveedor() || vista.facturasTodas()) {
+        } else if(vista.facturasTodas()) {
             // Opción de todas las facturas
             int anioMin = FachadaPersistenciaEncargado.getMinAnioFacturas();
             int anioMax = FachadaPersistenciaEncargado.getMaxAnioFacturas();
@@ -154,23 +155,30 @@ public class CtrlVistaConsultarFacturas {
             }
         }
         
-        // Obtiene el proveedor, comprueba que no esté vacío
-        String proveedor = vista.getProveedor();
-        if(proveedor != null && !proveedor.isEmpty()) {
-            // Comprueba que el proveedor especificado existe
-            String cifProveedor = FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
-            if(cifProveedor != null) {
-                // Busca las facturas en la BD y las muestra en la vista
-                ArrayList<FacturaPendiente> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, cifProveedor);
-                vista.muestraFacturasPendientes(facturasPendientes);
-            } else {
-                vista.mostrarErrorProveedor("Proveedor no existente");
+        // Luego obtiene el proveedor
+        String proveedor = null;
+        if(!vista.facturasCualquierProveedor()) {
+            proveedor = vista.getProveedor();
+            if(proveedor == null || proveedor.isEmpty()) {
+                vista.muestraErrorProveedor("Introduce un proveedor");
+                return;
             }
-        } else if(vista.facturasTodas()){
-            ArrayList<FacturaPendiente> facturasPendientes = FachadaPersistenciaEncargado.getFacturasPendientesDePago(fechaI, fechaF, null);
-                vista.muestraFacturasPendientes(facturasPendientes);
+            
+            // Comprueba que existe el proveedor
+            String cifProveedor = FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
+            if(cifProveedor == null) {
+                vista.muestraErrorProveedor("Proveedor no existente");
+                return;
+            }
         }
         
+        // Finalmente le pasa los datos al controlador del CU y obtiene las facturas
+        ArrayList<Factura> facturasPendientes = 
+                ControladorCUConsultarFacturas.getInstanciaSingleton().
+                        obtenerFacturasPendientes(fechaI, fechaF, proveedor);
+        // Le manda a la vista mostrar las facturas
+        // ############### ¿Cambiar a método de añadir filas en la vista? ###############3
+        vista.muestraFacturasPendientes(facturasPendientes);
     }
     
     
@@ -198,7 +206,7 @@ public class CtrlVistaConsultarFacturas {
      * Procesa un cambio en el input del proveedor. Quita el mensaje de error.
      */
     public void procesaCambioProveedor() {
-        vista.ocultarErrorProveedor();
+        vista.ocultaErrorProveedor();
         if(vista.getProveedor().isEmpty()) {
             vista.deshabilitaBotonConsultar();
         } else {
