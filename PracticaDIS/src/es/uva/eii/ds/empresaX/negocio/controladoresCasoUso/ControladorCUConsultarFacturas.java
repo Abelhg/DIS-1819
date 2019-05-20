@@ -47,6 +47,36 @@ public class ControladorCUConsultarFacturas {
         return FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
     }
     
+    /**
+     * Devuelve el año de la primera factura.
+     *
+     * @return Año de la primera factura
+     */
+    public static int getMinAnioFacturas() {
+        int res = 2000;
+        
+        try {
+            res = FachadaPersistenciaEncargado.getMinAnioFacturas();
+        } catch(Exception e) { }
+        
+        return res;
+    }
+    
+    /**
+     * Devuelve el año de la ultima factura.
+     *
+     * @return Año de la última factura
+     */
+    public static int getMaxAnioFacturas() {
+        int res = LocalDate.now().getYear();
+        
+        try {
+            res = FachadaPersistenciaEncargado.getMaxAnioFacturas();
+        } catch(Exception e) { }
+        
+        return res;
+    }
+    
     
     /*****     SINGLETON     *****/
     /**

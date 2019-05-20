@@ -3,7 +3,6 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUConsultarFacturas;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
-import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -41,8 +40,8 @@ public class CtrlVistaConsultarFacturas {
      */
     public void cargaAnios() {
         // Consulta en la BD el año más bajo y el más alto
-        int minAnio = FachadaPersistenciaEncargado.getMinAnioFacturas();
-        int maxAnio = FachadaPersistenciaEncargado.getMaxAnioFacturas();
+        int minAnio = ControladorCUConsultarFacturas.getMinAnioFacturas();
+        int maxAnio = ControladorCUConsultarFacturas.getMaxAnioFacturas();
         
         // Obtiene los años entre medias y los mete en un array
         String[] anios = new String[maxAnio-minAnio+1];
@@ -111,18 +110,22 @@ public class CtrlVistaConsultarFacturas {
         vista.ocultaErrorFechas();
         vista.ocultaErrorProveedor();
         
+        boolean anioActual = vista.estaMarcadaAnioActual();
+        boolean todas = vista.estaMarcadaTodas();
+        boolean cualquier = vista.estaMarcadaCualquier();
+        
         // Primero obtiene las fechas con las que tratar
         LocalDate fechaI;
         LocalDate fechaF;
-        if(vista.estaMarcadaAnioActual()) {
+        if(anioActual) {
             // Opción de facturas del año actual marcada.
-            int anioActual = LocalDate.now().getYear();
-            fechaI = LocalDate.of(anioActual, 1, 1);    // Primer día del año
-            fechaF = LocalDate.of(anioActual, 12, 31);  // Último día del año
-        } else if(vista.estaMarcadaTodas()) {
+            int currentYear = LocalDate.now().getYear();
+            fechaI = LocalDate.of(currentYear, 1, 1);    // Primer día del año
+            fechaF = LocalDate.of(currentYear, 12, 31);  // Último día del año
+        } else if(todas) {
             // Opción de todas las facturas
-            int anioMin = FachadaPersistenciaEncargado.getMinAnioFacturas();
-            int anioMax = FachadaPersistenciaEncargado.getMaxAnioFacturas();
+            int anioMin = ControladorCUConsultarFacturas.getMinAnioFacturas();
+            int anioMax = ControladorCUConsultarFacturas.getMaxAnioFacturas();
             fechaI = LocalDate.of(anioMin, 1, 1);
             fechaF = LocalDate.of(anioMax, 12, 31);
         } else {
@@ -155,7 +158,7 @@ public class CtrlVistaConsultarFacturas {
         
         // Luego obtiene el proveedor
         String proveedor = null;
-        if(!vista.estaMarcadaCualquier()) {
+        if(!cualquier) {
             proveedor = vista.getProveedor();
             if(proveedor == null || proveedor.isEmpty()) {
                 vista.muestraErrorProveedor("Introduce un proveedor");
