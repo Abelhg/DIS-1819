@@ -75,7 +75,7 @@
                               <Component id="errorFechas" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="2" attributes="0">
                           <Component id="inputProveedor" alignment="2" min="-2" pref="197" max="-2" attributes="0"/>
                           <Component id="checkProveedor" alignment="2" min="-2" max="-2" attributes="0"/>

@@ -6,10 +6,10 @@ public class JSONHelper {
     public static final String JSON_NOMBRE = "nombre";
     
     // JSON PEDIDO
-    public static String JSON_NUM_PEDIDO = "numeroPedido";
-    public static String JSON_FECHA_REALIZACION = "fechaRealizacion";
-    public static String JSON_PENDIENTE = "estaPendiente";
-    public static String JSON_PROVEEDOR = "proveedor";
+    public static final String JSON_NUM_PEDIDO = "numeroPedido";
+    public static final String JSON_FECHA_REALIZACION = "fechaRealizacion";
+    public static final String JSON_PENDIENTE = "estaPendiente";
+    public static final String JSON_PROVEEDOR = "proveedor";
     
     // JSON FACTURA
     public static final String JSON_FECHA_EMISION = "fechaEmision";
@@ -19,8 +19,8 @@ public class JSONHelper {
     public static final String JSON_FACTURAS_PENDIENTES = "facturasPendientes";
     
     // JSON PROVEEDOR
-    public static String JSON_TELEFONO = "telefono";
-    public static String JSON_EMAIL = "email";
+    public static final String JSON_TELEFONO = "telefono";
+    public static final String JSON_EMAIL = "email";
     
     // JSON EMPLEADO
     public static final String JSON_DNI = "dni";

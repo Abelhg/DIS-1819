@@ -294,7 +294,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(243, 243, 243)
                                 .addComponent(errorFechas)))
-                        .addGap(140, 140, 140)
+                        .addGap(176, 176, 176)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(inputProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkProveedor)
