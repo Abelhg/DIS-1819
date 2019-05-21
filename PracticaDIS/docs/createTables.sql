@@ -303,13 +303,43 @@ VALUES ('12345678Z',
         'Ruipérez Núñe', 
         '2014-02-25');
 
+INSERT INTO EMPLEADO 
+VALUES ('12123434A', 
+        'segura',
+        'Segura Patricio', 
+        'Mian', 
+        '2018-12-10');
+
+INSERT INTO EMPLEADO 
+VALUES ('98765432E', 
+        'segura',
+        'Jose', 
+        'Marcos Marcos', 
+        '2014-02-25');
+
 INSERT INTO ROLESENEMPRESA
 VALUES ('2014-02-25', 
-        '12345678Z',
+        '12123434A',
         4),
        ('2015-04-14',
-        '12345678Z',
+        '12123434A',
         2);
+
+       INSERT INTO ROLESENEMPRESA
+VALUES ('2014-02-25', 
+        '98765432E',
+        1),
+       ('2015-04-14',
+        '98765432E',
+        2);
+
+       INSERT INTO ROLESENEMPRESA
+VALUES ('2014-02-25', 
+        '12345678Z',
+        2),
+       ('2015-04-14',
+        '12345678Z',
+        3);
 
 INSERT INTO VINCULACIONCONLAEMPRESA
 VALUES ('2014-02-25',
@@ -345,9 +375,13 @@ VALUES  ('15264859N', 'Panusa', '942335708', 'comercial@panusa.es'),
 INSERT INTO PEDIDOAPROVEEDOR
 VALUES  (1, '2015-05-13', 'N', '15264859N'),
         (2, '2017-12-22', 'N', '15264859N'),
-        (3, '2019-04-14', 'N', '15264859N');
+        (3, '2019-04-14', 'N', '15264859N'),
+        (4, '2018-12-20', 'N', '15264859N');
+
+INSERT INTO TRANSFERENCIA VALUES(1, 50.01,'2018-12-20','1','12123434A');
 
 INSERT INTO FACTURA
 VALUES  (1, '2015-05-14', 123.45, 'ES-...', 1, NULL),
         (2, '2017-12-25', 666.66, 'ES-...', 2, NULL),
-        (3, '2019-04-14', 96.69, 'ES-...', 3, NULL);
+        (3, '2019-04-14', 96.69, 'ES-...', 3, NULL),
+        (4, '2018-05-20', 50.01, 'ES-...', 4, 1);
