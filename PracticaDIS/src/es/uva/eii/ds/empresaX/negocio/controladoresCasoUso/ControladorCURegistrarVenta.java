@@ -5,8 +5,10 @@
  */
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
+import com.google.gson.Gson;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
+import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
 
 /**
@@ -23,20 +25,22 @@ public class ControladorCURegistrarVenta {
         
     }
 
-    public static ProductoVendible crearProducto(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static ProductoVendible crearProducto(String prod) {
+        return new Gson().fromJson(prod, ProductoVendible.class);
     }
 
-    public static LineaDeVenta crearLineaDeVenta(String codigo, String cantidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static Venta crearLineaDeVenta(ProductoVendible prod, String cantidad,Venta venta) {
+        LineaDeVenta lv = new LineaDeVenta(Integer.parseInt(cantidad),prod);
+        venta.getLineas().add(lv);
+        return venta;
     }
     
-    public static void registrarVenta(){
-        
+    public static void registrarVenta(Venta venta){
+        FachadaPersistenciaDependiente.setVentaBD(venta);
     }
     
-    public static void actualizarExistencias(){
-        
+    public static void actualizarExistencias(Venta venta){
+        FachadaPersistenciaDependiente.actualizarExistenciasBD(venta);
     }
         
 }

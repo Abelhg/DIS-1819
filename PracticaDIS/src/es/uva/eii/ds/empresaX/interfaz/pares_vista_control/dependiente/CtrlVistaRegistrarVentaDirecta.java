@@ -1,6 +1,5 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
-import com.google.gson.Gson;
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCURegistrarVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
@@ -18,6 +17,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 public class CtrlVistaRegistrarVentaDirecta {
     
     private final VistaRegistrarVentaDirecta vista;
+    private Venta venta = new Venta();
     
     /**
      * Inicializa el controlador.
@@ -38,46 +38,47 @@ public class CtrlVistaRegistrarVentaDirecta {
         GestorUI.getInstanciaSingleton().atras();
     }
     
-    public void creaLineaDeVenta(String codigo,String cantidad,String[] listaProductos){
-                
-        Venta venta;
-        
-        if(listaProductos.length == 0){
-            venta = new Venta();
-        }
+    public void creaLineaDeVenta(String codigo,String cantidad){
         
         if(Integer.parseInt(cantidad) < 1){
             //Mensaje de error
         }
         
         String prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
-        ProductoVendible pVendible = new Gson().fromJson(prod, ProductoVendible.class);
+        ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(codigo);
+        LineaDeVenta lVenta = getLineaDeVentaPorProducto(codigo,venta);
         
         if(prod == null){
             //Mensaje de error
-        }else if(pVendible.getExistencias() < Integer.parseInt(cantidad)){
+        }else if(pVendible.getExistencias() < Integer.parseInt(cantidad)+lVenta.getCantidad()){
             //Otro mensaje de error
         }
         
-        LineaDeVenta lVenta = getLineaDeVentaPorProducto(codigo);
-        
         if(lVenta == null){
-            ProductoVendible p = ControladorCURegistrarVenta.crearProducto(codigo);
-            lVenta = ControladorCURegistrarVenta.crearLineaDeVenta(codigo,cantidad);
+            venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible,cantidad,venta);
         }else{
-            lVenta = sumaCantidad(lVenta,cantidad);
+            venta = sumaCantidad(lVenta,cantidad);
         }
         
-        //VistaRegistrarVentaDirecta.mostrarDatosVenta(venta);
+        VistaRegistrarVentaDirecta.mostrarDatosVenta(venta);
         
     }
 
-    private LineaDeVenta getLineaDeVentaPorProducto(String codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private LineaDeVenta getLineaDeVentaPorProducto(String codigo,Venta venta) {
+        
+        for(LineaDeVenta lp : venta.getLineas()){
+            if(lp.getProducto().getCodigo().equals(codigo)){
+                return lp;
+            }
+        }
+        return null;
     }
 
-    private LineaDeVenta sumaCantidad(LineaDeVenta lVenta, String cantidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Venta sumaCantidad(LineaDeVenta lVenta,String cantidad) {
+        
+        lVenta.setCantidad(lVenta.getCantidad()+Integer.parseInt(cantidad));
+        return venta;
+        
     }
     
     public void finalizarVenta(boolean hacerFactura){
@@ -88,7 +89,9 @@ public class CtrlVistaRegistrarVentaDirecta {
             //Hacer factura
         }
         
-        //ControladorCURegistrarVenta.registrarVenta(venta);
+        ControladorCURegistrarVenta.registrarVenta(venta);
+        
+        ControladorCURegistrarVenta.actualizarExistencias(venta);
         
     }
     
