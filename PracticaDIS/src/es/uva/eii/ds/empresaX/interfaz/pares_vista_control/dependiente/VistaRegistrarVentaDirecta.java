@@ -1,6 +1,8 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
+import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
+import java.util.ArrayList;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -8,13 +10,14 @@ import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
  * @author Roberto García Antoranz    (robegar)
  */
 public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
+    
+    private ArrayList<LineaDeVenta> lineas = new ArrayList<LineaDeVenta>();
 
-    static void mostrarDatosVenta(Venta venta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void mostrarDatosVenta(LineaDeVenta lv) {
+        lineas.add(lv);
     }
 
-    static void mostrarPrecioFinal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void mostrarPrecioFinal() {
     }
 
     private final CtrlVistaRegistrarVentaDirecta controlador;
@@ -33,7 +36,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
         cantidad = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        listaProductos = new javax.swing.JPanel();
+        cajaProductos = new javax.swing.JPanel();
         sumaElemento = new javax.swing.JButton();
         terminaVenta = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -58,14 +61,14 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
 
         jLabel2.setText("Cantidad");
 
-        javax.swing.GroupLayout listaProductosLayout = new javax.swing.GroupLayout(listaProductos);
-        listaProductos.setLayout(listaProductosLayout);
-        listaProductosLayout.setHorizontalGroup(
-            listaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout cajaProductosLayout = new javax.swing.GroupLayout(cajaProductos);
+        cajaProductos.setLayout(cajaProductosLayout);
+        cajaProductosLayout.setHorizontalGroup(
+            cajaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 672, Short.MAX_VALUE)
         );
-        listaProductosLayout.setVerticalGroup(
-            listaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        cajaProductosLayout.setVerticalGroup(
+            cajaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 241, Short.MAX_VALUE)
         );
 
@@ -102,7 +105,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 370, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addComponent(jLabel3)
@@ -124,14 +127,13 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                             .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(67, 67, 67)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(terminaVentaConFactura)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(sumaElemento, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(terminaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(sumaElemento, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(terminaVentaConFactura))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(terminaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(listaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cajaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(39, 39, 39))
         );
 
@@ -158,7 +160,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addComponent(listaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cajaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -170,7 +172,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void sumaElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaElementoActionPerformed
-        controlador.creaLineaDeVenta(codigo.toString(),cantidad.toString());
+        controlador.creaLineaDeVenta(codigo.getText(),Integer.parseInt(cantidad.getText()));
     }//GEN-LAST:event_sumaElementoActionPerformed
 
     private void terminaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaActionPerformed
@@ -183,6 +185,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel cajaProductos;
     private javax.swing.JTextField cantidad;
     private javax.swing.JTextField codigo;
     private javax.swing.JLabel jLabel1;
@@ -191,7 +194,6 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lTitulo;
-    private javax.swing.JPanel listaProductos;
     private javax.swing.JButton sumaElemento;
     private javax.swing.JButton terminaVenta;
     private javax.swing.JButton terminaVentaConFactura;

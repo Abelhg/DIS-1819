@@ -10,6 +10,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
+import java.util.ArrayList;
 
 /**
  * @author Abel Herrero Gómez (abeherr)
@@ -29,8 +30,8 @@ public class ControladorCURegistrarVenta {
         return new Gson().fromJson(prod, ProductoVendible.class);
     }
 
-    public static Venta crearLineaDeVenta(ProductoVendible prod, String cantidad,Venta venta) {
-        LineaDeVenta lv = new LineaDeVenta(Integer.parseInt(cantidad),prod);
+    public static Venta crearLineaDeVenta(ProductoVendible prod, int cantidad,Venta venta) {
+        LineaDeVenta lv = new LineaDeVenta(cantidad,prod);
         venta.getLineas().add(lv);
         return venta;
     }
@@ -41,6 +42,10 @@ public class ControladorCURegistrarVenta {
     
     public static void actualizarExistencias(Venta venta){
         FachadaPersistenciaDependiente.actualizarExistenciasBD(venta);
+    }
+
+    public static ArrayList<LineaDeVenta> getLineasDeVenta() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         
 }

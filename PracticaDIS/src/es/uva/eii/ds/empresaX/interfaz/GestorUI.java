@@ -1,10 +1,13 @@
 package es.uva.eii.ds.empresaX.interfaz;
 
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente.VistaRegistrarVentaDirecta;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
+import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Stack;
 import javax.swing.JFrame;
@@ -39,8 +42,8 @@ public class GestorUI {
         anteriores = new Stack<>();
         configurarMapaCU();
         // Muestra la pantalla principal
-        //vistaIdentificarse();
-        vistaConsultarFacturas();
+        vistaIdentificarse();
+        //vistaConsultarFacturas();
     }
     
     /**
@@ -157,7 +160,8 @@ public class GestorUI {
         guardaActual();
        
         java.awt.EventQueue.invokeLater(() -> {
-            actual = new VistaNoImplementada();                     // -------------------------- TODO
+            actual = new VistaRegistrarVentaDirecta();                     // -------------------------- TODO
+            ArrayList<LineaDeVenta> lineas = new ArrayList<>();
             actual.setVisible(true);
         });
     }

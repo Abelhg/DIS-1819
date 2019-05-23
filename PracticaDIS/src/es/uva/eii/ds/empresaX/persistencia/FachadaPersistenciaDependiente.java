@@ -5,6 +5,9 @@
  */
 package es.uva.eii.ds.empresaX.persistencia;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import java.sql.Date;
@@ -21,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class FachadaPersistenciaDependiente {
 
-    private static final String QUERY_ID_PRODUCTO = "SELECT * FROM Producto WHERE CODIGO = ?";
+    private static final String QUERY_ID_PRODUCTO = "SELECT * FROM PRODUCTO WHERE CODIGO = ?";
 
     private static final String QUERY_ID_VENTA_VENTA = "INSERT INTO VENTA VALUES(?,?,?)";
     private static final String QUERY_ID_VENTA_LINEA = "INSERT INTO LINEADEVENTA VALUES(?,?)";
@@ -39,11 +42,31 @@ public class FachadaPersistenciaDependiente {
         try {
             ConexionBD conn = conectarse();
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_PRODUCTO);
+            System.out.println();
             pst.setString(1, codigo);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                String res = "{\"codigo\":\"" + rs.getString("codigo") + "\",\"nombre\":" + rs.getString("nombre") + "\",\"nombre\":" + "{\"codigo\":\"" + rs.getString(codigo) + "\",\"descripcion\":" + rs.getString("descripcion") + "\",\"existencias\":" + rs.getInt("existencias") + "\",\"cantidadminimaenstock\":" + rs.getInt("cantidadminimaenstock") + "\",\"subtipo\":" + rs.getInt("subtipo") + "\",\"precio\":" + rs.getInt("precio") + "\",\"diasparaentregadelproveedor\":" + rs.getInt("diasparaentregadelproveedor") + "\",\"tipodemateriaprima\":" + rs.getInt("tipodemateriaprima");
-                return res;
+                String cod = rs.getString("codigo");
+                String nombre = rs.getString("nombre");
+                String descripcion = rs.getString("descripcion");
+                int existencias = rs.getInt("existencias");
+                int cantMin = rs.getInt("cantidadminimaenstock");
+                String subtipo = rs.getString("subtipo");
+                double precio = rs.getDouble("precio");
+                int diasEntrega = rs.getInt("diasparaentregadelproveedor");
+                String tipoMateria = rs.getString("tipodemateriaprima");
+                JsonObject json = new JsonObject();
+                json.addProperty("codigo", cod);
+                json.addProperty("nombre", nombre);
+                json.addProperty("descripcion", descripcion);
+                json.addProperty("existencias", existencias);
+                json.addProperty("cantMin", cantMin);
+                json.addProperty("subtipo", subtipo);
+                json.addProperty("precio", precio);
+                json.addProperty("diasEntrega", diasEntrega);
+                json.addProperty("tipoMateria", tipoMateria);
+                //String res = "{\'codigo\':\'"+cod+"\',\'nombre\':"+nombre+"\',\'descripcion\':"+descripcion+"\',\'existencias\':"+String.valueOf(existencias)+"\',\'cantidadminimaenstock\':"+String.valueOf(cantMin)+"\',\'subtipo\':"+subtipo+"\',\'precio\':"+String.valueOf(precio)+"\',\'diasparaentregadelproveedor\':"+String.valueOf(diasEntrega)+"\',\'tipodemateriaprima\':"+tipoMateria+"}\'";
+                return json.toString();
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FachadaPersistenciaEncargado.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,8 +87,8 @@ public class FachadaPersistenciaDependiente {
                 pst.setInt(5, lp.getProducto().getCantidadMinimaEnStock());
                 pst.setString(6, "");
                 pst.setDouble(7, lp.getProducto().getPrecioVenta());
-                pst.setInt(8, -1);
-                pst.setString(9, "");
+                pst.setInt(8, 1);
+                pst.setString(9, null);
                 int rs = pst.executeUpdate();
             }
             
@@ -77,7 +100,7 @@ public class FachadaPersistenciaDependiente {
             }
             
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_VENTA_VENTA);
-            pst.setInt(1, venta.getIdDeVenta());
+            //pst.setInt(1, venta.getIdDeVenta());
             pst.setDate(2, new Date(venta.getFechaDeVenta().toEpochDay()));
             pst.setString(3, "");
             int rs = pst.executeUpdate();
@@ -93,7 +116,7 @@ public class FachadaPersistenciaDependiente {
         try {
             ConexionBD conn = conectarse();
             for (LineaDeVenta lp : venta.getLineas()) {
-                PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM PRODUCTO WHERE CODIGO = ?");
+                PreparedStatement pst1 = conn.prepareStatement(QUERY_ID_PRODUCTO);
                 pst1.setString(1, lp.getProducto().getCodigo());
                 ResultSet rs1 = pst1.executeQuery();
                 rs1.next();

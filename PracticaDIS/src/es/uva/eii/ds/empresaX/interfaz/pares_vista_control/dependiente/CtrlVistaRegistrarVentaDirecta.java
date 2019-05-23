@@ -9,18 +9,19 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 
 /**
  * Controlador de la vista de registro de venta directa.
- * 
- * @author Abel Herrero Gómez         (abeherr)
- * @author Daniel De Vicente Garrote  (dandevi)
- * @author Roberto García Antoranz    (robegar)
+ *
+ * @author Abel Herrero Gómez (abeherr)
+ * @author Daniel De Vicente Garrote (dandevi)
+ * @author Roberto García Antoranz (robegar)
  */
 public class CtrlVistaRegistrarVentaDirecta {
-    
+
     private final VistaRegistrarVentaDirecta vista;
     private Venta venta = new Venta();
-    
+
     /**
      * Inicializa el controlador.
+     *
      * @param v Vista que controla
      */
     public CtrlVistaRegistrarVentaDirecta(VistaRegistrarVentaDirecta v) {
@@ -30,69 +31,66 @@ public class CtrlVistaRegistrarVentaDirecta {
         // Centra en la pantalla
         vista.setLocationRelativeTo(null);
     }
-    
+
     /**
      * Cuando se cierra la ventana, se vuelve a la anterior.
      */
     public void procesaCierre() {
         GestorUI.getInstanciaSingleton().atras();
     }
-    
-    public void creaLineaDeVenta(String codigo,String cantidad){
-        
-        if(Integer.parseInt(cantidad) < 1){
-            //Mensaje de error
-        }
-        
-        String prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
-        ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(codigo);
-        LineaDeVenta lVenta = getLineaDeVentaPorProducto(codigo,venta);
-        
-        if(prod == null){
-            //Mensaje de error
-        }else if(pVendible.getExistencias() < Integer.parseInt(cantidad)+lVenta.getCantidad()){
-            //Otro mensaje de error
-        }
-        
-        if(lVenta == null){
-            venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible,cantidad,venta);
-        }else{
-            venta = sumaCantidad(lVenta,cantidad);
-        }
-        
-        VistaRegistrarVentaDirecta.mostrarDatosVenta(venta);
-        
-    }
 
-    private LineaDeVenta getLineaDeVentaPorProducto(String codigo,Venta venta) {
-        
-        for(LineaDeVenta lp : venta.getLineas()){
-            if(lp.getProducto().getCodigo().equals(codigo)){
-                return lp;
+    public void creaLineaDeVenta(String codigo, int cantidad) {
+
+        if (cantidad < 1) {
+            //Mensaje de error
+        } else {
+
+            String prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
+
+            if (prod == null) {
+                //Mensaje de error
+            } else {
+
+                ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(prod);
+                /*LineaDeVenta lVenta = ControladorCURegistrarVenta.getLineasDeVenta();
+
+                if (pVendible.getExistencias() < cantidad + lVenta.getCantidad()) {
+                    //Otro mensaje de error
+                } else {
+                    if (lVenta == null) {
+                        //venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible, cantidad);
+                    } else {
+                        venta = sumaCantidad(lVenta, cantidad);
+                    }
+
+                    VistaRegistrarVentaDirecta.mostrarDatosVenta();
+                }*/
             }
         }
-        return null;
+
     }
 
-    private Venta sumaCantidad(LineaDeVenta lVenta,String cantidad) {
-        
-        lVenta.setCantidad(lVenta.getCantidad()+Integer.parseInt(cantidad));
+
+
+    private Venta sumaCantidad(LineaDeVenta lVenta, int cantidad) {
+
+        lVenta.setCantidad(lVenta.getCantidad() + cantidad);
         return venta;
-        
+
     }
-    
-    public void finalizarVenta(boolean hacerFactura){
-        
+
+    public void finalizarVenta(boolean hacerFactura) {
+
         VistaRegistrarVentaDirecta.mostrarPrecioFinal();
-        
-        if(hacerFactura){
+
+        if (hacerFactura) {
             //Hacer factura
         }
-        
+
         ControladorCURegistrarVenta.registrarVenta(venta);
-        
+
         ControladorCURegistrarVenta.actualizarExistencias(venta);
-        
+
     }
-    
+
 }

@@ -331,7 +331,7 @@ VALUES ('2014-02-25',
         1),
        ('2015-04-14',
         '98765432E',
-        2);
+        4);
 
        INSERT INTO ROLESENEMPRESA
 VALUES ('2014-02-25', 
@@ -385,3 +385,7 @@ VALUES  (1, '2015-05-14', 123.45, 'ES-...', 1, NULL),
         (2, '2017-12-25', 666.66, 'ES-...', 2, NULL),
         (3, '2019-04-14', 96.69, 'ES-...', 3, NULL),
         (4, '2018-05-20', 50.01, 'ES-...', 4, 1);
+
+INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',19.50,5,null);
+INSERT INTO PRODUCTO VALUES('32005867','p2','descripcion',2,1,'ProductoDeHorno',12.50,5,null);
+INSERT INTO PRODUCTO VALUES('98718416','p3','descripcion',0,2,'ProductoDeHorno',9.25,5,null);
