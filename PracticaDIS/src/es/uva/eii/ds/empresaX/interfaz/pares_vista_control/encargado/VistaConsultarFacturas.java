@@ -1,6 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 
-import es.uva.eii.ds.empresaX.negocio.modelos.FacturaPendiente;
+import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -39,7 +39,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lFecha = new javax.swing.JLabel();
         checkAnioActual = new javax.swing.JCheckBox();
-        checkProveedor = new javax.swing.JCheckBox();
+        checkTodas = new javax.swing.JCheckBox();
         lInicio = new javax.swing.JLabel();
         lFin = new javax.swing.JLabel();
         inputDiaI = new javax.swing.JComboBox<>();
@@ -54,8 +54,9 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lDiaF = new javax.swing.JLabel();
         lMesF = new javax.swing.JLabel();
         lAnioF = new javax.swing.JLabel();
-        lProveedor = new javax.swing.JLabel();
         errorFechas = new javax.swing.JLabel();
+        lProveedor = new javax.swing.JLabel();
+        checkProveedor = new javax.swing.JCheckBox();
         inputProveedor = new javax.swing.JTextField();
         errorProveedor = new javax.swing.JLabel();
         btnConsultar = new javax.swing.JButton();
@@ -67,7 +68,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lNombre = new javax.swing.JLabel();
         lNumero = new javax.swing.JLabel();
         lImporte = new javax.swing.JLabel();
-        checkTotal = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -93,11 +93,11 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             }
         });
 
-        checkProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
-        checkProveedor.setText("Todas las facturas");
-        checkProveedor.addActionListener(new java.awt.event.ActionListener() {
+        checkTodas.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
+        checkTodas.setText("Todas las facturas");
+        checkTodas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkProveedorActionPerformed(evt);
+                checkTodasActionPerformed(evt);
             }
         });
 
@@ -171,14 +171,23 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lAnioF.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
         lAnioF.setText("Año");
 
-        lProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
-        lProveedor.setText("<html><u>Nombre de proveedor:</u></html>");
-
         errorFechas.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
         errorFechas.setForeground(new java.awt.Color(255, 0, 0));
         errorFechas.setText("Mensaje de error para las fechas");
 
-        inputProveedor.setFont(new java.awt.Font("Ebrima", 0, 16)); // NOI18N
+        lProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
+        lProveedor.setText("<html><u>Nombre de proveedor:</u></html>");
+
+        checkProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
+        checkProveedor.setText("Cualquier proveedor");
+        checkProveedor.setName("checkProveedor"); // NOI18N
+        checkProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkProveedorActionPerformed(evt);
+            }
+        });
+
+        inputProveedor.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
         inputProveedor.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         inputProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -193,6 +202,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         btnConsultar.setBackground(new java.awt.Color(102, 255, 102));
         btnConsultar.setFont(new java.awt.Font("Ebrima", 1, 24)); // NOI18N
         btnConsultar.setText("CONSULTAR");
+        btnConsultar.setFocusPainted(false);
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
@@ -244,15 +254,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         lImporte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lImporte.setText("Importe de factura");
 
-        checkTotal.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
-        checkTotal.setText("Todas las facturas de todos los proveedores");
-        checkTotal.setName("checkTotal"); // NOI18N
-        checkTotal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkTotalActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -262,134 +263,139 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lDiaI)
-                            .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lMesI)
-                            .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lInicio))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lAnioI)
-                            .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lDiaF)
-                            .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lMesF)
-                            .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lFin))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(lAnioF)
-                            .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(100, 100, 100)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(btnConsultar)
-                            .addComponent(errorProveedor)
-                            .addComponent(inputProveedor)
-                            .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lDiaI)
+                                    .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lMesI)
+                                    .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lInicio))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lAnioI)
+                                    .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lDiaF)
+                                    .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lMesF)
+                                    .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lFin))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(lAnioF)
+                                    .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(243, 243, 243)
-                                .addComponent(errorFechas))
+                                .addComponent(errorFechas)))
+                        .addGap(176, 176, 176)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(inputProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkProveedor)
+                            .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(errorProveedor)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(lImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(lNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(lImporte, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(checkAnioActual)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(checkTotal)
-                                    .addComponent(checkProveedor))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(btnConsultar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(checkAnioActual)
+                        .addGap(30, 30, 30)
+                        .addComponent(checkTodas)))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkAnioActual)
+                    .addComponent(checkTodas)
+                    .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(checkTotal)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkAnioActual)
-                            .addComponent(checkProveedor)
-                            .addComponent(lProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(lFin))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lInicio))))
-                    .addComponent(inputProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(errorProveedor)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConsultar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(lAnioI))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lDiaF)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lMesF)
-                                        .addComponent(lAnioF))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lDiaI)
-                                    .addComponent(lMesI))))
+                                .addGap(8, 8, 8)
+                                .addComponent(lInicio)))
+                        .addGap(5, 5, 5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(errorFechas)))
-                .addGap(18, 18, 18)
+                        .addComponent(checkProveedor)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lNombre)
-                        .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lImporte)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(lAnioI))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputAnioF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputMesF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputDiaF, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lDiaF)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lMesF)
+                                .addComponent(lAnioF))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputAnioI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputMesI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputDiaI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lDiaI)
+                            .addComponent(lMesI)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(inputProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(errorProveedor)
+                    .addComponent(errorFechas))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cabeceraLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lNombre)
+                                .addComponent(lNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lImporte)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(91, 91, 91))))
         );
 
         pack();
@@ -403,9 +409,9 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         controlador.procesaClickAnioActual();
     }//GEN-LAST:event_checkAnioActualActionPerformed
 
-    private void checkProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkProveedorActionPerformed
-        controlador.procesaClickProveedor();
-    }//GEN-LAST:event_checkProveedorActionPerformed
+    private void checkTodasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTodasActionPerformed
+        controlador.procesaClickTodas();
+    }//GEN-LAST:event_checkTodasActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
        controlador.procesaClickConsultar();
@@ -448,9 +454,9 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_inputProveedorKeyReleased
 
-    private void checkTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTotalActionPerformed
-        controlador.procesaClickTodas();
-    }//GEN-LAST:event_checkTotalActionPerformed
+    private void checkProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkProveedorActionPerformed
+        controlador.procesaClickProveedor();
+    }//GEN-LAST:event_checkProveedorActionPerformed
     
     
     /**
@@ -466,7 +472,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         ((JLabel) inputAnioF.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
         // Oculta errores
         ocultaErrorFechas();
-        ocultarErrorProveedor();
+        ocultaErrorProveedor();
         // Pide al controlador que le cargue los años
         controlador.cargaAnios();
         // Lista de resultados
@@ -480,24 +486,25 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * Devuelve true si está marcada la opción de facturas solo del año actual.
      * @return True si está marcada la opción
      */
-    public boolean facturasAnioActual() {
+    public boolean estaMarcadaAnioActual() {
         return checkAnioActual.isSelected();
     }
     
     /**
-     * Devuelve true si está marcada la opción de todas las facturas del proveedor.
+     * Devuelve true si está marcada la opción de todas las facturas independientemente
+     * de la fecha de emisión.
      * @return True si está marcada la opción
      */
-    public boolean facturasProveedor() {
-        return checkProveedor.isSelected();
+    public boolean estaMarcadaTodas() {
+        return checkTodas.isSelected();
     }
     
     /**
-     * Devuelve true si esta marcada la opcion de todas las facturas.
+     * Devuelve true si esta marcada la opcion de cualquier proveedor.
      * @return True si está marcada la opción
      */
-    public boolean facturasTodas(){
-        return checkTotal.isSelected();
+    public boolean estaMarcadaCualquier(){
+        return checkProveedor.isSelected();
     }
     
     /**
@@ -510,15 +517,15 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     /**
      * Desmarca la opción de todas las facturas del proveedor.
      */
-    public void desmarcaProveedor() {
-        checkProveedor.setSelected(false);
+    public void desmarcaTodas() {
+        checkTodas.setSelected(false);
     }
     
     /**
-     * Desmarca la opción de todas las facturas.
+     * Desmarca la opción de cualquier proveedor.
      */
-    public void desmarcaTodas() {
-        checkTotal.setSelected(false);
+    public void desmarcaProveedor() {
+        checkProveedor.setSelected(false);
     }
     
     
@@ -673,14 +680,40 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         return inputProveedor.getText();
     }
     
+    
+    /**
+     * Inhabilita la entrada de un proveedor.
+     */
+    public void inhabilitaProveedor() {
+        inputProveedor.setEnabled(false);
+        inputProveedor.setBackground(Color.GRAY);
+    }
+    
+    /**
+     * Habilita la entrada de un proveedor.
+     */
+    public void habilitaProveedor() {
+        inputProveedor.setEnabled(true);
+        inputProveedor.setBackground(Color.WHITE);
+    }
+    
+    /**
+     * Borra el contenido de la entrada de proveedor.
+     */
+    public void clearProveedor() {
+        inputProveedor.setText("");
+    }
+    
     /**
      * Asigna focus al input del proveedor.
      * @param error True para mostrar un signo de error en el cuadro de texto
      */
     public void focusProveedor(boolean error) {
-        inputProveedor.requestFocusInWindow();
-        if(error) {
-            inputProveedor.setBackground(Color.red);
+        if(!estaMarcadaCualquier()) {
+            inputProveedor.requestFocusInWindow();
+            if(error) {
+                inputProveedor.setBackground(Color.red);
+            }
         }
     }
     
@@ -688,7 +721,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * Muestra el mensaje de error especificado sobre el proveedor.
      * @param mensaje Mensaje de error a mostrar al usuario
      */
-    public void mostrarErrorProveedor(String mensaje) {
+    public void muestraErrorProveedor(String mensaje) {
         errorProveedor.setText(mensaje);
         errorProveedor.setVisible(true);
     }
@@ -696,7 +729,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     /**
      * Oculta el mensaje de error del proveedor.
      */
-    public void ocultarErrorProveedor() {
+    public void ocultaErrorProveedor() {
         errorProveedor.setVisible(false);
     }
     
@@ -737,23 +770,23 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * Actualiza la lista de facturas pendientes con las especificadas.
      * @param pendientes Facturas a mostrar
      */
-    public void muestraFacturasPendientes(ArrayList<FacturaPendiente> pendientes) {
+    public void muestraFacturasPendientes(ArrayList<Factura> pendientes) {
         // Borra cualquier elemento anterior
         listaResultados.removeAll();
         
         if(pendientes.size() > 0) {
             GridBagConstraints gbc;
-            for(FacturaPendiente factura : pendientes) {
+            for(Factura factura : pendientes) {
                 // Crea y configura la fila
                 JPanel nFila = new JPanel();
                 nFila.setLayout(new BoxLayout(nFila, BoxLayout.LINE_AXIS));
                 // Nombre de proveedor
                 JLabel lNombreProveedor = new JLabel();
-                configuraCasillaLista(lNombreProveedor, factura.getNombreProveedor());
+                configuraCasillaLista(lNombreProveedor, factura.getPedido().getProveedor().getNombre());
                 nFila.add(lNombreProveedor);
                 // Número de pedido
                 JLabel lNumeroPedido = new JLabel();
-                configuraCasillaLista(lNumeroPedido, Long.toString(factura.getNumeroPedido()));
+                configuraCasillaLista(lNumeroPedido, Long.toString(factura.getPedido().getNumeroDePedido()));
                 nFila.add(lNumeroPedido);
                 // Importe de factura
                 JLabel lImporteFactura = new JLabel();
@@ -761,7 +794,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                 nFila.add(lImporteFactura);
                 // Fecha de pedido
                 JLabel lFechaPedido = new JLabel();
-                configuraCasillaLista(lFechaPedido, factura.getFechaPedido().toString());
+                configuraCasillaLista(lFechaPedido, factura.getPedido().getFechaDeRealizacion().toString());
                 nFila.add(lFechaPedido);
                 // Fecha de emisión
                 JLabel lFechaEmision = new JLabel();
@@ -815,7 +848,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
     private javax.swing.JPanel cabeceraLista;
     private javax.swing.JCheckBox checkAnioActual;
     private javax.swing.JCheckBox checkProveedor;
-    private javax.swing.JCheckBox checkTotal;
+    private javax.swing.JCheckBox checkTodas;
     private javax.swing.JLabel errorFechas;
     private javax.swing.JLabel errorProveedor;
     private javax.swing.JComboBox<String> inputAnioF;

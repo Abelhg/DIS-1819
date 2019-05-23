@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
@@ -13,23 +14,7 @@ import java.util.TreeMap;
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class Empleado {
-    
-    public static final String JSON_DNI = "dni";
-    public static final String JSON_NOMBRE = "nombre";
-    public static final String JSON_APELLIDOS = "apellidos";
-    public static final String JSON_FECHA_INICIO = "fechaInicio";
-    public static final String JSON_COMIENZO = "comienzo";
-    public static final String JSON_FINAL_PREVISTO = "finalPrevisto";
-    public static final String JSON_ROLES = "roles";
-    public static final String JSON_ROL = "rol";
-    public static final String JSON_VINCULACIONES = "vinculaciones";
-    public static final String JSON_VINCULACION = "vinculacion";
-    public static final String JSON_DISPONIBILIDADES = "disponibilidades";
-    public static final String JSON_DISPONIBILIDAD = "disponibilidad";
-
-    public static final String JSON_ERROR = "error";
-    
+public class Empleado {   
     private String dni;
     private String nombre;
     private String apellidos;
@@ -68,11 +53,11 @@ public class Empleado {
         try {
             JsonObject jo = new Gson().fromJson(jsonString, JsonObject.class);
             // NOMBRE, APELLIDOS Y DNI
-            nombre = jo.get(JSON_NOMBRE).getAsString();
-            apellidos = jo.get(JSON_APELLIDOS).getAsString();
-            dni = jo.get(JSON_DNI).getAsString();
+            nombre = jo.get(JSONHelper.JSON_NOMBRE).getAsString();
+            apellidos = jo.get(JSONHelper.JSON_APELLIDOS).getAsString();
+            dni = jo.get(JSONHelper.JSON_DNI).getAsString();
             // FECHA DE INICIO
-            String[] fechaI = jo.get(JSON_FECHA_INICIO).getAsString().split("-");
+            String[] fechaI = jo.get(JSONHelper.JSON_FECHA_INICIO).getAsString().split("-");
             fechaInicioEnEmpresa = LocalDate.of(
                     Integer.valueOf(fechaI[0]), // YYYY
                     Integer.valueOf(fechaI[1]), // MM
@@ -95,16 +80,16 @@ public class Empleado {
      */
     private void configuraRoles(JsonObject jo) {
         rolesEnLaEmpresa = new TreeMap<>();
-        JsonArray jRoles = jo.getAsJsonArray(JSON_ROLES);
+        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ROLES);
         for(JsonElement jr : jRoles) {
             JsonObject jRol = new Gson().fromJson(jr.toString(), JsonObject.class);
-            String[] fechaComienzo = jRol.get(JSON_COMIENZO).getAsString().split("-");
+            String[] fechaComienzo = jRol.get(JSONHelper.JSON_COMIENZO).getAsString().split("-");
             LocalDate comienzo = LocalDate.of(
                 Integer.valueOf(fechaComienzo[0]), // YYYY
                 Integer.valueOf(fechaComienzo[1]), // MM
                 Integer.valueOf(fechaComienzo[2])  // DD
             );
-            Rol rol = new Rol(TipoRol.valueOf(jRol.get(JSON_ROL).getAsString()));
+            Rol rol = new Rol(TipoRol.valueOf(jRol.get(JSONHelper.JSON_ROL).getAsString()));
             rolesEnLaEmpresa.put(comienzo, rol);
         }
     }
@@ -115,16 +100,16 @@ public class Empleado {
      */
     private void configuraVinculaciones(JsonObject jo) {
         estadoDeVinculacion = new TreeMap<>();
-        JsonArray jVinculaciones = jo.getAsJsonArray(JSON_VINCULACIONES);
+        JsonArray jVinculaciones = jo.getAsJsonArray(JSONHelper.JSON_VINCULACIONES);
         for(JsonElement jv : jVinculaciones) {
             JsonObject jVinculacion = new Gson().fromJson(jv.toString(), JsonObject.class);
-            String[] fechaComienzo = jVinculacion.get(JSON_COMIENZO).getAsString().split("-");
+            String[] fechaComienzo = jVinculacion.get(JSONHelper.JSON_COMIENZO).getAsString().split("-");
             LocalDate comienzo = LocalDate.of(
                 Integer.valueOf(fechaComienzo[0]), // YYYY
                 Integer.valueOf(fechaComienzo[1]), // MM
                 Integer.valueOf(fechaComienzo[2])  // DD
             );
-            VinculacionConLaEmpresa vinculacion = new VinculacionConLaEmpresa(TipoVinculacion.valueOf(jVinculacion.get(JSON_VINCULACION).getAsString()));
+            VinculacionConLaEmpresa vinculacion = new VinculacionConLaEmpresa(TipoVinculacion.valueOf(jVinculacion.get(JSONHelper.JSON_VINCULACION).getAsString()));
             estadoDeVinculacion.put(comienzo, vinculacion);
         }
     }
@@ -135,16 +120,16 @@ public class Empleado {
      */
     private void configuraDisponibilidades(JsonObject jo) {
         estadoDeDisponibilidad = new TreeMap<>();
-        JsonArray jDisponibilidades = jo.getAsJsonArray(JSON_DISPONIBILIDADES);
+        JsonArray jDisponibilidades = jo.getAsJsonArray(JSONHelper.JSON_DISPONIBILIDADES);
         for(JsonElement jd : jDisponibilidades) {
             JsonObject jDisponibilidad = new Gson().fromJson(jd.toString(), JsonObject.class);
-            String[] fechaComienzo = jDisponibilidad.get(JSON_COMIENZO).getAsString().split("-");
+            String[] fechaComienzo = jDisponibilidad.get(JSONHelper.JSON_COMIENZO).getAsString().split("-");
             LocalDate comienzo = LocalDate.of(
                 Integer.valueOf(fechaComienzo[0]), // YYYY
                 Integer.valueOf(fechaComienzo[1]), // MM
                 Integer.valueOf(fechaComienzo[2])  // DD
             );
-            Disponibilidad disponibilidad = new Disponibilidad(TipoDisponibilidad.valueOf(jDisponibilidad.get(JSON_DISPONIBILIDAD).getAsString()));
+            Disponibilidad disponibilidad = new Disponibilidad(TipoDisponibilidad.valueOf(jDisponibilidad.get(JSONHelper.JSON_DISPONIBILIDAD).getAsString()));
             estadoDeDisponibilidad.put(comienzo, disponibilidad);
         }
     }

@@ -1,12 +1,14 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
-import es.uva.eii.ds.empresaX.negocio.modelos.FacturaPendiente;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,12 +30,14 @@ public class FachadaPersistenciaEncargado {
     private static final String QUERY_FACTURAS_PEND
             = "SELECT * FROM "
             + "Factura INNER JOIN PedidoAProveedor ON Factura.pedido = PedidoAProveedor.numeroDePedido "
-            + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND proveedor = (?) AND enTransferencia IS NULL";
+            + "INNER JOIN proveedor ON PedidoAProveedor.proveedor = Proveedor.cif "
+            + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND enTransferencia IS NULL";
+    private static final String QUERY_PLUS_PROVEEDOR = " AND proveedor = (?)";
 
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
     }
-
+    
     /**
      * Devuelve el año de la primera factura.
      *
@@ -62,6 +66,7 @@ public class FachadaPersistenciaEncargado {
      */
     public static String getCIFProveedor(String proveedor) {
         String cif = null;
+
         try {
             ConexionBD conn = conectarse();
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_PROVEEDOR);
@@ -78,59 +83,88 @@ public class FachadaPersistenciaEncargado {
     }
 
     /**
-     * Devuelve las facturas pendientes de pago en el rango de fechas
+     * Devuelve un JSON con las facturas pendientes de pago en el rango de fechas
      * seleccionado y para el proveedor requerido.
      *
      * @param fechaI Fecha mínima de emisión
      * @param fechaF Fecha máxima de emisión
-     * @param proveedor Proveedor del pedido
-     * @return Facturas que cumplen los requisitos de búsqueda
+     * @param proveedor Proveedor del pedido (null para cualquiera)
+     * @return Facturas que cumplen los requisitos de búsqueda (JSON)
      */
-    public static ArrayList<FacturaPendiente> getFacturasPendientesDePago(
-            LocalDate fechaI, LocalDate fechaF, String proveedor) {
-
-        ArrayList<FacturaPendiente> facturas = new ArrayList<>();
-
+    public static String getFacturasPendientesDePago(LocalDate fechaI, LocalDate fechaF, String proveedor) {
+        // Obtiene la lista de facturas
+        JsonArray arrayFacturas = new JsonArray();
+        
         try {
-
-            if (proveedor != null) {
-                ConexionBD conn = conectarse();
-                PreparedStatement pst = conn.prepareStatement(QUERY_FACTURAS_PEND);
-                pst.setDate(1, Date.valueOf(fechaI));
-                pst.setDate(2, Date.valueOf(fechaF));
+            ConexionBD conn = conectarse();
+            String query = QUERY_FACTURAS_PEND;
+            if(proveedor != null) {
+                // Proveedor especificado
+                query += QUERY_PLUS_PROVEEDOR;
+            }
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setDate(1, Date.valueOf(fechaI));
+            pst.setDate(2, Date.valueOf(fechaF));
+            if(proveedor != null) {
                 pst.setString(3, proveedor);
-                ResultSet rs = pst.executeQuery();
-                while (rs.next()) {
-                    long numeroPedido = rs.getLong("pedido");
-                    double importe = rs.getFloat("importe");
-                    LocalDate fechaPedido = rs.getDate("fechaDeRealizacion").toLocalDate();
-                    LocalDate fechaEmision = rs.getDate("fechaDeEmision").toLocalDate();
-                    facturas.add(new FacturaPendiente(proveedor, numeroPedido, importe, fechaPedido, fechaEmision));
-                }
+            }
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                JsonObject factura = new JsonObject();
+                // Atributos directos de la factura
+                factura.addProperty(JSONHelper.JSON_FECHA_EMISION, rs.getDate("FECHADEEMISION").toString());
+                factura.addProperty(JSONHelper.JSON_IMPORTE, rs.getDouble("IMPORTE"));
+                factura.addProperty(JSONHelper.JSON_CUENTA_BANCARIA, rs.getString("CUENTABANCARIA"));
+                factura.add(JSONHelper.JSON_PEDIDO, getPedido(rs)); // Añade el pedido
 
-            } else {
-                ConexionBD conn = conectarse();
-
-                PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM Factura JOIN Pedidoaproveedor ON Factura.Pedido = Pedidoaproveedor.Numerodepedido");
-                ResultSet rs1 = pst1.executeQuery();
-
-                while (rs1.next()) {
-                    long numeroPedido = rs1.getLong("pedido");
-                    double importe = rs1.getFloat("importe");
-                    LocalDate fechaPedido = rs1.getDate("fechaDeRealizacion").toLocalDate();
-                    LocalDate fechaEmision = rs1.getDate("fechaDeEmision").toLocalDate();
-
-                    facturas.add(new FacturaPendiente(rs1.getString("Proveedor"), numeroPedido, importe, fechaPedido, fechaEmision));
-                }
-
+                // Añade la factura a la lista
+                arrayFacturas.add(factura);
             }
 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FachadaPersistenciaEncargado.class.getName()).log(Level.SEVERE, null, ex);
-            facturas = null;
+            arrayFacturas = new JsonArray(); // Vacío
         }
 
-        return facturas;
+        // Construye el objeto resultado
+        JsonObject facturasPendientes = new JsonObject();
+        facturasPendientes.add(JSONHelper.JSON_FACTURAS_PENDIENTES, arrayFacturas);
+        
+        return facturasPendientes.toString();
     }
 
+    /**
+     * Devuelve el objeto JSON correspondiente al pedido.
+     * @param rs Resultado de la consulta
+     * @return JSON del pedido
+     * @throws SQLException 
+     */
+    private static JsonObject getPedido(ResultSet rs) throws SQLException {
+        JsonObject pedido = new JsonObject();
+        
+        pedido.addProperty(JSONHelper.JSON_NUM_PEDIDO, rs.getLong("NUMERODEPEDIDO"));
+        pedido.addProperty(JSONHelper.JSON_FECHA_REALIZACION, rs.getDate("FECHADEREALIZACION").toString());
+        pedido.addProperty(JSONHelper.JSON_PENDIENTE, rs.getString("ESTAPENDIENTE"));
+        // Proveedor
+        pedido.add(JSONHelper.JSON_PROVEEDOR, getProveedor(rs));
+        
+        return pedido;
+    }
+    
+    /**
+     * Devuelve el objeto JSON correspondiente al proveedor.
+     * @param rs Resultado de la consulta
+     * @return JSON del proveedor
+     * @throws SQLException 
+     */
+    private static JsonObject getProveedor(ResultSet rs) throws SQLException {
+        JsonObject proveedor = new JsonObject();
+        
+        proveedor.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+        proveedor.addProperty(JSONHelper.JSON_TELEFONO, rs.getString("TELEFONO"));
+        proveedor.addProperty(JSONHelper.JSON_EMAIL, rs.getString("EMAIL"));
+        
+        return proveedor;
+    }
+    
 }

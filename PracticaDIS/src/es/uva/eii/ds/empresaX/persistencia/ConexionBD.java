@@ -3,9 +3,7 @@ package es.uva.eii.ds.empresaX.persistencia;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -39,20 +37,6 @@ public class ConexionBD {
     
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return connection.prepareStatement(sql);
-    }
-    
-    public void inserta(String query) throws SQLException {
-        openConnection();
-        Statement s = connection.createStatement();
-        s.execute(query);
-        closeConnection();
-    }
-    
-    public ResultSet consulta(String query) throws SQLException {
-        openConnection();
-        Statement s = connection.createStatement();
-        s.execute(query);
-        return s.getResultSet();
     }
 
     /** Alcance de clase **/

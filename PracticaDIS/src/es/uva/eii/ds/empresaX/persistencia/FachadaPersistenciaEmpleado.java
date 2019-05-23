@@ -2,8 +2,9 @@ package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,7 +52,6 @@ public class FachadaPersistenciaEmpleado {
     private static final String DISP_FINAL = "FinalPrevisto";
     private static final String DISP_DISPONIBILIDAD = "Disponibilidad";
     
-    
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
     }
@@ -92,8 +92,8 @@ public class FachadaPersistenciaEmpleado {
         ResultSet rs = pst.executeQuery();
         while(rs.next()){
             JsonObject rol = new JsonObject();
-            rol.addProperty(Empleado.JSON_COMIENZO, rs.getDate(ROL_COMIENZO).toString());
-            rol.addProperty(Empleado.JSON_ROL, obtenerNombreTipo(conn, TIPOS_ROL, rs.getInt(ROL_ROL)));
+            rol.addProperty(JSONHelper.JSON_COMIENZO, rs.getDate(ROL_COMIENZO).toString());
+            rol.addProperty(JSONHelper.JSON_ROL, obtenerNombreTipo(conn, TIPOS_ROL, rs.getInt(ROL_ROL)));
             roles.add(rol);
         }
         
@@ -115,8 +115,8 @@ public class FachadaPersistenciaEmpleado {
         ResultSet rs = pst.executeQuery();
         while(rs.next()){
             JsonObject vinculacion = new JsonObject();
-            vinculacion.addProperty(Empleado.JSON_COMIENZO, rs.getDate(VINC_INICIO).toString());
-            vinculacion.addProperty(Empleado.JSON_VINCULACION, obtenerNombreTipo(conn, TIPOS_VINCULACION, rs.getInt(VINC_VINCULO)));
+            vinculacion.addProperty(JSONHelper.JSON_COMIENZO, rs.getDate(VINC_INICIO).toString());
+            vinculacion.addProperty(JSONHelper.JSON_VINCULACION, obtenerNombreTipo(conn, TIPOS_VINCULACION, rs.getInt(VINC_VINCULO)));
             vinculaciones.add(vinculacion);
         }
         
@@ -138,12 +138,12 @@ public class FachadaPersistenciaEmpleado {
         ResultSet rs = pst.executeQuery();
         while(rs.next()){
             JsonObject disponibilidad = new JsonObject();
-            disponibilidad.addProperty(Empleado.JSON_COMIENZO, rs.getDate(DISP_COMIENZO).toString());
+            disponibilidad.addProperty(JSONHelper.JSON_COMIENZO, rs.getDate(DISP_COMIENZO).toString());
             if(rs.getDate(DISP_FINAL) != null) {
                 // Puede ser null
-                disponibilidad.addProperty(Empleado.JSON_FINAL_PREVISTO, rs.getDate(DISP_FINAL).toString());
+                disponibilidad.addProperty(JSONHelper.JSON_FINAL_PREVISTO, rs.getDate(DISP_FINAL).toString());
             }
-            disponibilidad.addProperty(Empleado.JSON_DISPONIBILIDAD, obtenerNombreTipo(conn, TIPOS_DISPONIBILIDAD, rs.getInt(DISP_DISPONIBILIDAD)));
+            disponibilidad.addProperty(JSONHelper.JSON_DISPONIBILIDAD, obtenerNombreTipo(conn, TIPOS_DISPONIBILIDAD, rs.getInt(DISP_DISPONIBILIDAD)));
             disponibilidades.add(disponibilidad);
         }
         
@@ -162,26 +162,29 @@ public class FachadaPersistenciaEmpleado {
         
         try {
             ConexionBD conn = conectarse();
+            // Ejecuta la selección
             PreparedStatement pst = conn.prepareStatement(QUERY_NIF_PASS);
             pst.setString(1, nif);
             pst.setString(2, password);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
                 // Credenciales válidas
-                jo.addProperty(Empleado.JSON_DNI, rs.getString(EMPL_NIF));
-                jo.addProperty(Empleado.JSON_NOMBRE, rs.getString(EMPL_NOMBRE));
-                jo.addProperty(Empleado.JSON_APELLIDOS, rs.getString(EMPL_APELLIDOS));
-                jo.addProperty(Empleado.JSON_FECHA_INICIO, rs.getDate(EMPL_FECHA_INICIO).toString());
-                jo.add(Empleado.JSON_ROLES, obtenerRolesEmpleado(conn, nif));
-                jo.add(Empleado.JSON_VINCULACIONES, obtenerVinculacionesEmpleado(conn, nif));
-                jo.add(Empleado.JSON_DISPONIBILIDADES, obtenerDisponibilidadesEmpleado(conn, nif));
+                jo.addProperty(JSONHelper.JSON_DNI, rs.getString(EMPL_NIF));
+                jo.addProperty(JSONHelper.JSON_NOMBRE, rs.getString(EMPL_NOMBRE));
+                jo.addProperty(JSONHelper.JSON_APELLIDOS, rs.getString(EMPL_APELLIDOS));
+                jo.addProperty(JSONHelper.JSON_FECHA_INICIO, rs.getDate(EMPL_FECHA_INICIO).toString());
+                jo.add(JSONHelper.JSON_ROLES, obtenerRolesEmpleado(conn, nif));
+                jo.add(JSONHelper.JSON_VINCULACIONES, obtenerVinculacionesEmpleado(conn, nif));
+                jo.add(JSONHelper.JSON_DISPONIBILIDADES, obtenerDisponibilidadesEmpleado(conn, nif));
             } else {
                 // Credenciales inválidas
                 throw new MessageException("Credenciales inválidas");
             }
-        } catch(ClassNotFoundException | SQLException ex){
+        } catch(SQLException ex){
             Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             throw new MessageException("Error inesperado");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return jo.toString();
