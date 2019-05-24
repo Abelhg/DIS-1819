@@ -9,7 +9,7 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  *
  * @author daniel
  */
-public class Producto {
+public abstract class Producto {
 
     private String codigo;
     private String nombre;

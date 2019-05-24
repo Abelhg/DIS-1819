@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -11,13 +12,16 @@ import java.util.ArrayList;
  */
 public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     
-    private ArrayList<LineaDeVenta> lineas = new ArrayList<LineaDeVenta>();
-
-    public void mostrarDatosVenta(LineaDeVenta lv) {
-        lineas.add(lv);
+    public void mostrarDatosVenta(Venta venta) {
+        ArrayList<LineaDeVenta> lista = venta.getLineas();
+        DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
+        model.setRowCount(0);
+        for(int i=0;i<lista.size();i++){
+            model.addRow(new Object[]{lista.get(i).getCantidad(),lista.get(i).getProducto().getPrecioVenta(),lista.get(i).getCantidad()*lista.get(i).getProducto().getPrecioVenta()});
+        }
     }
 
-    public static void mostrarPrecioFinal() {
+    public void mostrarPrecioFinal() {
     }
 
     private final CtrlVistaRegistrarVentaDirecta controlador;
@@ -36,13 +40,10 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
         cantidad = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cajaProductos = new javax.swing.JPanel();
         sumaElemento = new javax.swing.JButton();
         terminaVenta = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        terminaVentaConFactura = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -61,17 +62,6 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
 
         jLabel2.setText("Cantidad");
 
-        javax.swing.GroupLayout cajaProductosLayout = new javax.swing.GroupLayout(cajaProductos);
-        cajaProductos.setLayout(cajaProductosLayout);
-        cajaProductosLayout.setHorizontalGroup(
-            cajaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 672, Short.MAX_VALUE)
-        );
-        cajaProductosLayout.setVerticalGroup(
-            cajaProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
-        );
-
         sumaElemento.setText("Añadir");
         sumaElemento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,18 +76,35 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Producto");
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jLabel4.setText("Precio de venta");
+            },
+            new String [] {
+                "Cantidad", "Precio venta", "Subtotal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
-        jLabel5.setText("Subtotal");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        terminaVentaConFactura.setText("Finalizar con factura");
-        terminaVentaConFactura.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                terminaVentaConFacturaActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane2.setViewportView(tablaProductos);
+        if (tablaProductos.getColumnModel().getColumnCount() > 0) {
+            tablaProductos.getColumnModel().getColumn(0).setResizable(false);
+            tablaProductos.getColumnModel().getColumn(1).setResizable(false);
+            tablaProductos.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,15 +114,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(156, 156, 156)
-                .addComponent(jLabel5)
-                .addGap(136, 136, 136))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,16 +127,14 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                         .addGap(67, 67, 67)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sumaElemento, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(terminaVentaConFactura))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addComponent(terminaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(terminaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cajaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39))
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {sumaElemento, terminaVenta, terminaVentaConFactura});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {sumaElemento, terminaVenta});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,21 +144,19 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(sumaElemento)
-                    .addComponent(terminaVenta))
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(terminaVentaConFactura))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addComponent(cajaProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(sumaElemento))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(terminaVenta)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64))
         );
 
         pack();
@@ -172,30 +167,28 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void sumaElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaElementoActionPerformed
-        controlador.creaLineaDeVenta(codigo.getText(),Integer.parseInt(cantidad.getText()));
+        controlador.introducirProducto(codigo.getText(),Integer.parseInt(cantidad.getText()));
     }//GEN-LAST:event_sumaElementoActionPerformed
 
     private void terminaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaActionPerformed
-        controlador.finalizarVenta(false);
+        controlador.finalizarVenta();
     }//GEN-LAST:event_terminaVentaActionPerformed
-
-    private void terminaVentaConFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaConFacturaActionPerformed
-        controlador.finalizarVenta(true);
-    }//GEN-LAST:event_terminaVentaConFacturaActionPerformed
  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel cajaProductos;
     private javax.swing.JTextField cantidad;
     private javax.swing.JTextField codigo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lTitulo;
     private javax.swing.JButton sumaElemento;
+    private javax.swing.JTable tablaProductos;
     private javax.swing.JButton terminaVenta;
-    private javax.swing.JButton terminaVentaConFactura;
     // End of variables declaration//GEN-END:variables
+
+    void borrarLista() {
+        DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
+        model.setRowCount(0);
+    }
 }

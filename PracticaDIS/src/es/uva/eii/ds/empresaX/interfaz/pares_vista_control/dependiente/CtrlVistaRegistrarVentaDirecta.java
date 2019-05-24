@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
+import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCURegistrarVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
@@ -17,7 +18,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 public class CtrlVistaRegistrarVentaDirecta {
 
     private final VistaRegistrarVentaDirecta vista;
-    private Venta venta = new Venta();
+    private static Venta venta;
 
     /**
      * Inicializa el controlador.
@@ -39,38 +40,35 @@ public class CtrlVistaRegistrarVentaDirecta {
         GestorUI.getInstanciaSingleton().atras();
     }
 
-    public void creaLineaDeVenta(String codigo, int cantidad) {
+    public void introducirProducto(String codigo, int cantidad) {
 
         if (cantidad < 1) {
             //Mensaje de error
         } else {
 
-            String prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
+            if (venta == null) {
+                venta = new Venta(/*id del empleado,*/);
+            }
+
+            JsonObject prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
 
             if (prod == null) {
                 //Mensaje de error
             } else {
 
                 ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(prod);
-                /*LineaDeVenta lVenta = ControladorCURegistrarVenta.getLineasDeVenta();
+                int cantDisp = ControladorCURegistrarVenta.getCantidadDisponible(pVendible, venta);
 
-                if (pVendible.getExistencias() < cantidad + lVenta.getCantidad()) {
+                if (cantDisp < cantidad) {
                     //Otro mensaje de error
                 } else {
-                    if (lVenta == null) {
-                        //venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible, cantidad);
-                    } else {
-                        venta = sumaCantidad(lVenta, cantidad);
-                    }
-
-                    VistaRegistrarVentaDirecta.mostrarDatosVenta();
-                }*/
+                    venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible, cantidad, venta);
+                    vista.mostrarDatosVenta(venta);
+                }
             }
         }
 
     }
-
-
 
     private Venta sumaCantidad(LineaDeVenta lVenta, int cantidad) {
 
@@ -79,18 +77,38 @@ public class CtrlVistaRegistrarVentaDirecta {
 
     }
 
-    public void finalizarVenta(boolean hacerFactura) {
+    public void finalizarVenta() {
 
-        VistaRegistrarVentaDirecta.mostrarPrecioFinal();
+        if (venta.getLineas().size() > 0) {
 
-        if (hacerFactura) {
-            //Hacer factura
+            /*VistaPrecioTotal vistaPrecio = new VistaPrecioTotal();
+            double total = getTotalVenta();
+            vistaPrecio.mostrarPrecioFinal(total);
+            vistaPrecio.setVisible(true);*/
+
+            /*if (hacerFactura) {
+                //Hacer factura
+            }*/
+
+            ControladorCURegistrarVenta.registrarVenta(venta);
+
+            ControladorCURegistrarVenta.actualizarExistencias(venta);
+            
+            vista.borrarLista();
+            GestorUI.getInstanciaSingleton().atras();
+
+        }else{
+            //Mensaje de error
         }
 
-        ControladorCURegistrarVenta.registrarVenta(venta);
+    }
 
-        ControladorCURegistrarVenta.actualizarExistencias(venta);
-
+    private double getTotalVenta() {
+        double res = 0;
+        for (LineaDeVenta lv : venta.getLineas()) {
+            res += lv.getCantidad()*lv.getProducto().getPrecioVenta();
+        }
+        return res;
     }
 
 }

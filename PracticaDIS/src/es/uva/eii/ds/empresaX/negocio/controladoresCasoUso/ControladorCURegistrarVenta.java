@@ -5,12 +5,11 @@
  */
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
-import java.util.ArrayList;
 
 /**
  * @author Abel Herrero Gómez (abeherr)
@@ -19,15 +18,16 @@ import java.util.ArrayList;
  */
 public class ControladorCURegistrarVenta {
 
-    public static String compruebaExistenciaProducto(String codigo) {
+    public static JsonObject compruebaExistenciaProducto(String codigo) {
         
-        String prod = FachadaPersistenciaDependiente.getProductoBD(codigo);
+        JsonObject prod = FachadaPersistenciaDependiente.getProductoBD(codigo);
         return prod;
         
     }
 
-    public static ProductoVendible crearProducto(String prod) {
-        return new Gson().fromJson(prod, ProductoVendible.class);
+    public static ProductoVendible crearProducto(JsonObject prod) {
+        ProductoVendible pv = new ProductoVendible(prod.get("codigo").getAsString(),prod.get("nombre").getAsString(),prod.get("descripcion").getAsString(),prod.get("existencias").getAsInt(),prod.get("cantMin").getAsInt(),prod.get("precio").getAsDouble());
+        return pv;
     }
 
     public static Venta crearLineaDeVenta(ProductoVendible prod, int cantidad,Venta venta) {
@@ -44,8 +44,13 @@ public class ControladorCURegistrarVenta {
         FachadaPersistenciaDependiente.actualizarExistenciasBD(venta);
     }
 
-    public static ArrayList<LineaDeVenta> getLineasDeVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static int getCantidadDisponible(ProductoVendible pVendible, Venta venta) {
+        int res = pVendible.getExistencias();
+        for(LineaDeVenta lv : venta.getLineas()){
+            if(lv.getProducto().getCodigo().equals(pVendible.getCodigo()))
+                res -= lv.getCantidad();
+        }
+        return res;
     }
         
 }
