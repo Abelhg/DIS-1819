@@ -10,6 +10,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
+import java.util.ArrayList;
 
 /**
  * @author Abel Herrero Gómez (abeherr)
@@ -30,23 +31,24 @@ public class ControladorCURegistrarVenta {
         return pv;
     }
 
-    public static Venta crearLineaDeVenta(ProductoVendible prod, int cantidad,Venta venta) {
+    public static ArrayList<LineaDeVenta> crearLineaDeVenta(ProductoVendible prod, int cantidad,ArrayList<LineaDeVenta> lineasVenta) {
         LineaDeVenta lv = new LineaDeVenta(cantidad,prod);
-        venta.getLineas().add(lv);
-        return venta;
+        lineasVenta.add(lv);
+        return lineasVenta;
     }
     
-    public static void registrarVenta(Venta venta){
-        FachadaPersistenciaDependiente.setVentaBD(venta);
+    public static void registrarVenta(ArrayList<LineaDeVenta> lineasVenta,String cifEmpleado){
+        Venta venta = new Venta(cifEmpleado,lineasVenta);
+        FachadaPersistenciaDependiente.setVentaBD(cifEmpleado,venta);
     }
     
-    public static void actualizarExistencias(Venta venta){
-        FachadaPersistenciaDependiente.actualizarExistenciasBD(venta);
+    public static void actualizarExistencias(ArrayList<LineaDeVenta> lineasVenta){
+        FachadaPersistenciaDependiente.actualizarExistenciasBD(lineasVenta);
     }
 
-    public static int getCantidadDisponible(ProductoVendible pVendible, Venta venta) {
+    public static int getCantidadDisponible(ProductoVendible pVendible, ArrayList<LineaDeVenta> lineasVenta) {
         int res = pVendible.getExistencias();
-        for(LineaDeVenta lv : venta.getLineas()){
+        for(LineaDeVenta lv : lineasVenta){
             if(lv.getProducto().getCodigo().equals(pVendible.getCodigo()))
                 res -= lv.getCantidad();
         }

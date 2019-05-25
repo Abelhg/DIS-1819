@@ -7,6 +7,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import javax.swing.JFrame;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
+import java.util.ArrayList;
 
 /**
  * Controlador de la vista de registro de venta directa.
@@ -18,7 +19,12 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 public class CtrlVistaRegistrarVentaDirecta {
 
     private final VistaRegistrarVentaDirecta vista;
-    private static Venta venta;
+    private static ArrayList<LineaDeVenta> lineasVenta;
+
+    private final static String errorCantidadIncorrecta = "La cantidad introducida es menos que uno. Vuelva a introducir una cantidad correcta";
+    private final static String errorProductoInexistente = "El código introducido no pertenece a ningún producto en la lista de productos existente";
+    private final static String errorCantidadNoRelaizable = "No existen unidades suficientes para ese producto";
+    private final static String errorListaVacia = "No hay productos introducidos en la lista";
 
     /**
      * Inicializa el controlador.
@@ -40,75 +46,90 @@ public class CtrlVistaRegistrarVentaDirecta {
         GestorUI.getInstanciaSingleton().atras();
     }
 
-    public void introducirProducto(String codigo, int cantidad) {
+    public void introducirProducto(String codigo, String cant) {
+        
+        if(lineasVenta == null) lineasVenta = new ArrayList<>();
+        
+        if(cant.isEmpty()){
+            VistaError vistaError = new VistaError(errorCantidadIncorrecta);
+            vistaError.setLocationRelativeTo(null);
+            vistaError.setVisible(true);
+        }else{
+        
+        int cantidad = Integer.parseInt(cant);
 
         if (cantidad < 1) {
-            //Mensaje de error
+            VistaError vistaError = new VistaError(errorCantidadIncorrecta);
+            vistaError.setLocationRelativeTo(null);
+            vistaError.setVisible(true);
         } else {
 
-            if (venta == null) {
-                venta = new Venta(/*id del empleado,*/);
-            }
-
-            JsonObject prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
-
-            if (prod == null) {
-                //Mensaje de error
+            if (codigo.isEmpty()) {
+                VistaError vistaError = new VistaError(errorProductoInexistente);
+                vistaError.setLocationRelativeTo(null);
+                vistaError.setVisible(true);
             } else {
 
-                ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(prod);
-                int cantDisp = ControladorCURegistrarVenta.getCantidadDisponible(pVendible, venta);
+                JsonObject prod = ControladorCURegistrarVenta.compruebaExistenciaProducto(codigo);
 
-                if (cantDisp < cantidad) {
-                    //Otro mensaje de error
+                if (prod == null) {
+                    VistaError vistaError = new VistaError(errorProductoInexistente);
+                    vistaError.setLocationRelativeTo(null);
+                    vistaError.setVisible(true);
                 } else {
-                    venta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible, cantidad, venta);
-                    vista.mostrarDatosVenta(venta);
+
+                    ProductoVendible pVendible = ControladorCURegistrarVenta.crearProducto(prod);
+                    int cantDisp = ControladorCURegistrarVenta.getCantidadDisponible(pVendible, lineasVenta);
+
+                    if (cantDisp < cantidad) {
+                        VistaError vistaError = new VistaError(errorCantidadNoRelaizable);
+                        vistaError.setLocationRelativeTo(null);
+                        vistaError.setVisible(true);
+                    } else {
+                        lineasVenta = ControladorCURegistrarVenta.crearLineaDeVenta(pVendible, cantidad, lineasVenta);
+                        vista.mostrarDatosVenta(lineasVenta);
+                    }
                 }
             }
         }
+        }
 
     }
+    
+    public void finalizarVenta(String cifEmpleado) {
 
-    private Venta sumaCantidad(LineaDeVenta lVenta, int cantidad) {
+        if (lineasVenta != null || lineasVenta.size() > 0) {
 
-        lVenta.setCantidad(lVenta.getCantidad() + cantidad);
-        return venta;
-
-    }
-
-    public void finalizarVenta() {
-
-        if (venta.getLineas().size() > 0) {
-
-            /*VistaPrecioTotal vistaPrecio = new VistaPrecioTotal();
-            double total = getTotalVenta();
-            vistaPrecio.mostrarPrecioFinal(total);
+            /*double total = getTotalVenta();
+            VistaPrecioTotal vistaPrecio = new VistaPrecioTotal(total);
+            vistaPrecio.setLocationRelativeTo(null);
             vistaPrecio.setVisible(true);*/
 
-            /*if (hacerFactura) {
-                //Hacer factura
-            }*/
+            ControladorCURegistrarVenta.registrarVenta(lineasVenta,cifEmpleado);
 
-            ControladorCURegistrarVenta.registrarVenta(venta);
+            ControladorCURegistrarVenta.actualizarExistencias(lineasVenta);
 
-            ControladorCURegistrarVenta.actualizarExistencias(venta);
-            
             vista.borrarLista();
             GestorUI.getInstanciaSingleton().atras();
 
-        }else{
-            //Mensaje de error
+        } else {
+            VistaError vistaError = new VistaError(errorListaVacia);
+            vistaError.setLocationRelativeTo(null);
+            vistaError.setVisible(true);
         }
 
     }
 
     private double getTotalVenta() {
         double res = 0;
-        for (LineaDeVenta lv : venta.getLineas()) {
-            res += lv.getCantidad()*lv.getProducto().getPrecioVenta();
+        for (LineaDeVenta lv : lineasVenta) {
+            res += lv.getCantidad() * lv.getProducto().getPrecioVenta();
         }
         return res;
+    }
+
+    void vaciaLista() {
+        lineasVenta = null;
     }
 
 }

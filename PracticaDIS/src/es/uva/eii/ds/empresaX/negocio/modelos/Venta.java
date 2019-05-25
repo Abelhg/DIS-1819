@@ -17,17 +17,13 @@ public class Venta {
     private LocalDate fechaDeVenta;
     private int idDeVenta;
     private ArrayList<LineaDeVenta> lineas;
+    private String empleado;
 
-    public Venta(int idDeVenta, ArrayList<LineaDeVenta> lineas) {
+    public Venta(String empleado, ArrayList<LineaDeVenta> lineas) {
         this.fechaDeVenta = LocalDate.now();
-        this.idDeVenta = idDeVenta;
-        this.lineas = new ArrayList<>();
-    }
-
-    public Venta(int idDeVenta) {
-        this.fechaDeVenta = LocalDate.now();
-        this.idDeVenta = idDeVenta;
-        this.lineas = new ArrayList<>();
+        this.idDeVenta = -1;
+        this.lineas = lineas;
+        this.empleado = empleado;
     }
     
     public Venta() {

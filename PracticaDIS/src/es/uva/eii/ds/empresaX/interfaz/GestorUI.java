@@ -4,10 +4,8 @@ import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente.VistaRegi
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
-import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Stack;
 import javax.swing.JFrame;
@@ -20,6 +18,7 @@ import javax.swing.JFrame;
 public class GestorUI { 
     private final Stack<JFrame> anteriores;
     private JFrame actual;
+    private static String cifEmpleado;
     
     private static GestorUI instancia;
     private EnumMap<CasosDeUso, String> stringsCasos;
@@ -131,9 +130,9 @@ public class GestorUI {
      * Muestra la ventana con la lista de opciones del usuario según su rol.
      * @param rol Rol del usuario
      */
-    public void empleadoIdentificado(TipoRol rol) {
+    public void empleadoIdentificado(TipoRol rol,String dni) {
         guardaActual();
-        
+        cifEmpleado = dni;
         java.awt.EventQueue.invokeLater(() -> {
             actual = new VistaListaOpciones(rol);
             actual.setVisible(true);
@@ -158,10 +157,9 @@ public class GestorUI {
      */
     private void vistaRegistrarVenta() {
         guardaActual();
-       
+        VistaRegistrarVentaDirecta.setCifEmpleado(cifEmpleado);
         java.awt.EventQueue.invokeLater(() -> {
-            actual = new VistaRegistrarVentaDirecta();                     // -------------------------- TODO
-            ArrayList<LineaDeVenta> lineas = new ArrayList<>();
+            actual = new VistaRegistrarVentaDirecta();
             actual.setVisible(true);
         });
     }

@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +27,6 @@ public class FachadaPersistenciaDependiente {
 
     private static final String QUERY_ID_VENTA_VENTA = "INSERT INTO VENTA VALUES(?,?,?)";
     private static final String QUERY_ID_VENTA_LINEA = "INSERT INTO LINEADEVENTA VALUES(?,?,?)";
-    private static final String QUERY_ID_VENTA_PRODUCTO = "INSERT INTO PRODUCTO VALUES(?,?,?,?,?,?,?,?,?)";
 
     private static final String QUERY_EXISTENCIAS = "UPDATE PRODUCTO SET EXISTENCIAS = ? WHERE CODIGO = ?";
 
@@ -71,23 +71,10 @@ public class FachadaPersistenciaDependiente {
         return null;
     }
 
-    public static void setVentaBD(Venta venta) {
+    public static void setVentaBD(String cifEmpleado,Venta venta) {
 
         try {
             ConexionBD conn = conectarse();
-            /*for (LineaDeVenta lp : venta.getLineas()) {
-                PreparedStatement pst = conn.prepareStatement(QUERY_ID_VENTA_PRODUCTO);
-                pst.setString(1, lp.getProducto().getCodigo());
-                pst.setString(2, lp.getProducto().getNombre());
-                pst.setString(3, lp.getProducto().getDescripcion());
-                pst.setInt(4, lp.getProducto().getExistencias());
-                pst.setInt(5, lp.getProducto().getCantidadMinimaEnStock());
-                pst.setString(6, "ProductoDeHorno");
-                pst.setDouble(7, lp.getProducto().getPrecioVenta());
-                pst.setInt(8, 1);
-                pst.setString(9, null);
-                int rs = pst.executeUpdate();
-            }*/
             
             PreparedStatement count = conn.prepareStatement("SELECT COUNT(*) AS rowcount FROM VENTA");
             ResultSet rsCount = count.executeQuery();
@@ -95,9 +82,11 @@ public class FachadaPersistenciaDependiente {
             
             Date hoy = java.sql.Date.valueOf(venta.getFechaDeVenta());
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_VENTA_VENTA);
+            System.out.println(cifEmpleado);
+            System.out.println("Lineas: "+venta.getLineas());
             pst.setInt(1, rsCount.getInt("rowcount")+1);
             pst.setDate(2, hoy);
-            pst.setString(3, "98765432E");//Temporal,esto coge el dni del identificado
+            pst.setString(3, cifEmpleado);
             int rs = pst.executeUpdate();
 
             
@@ -115,11 +104,11 @@ public class FachadaPersistenciaDependiente {
 
     }
 
-    public static void actualizarExistenciasBD(Venta venta) {
+    public static void actualizarExistenciasBD(ArrayList<LineaDeVenta> lineasVenta) {
 
         try {
             ConexionBD conn = conectarse();
-            for (LineaDeVenta lp : venta.getLineas()) {
+            for (LineaDeVenta lp : lineasVenta) {
                 PreparedStatement pst1 = conn.prepareStatement(QUERY_ID_PRODUCTO);
                 pst1.setString(1, lp.getProducto().getCodigo());
                 ResultSet rs1 = pst1.executeQuery();

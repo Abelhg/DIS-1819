@@ -5,10 +5,22 @@
  */
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author daniel
  */
 public class CtrlVistaPrecioTotal {
+    
+    private VistaPrecioTotal vista;
+    
+    public CtrlVistaPrecioTotal(VistaPrecioTotal v) {
+        vista = v;
+        // Evita que termine el programa al cerrar la ventana
+        vista.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        // Centra en la pantalla
+        vista.setLocationRelativeTo(null);
+    }
 
 }

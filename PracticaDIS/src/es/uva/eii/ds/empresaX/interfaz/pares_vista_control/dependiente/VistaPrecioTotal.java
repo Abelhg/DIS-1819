@@ -6,12 +6,23 @@
 
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author daniel
  */
 public class VistaPrecioTotal extends javax.swing.JDialog {
+    
+    private final CtrlVistaPrecioTotal controlador;
 
+    public VistaPrecioTotal(double total) {
+        initComponents();
+        controlador = new CtrlVistaPrecioTotal(this);
+        finalizarText.setText("¿Desea hacer una factura de la compra?");
+        precioText.setText("Precio total: "+total);
+    }
+   
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -39,6 +50,10 @@ public class VistaPrecioTotal extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
+
+        finalizarText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        precioText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,6 +99,7 @@ public class VistaPrecioTotal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        //Crear factura
         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -102,8 +118,4 @@ public class VistaPrecioTotal extends javax.swing.JDialog {
     private javax.swing.JLabel precioText;
     // End of variables declaration//GEN-END:variables
 
-    void mostrarPrecioFinal(double total) {
-        finalizarText.setText("¿Desea hacer una factura de la compra?");
-        precioText.setText("Precio total: "+total);
-    }
 }

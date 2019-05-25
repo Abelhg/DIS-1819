@@ -1,7 +1,6 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
-import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,12 +11,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     
-    public void mostrarDatosVenta(Venta venta) {
-        ArrayList<LineaDeVenta> lista = venta.getLineas();
+    public static String cifEmpleado;
+    
+    public void mostrarDatosVenta(ArrayList<LineaDeVenta> lineasVenta) {
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
-        for(int i=0;i<lista.size();i++){
-            model.addRow(new Object[]{lista.get(i).getCantidad(),lista.get(i).getProducto().getPrecioVenta(),lista.get(i).getCantidad()*lista.get(i).getProducto().getPrecioVenta()});
+        for(int i=0;i<lineasVenta.size();i++){
+            model.addRow(new Object[]{lineasVenta.get(i).getCantidad(),lineasVenta.get(i).getProducto().getPrecioVenta(),lineasVenta.get(i).getCantidad()*lineasVenta.get(i).getProducto().getPrecioVenta()});
         }
     }
 
@@ -163,15 +163,16 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        controlador.vaciaLista();
         controlador.procesaCierre();
     }//GEN-LAST:event_formWindowClosing
 
     private void sumaElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaElementoActionPerformed
-        controlador.introducirProducto(codigo.getText(),Integer.parseInt(cantidad.getText()));
+        controlador.introducirProducto(codigo.getText(),cantidad.getText());
     }//GEN-LAST:event_sumaElementoActionPerformed
 
     private void terminaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaActionPerformed
-        controlador.finalizarVenta();
+        controlador.finalizarVenta(cifEmpleado);
     }//GEN-LAST:event_terminaVentaActionPerformed
  
     
@@ -187,8 +188,13 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     private javax.swing.JButton terminaVenta;
     // End of variables declaration//GEN-END:variables
 
-    void borrarLista() {
+    public void borrarLista() {
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
     }
+    
+    public static void setCifEmpleado(String cif){
+        cifEmpleado = cif;
+    }
+
 }
