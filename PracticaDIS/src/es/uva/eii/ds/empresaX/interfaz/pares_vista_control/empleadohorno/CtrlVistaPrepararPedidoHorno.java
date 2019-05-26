@@ -13,6 +13,8 @@ import javax.swing.JFrame;
  */
 public class CtrlVistaPrepararPedidoHorno {
     
+    private static String cifEmpleado;
+    
     private final VistaPrepararPedidoHorno vista;
     
     /**
@@ -32,6 +34,14 @@ public class CtrlVistaPrepararPedidoHorno {
      */
     public void procesaCierre() {
         GestorUI.getInstanciaSingleton().atras();
+    }
+    
+    public static void setCifEmpleado(String cif) {
+        cifEmpleado = cif;
+    }
+    
+    public void getProximosPedidosHorno(){
+        
     }
     
 }

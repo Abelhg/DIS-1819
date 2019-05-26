@@ -3,6 +3,8 @@ package es.uva.eii.ds.empresaX.interfaz;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente.VistaRegistrarVentaDirecta;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaIdentificarse;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado.VistaListaOpciones;
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno.CtrlVistaPrepararPedidoHorno;
+import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno.VistaPrepararPedidoHorno;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
@@ -129,6 +131,7 @@ public class GestorUI {
     /**
      * Muestra la ventana con la lista de opciones del usuario según su rol.
      * @param rol Rol del usuario
+     * @param dni
      */
     public void empleadoIdentificado(TipoRol rol,String dni) {
         guardaActual();
@@ -171,9 +174,9 @@ public class GestorUI {
      */
     private void vistaPrepararPedido() {
         guardaActual();
-       
+        CtrlVistaPrepararPedidoHorno.setCifEmpleado(cifEmpleado);
         java.awt.EventQueue.invokeLater(() -> {
-            actual = new VistaNoImplementada();                     // -------------------------- TODO
+            actual = new VistaNoImplementada();
             actual.setVisible(true);
         });
     }
