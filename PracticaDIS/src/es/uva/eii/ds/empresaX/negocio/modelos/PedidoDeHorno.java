@@ -8,8 +8,9 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
 import java.util.Date;
 
 /**
- *
- * @author roberto
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
  */
 public class PedidoDeHorno {
     private int numeroDePedido;
