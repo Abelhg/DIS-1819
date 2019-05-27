@@ -1,9 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uva.eii.ds.empresaX.negocio.modelos;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -17,52 +17,43 @@ public class Cliente {
     private int telefono;
     private String email;
 
-    public Cliente(String dni, String nombre, String apellidos, int telefono, String email) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.telefono = telefono;
-        this.email = email;
+    
+    public Cliente(String jsonString) {
+        try {
+            JsonObject jo = new Gson().fromJson(jsonString, JsonObject.class);
+            
+            // Configura los atributos
+            dni = jo.get(JSONHelper.JSON_DNI).getAsString();
+            nombre = jo.get(JSONHelper.JSON_NOMBRE).getAsString();
+            apellidos = jo.get(JSONHelper.JSON_APELLIDOS).getAsString();
+            telefono = jo.get(JSONHelper.JSON_TELEFONO).getAsInt();
+            email = jo.get(JSONHelper.JSON_EMAIL).getAsString();
+        } catch(JsonSyntaxException | NumberFormatException e) {
+            // Especificar excepciones
+            System.out.println("[!] Excepción al crear Empleado:");
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
     }
 
     public String getDni() {
         return dni;
     }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-
+    
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getApellidos() {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
     public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
     
 }

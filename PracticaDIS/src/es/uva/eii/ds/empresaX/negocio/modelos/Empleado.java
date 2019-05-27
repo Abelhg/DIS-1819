@@ -71,6 +71,7 @@ public class Empleado {
             // Especificar excepciones
             System.out.println("[!] Excepción al crear Empleado:");
             e.printStackTrace();
+            throw new IllegalArgumentException();
         }
     }
     
@@ -80,16 +81,16 @@ public class Empleado {
      */
     private void configuraRoles(JsonObject jo) {
         rolesEnLaEmpresa = new TreeMap<>();
-        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ROLES);
+        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ESTADOS);
         for(JsonElement jr : jRoles) {
             JsonObject jRol = new Gson().fromJson(jr.toString(), JsonObject.class);
-            String[] fechaComienzo = jRol.get(JSONHelper.JSON_COMIENZO).getAsString().split("-");
+            String[] fechaComienzo = jRol.get(JSONHelper.JSON_MOMENTO).getAsString().split("-");
             LocalDate comienzo = LocalDate.of(
                 Integer.valueOf(fechaComienzo[0]), // YYYY
                 Integer.valueOf(fechaComienzo[1]), // MM
                 Integer.valueOf(fechaComienzo[2])  // DD
             );
-            Rol rol = new Rol(TipoEstadoPeido.valueOf(jRol.get(JSONHelper.JSON_ROL).getAsString()));
+            Rol rol = new Rol(TipoRol.valueOf(jRol.get(JSONHelper.JSON_ROL).getAsString()));
             rolesEnLaEmpresa.put(comienzo, rol);
         }
     }

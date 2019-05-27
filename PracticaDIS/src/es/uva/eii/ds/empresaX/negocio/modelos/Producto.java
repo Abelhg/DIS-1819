@@ -17,6 +17,11 @@ public abstract class Producto {
     private int existencias;
     private int cantidadMinimaEnStock;
 
+    
+    public Producto(String jsonString) {
+        // TODO
+    }
+    
     public Producto(String codigo, String nombre, String descripcion, int existencias, int cantidadMinimaEnStock) {
         this.codigo = codigo;
         this.nombre = nombre;

@@ -7,17 +7,17 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  */
 public class Rol {
 
-    private TipoEstadoPeido tipo;
+    private TipoRol tipo;
     
-    public Rol(TipoEstadoPeido tipo){
+    public Rol(TipoRol tipo){
         this.tipo = tipo;
     }
 
-    public TipoEstadoPeido getTipo() {
+    public TipoRol getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoEstadoPeido tipo) {
+    public void setTipo(TipoRol tipo) {
         this.tipo = tipo;
     }
     

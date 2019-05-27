@@ -1,7 +1,7 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
-import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPeido;
+import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
 import javax.swing.JFrame;
 
 /**
@@ -13,7 +13,7 @@ public class CtrlVistaListaOpciones {
     
     private final VistaListaOpciones vista;
         
-    public CtrlVistaListaOpciones(VistaListaOpciones v, TipoEstadoPeido rol) {
+    public CtrlVistaListaOpciones(VistaListaOpciones v, TipoRol rol) {
         vista = v;
         // Asigna el titulo de la ventana
         vista.setTitulo(rol.toString());

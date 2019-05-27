@@ -36,8 +36,14 @@ public class JSONHelper {
     public static final String JSON_DISPONIBILIDAD = "disponibilidad";
     public static final String JSON_ERROR = "error";
     
-    //JSON PEDIDO
-    public static final String JSON_FECHA_DESEADA = "fecha";
+    // JSON PEDIDO HORNO
+    public static final String JSON_PEDIDOS_PENDIENTES = "pedidosPendientes";
+    public static final String JSON_FECHA_DESEADA = "fechaDeseada";
+    public static final String JSON_CLIENTE = "cliente";
+    public static final String JSON_DEPENDIENTE = "dependiente";
+    public static final String JSON_ESTADO = "estado";
+    public static final String JSON_ESTADOS = "estados";
+    public static final String JSON_MOMENTO = "momento";
 
     
 }

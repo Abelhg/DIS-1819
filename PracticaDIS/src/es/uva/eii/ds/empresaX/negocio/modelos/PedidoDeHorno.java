@@ -1,12 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uva.eii.ds.empresaX.negocio.modelos;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.TreeMap;
 
 /**
@@ -16,56 +18,71 @@ import java.util.TreeMap;
  */
 public class PedidoDeHorno {
     private int numeroDePedido;
-    private Date fechaEnLaQueSeQuiere;
+    private LocalDate fechaEnLaQueSeQuiere;
     private Cliente cliente;
     private Empleado dependiente;
-    private TreeMap<LocalDate, EstadoPedido> estadoPedido;
+    private TreeMap<LocalDateTime, EstadoPedido> estadosPedido;
 
-    public PedidoDeHorno(int numeroDePedido, Date fechaEnLaQueSeQuiere, Cliente cliente, Empleado dependiente) {
-        this.numeroDePedido = numeroDePedido;
-        this.fechaEnLaQueSeQuiere = fechaEnLaQueSeQuiere;
-        this.cliente = cliente;
-        this.dependiente = dependiente;
+    /**
+     * Construye e inicializa un Pedido de Horno desde una string JSON.
+     * @param jsonString String JSON
+     */
+    public PedidoDeHorno(String jsonString) {
+        try {
+            JsonObject jo = new Gson().fromJson(jsonString, JsonObject.class);
+            
+            numeroDePedido = jo.get(JSONHelper.JSON_NUM_PEDIDO).getAsInt();
+            // FECHA DESEADA
+            String[] fechaD = jo.get(JSONHelper.JSON_FECHA_DESEADA).getAsString().split("-");
+            fechaEnLaQueSeQuiere = LocalDate.of(
+                    Integer.valueOf(fechaD[0]), // YYYY
+                    Integer.valueOf(fechaD[1]), // MM
+                    Integer.valueOf(fechaD[2])  // DD
+            );
+            
+            cliente = new Cliente(jo.get(JSONHelper.JSON_CLIENTE).toString());
+            dependiente = new Empleado(jo.get(JSONHelper.JSON_DEPENDIENTE).toString());
+            configuraEstados(jo);
+        } catch(JsonSyntaxException | NumberFormatException e) {
+            // Especificar excepciones
+            System.out.println("[!] Excepción al crear Empleado:");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Obtiene los roles y los añade a la lista.
+     * @param jo Objeto JSON
+     */
+    private void configuraEstados(JsonObject jo) {
+        estadosPedido = new TreeMap<>();
+        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ROLES);
+        for(JsonElement jr : jRoles) {
+            JsonObject jEstado = new Gson().fromJson(jr.toString(), JsonObject.class);
+            LocalDateTime momento = Timestamp.valueOf(jEstado.get(JSONHelper.JSON_COMIENZO).getAsString()).toLocalDateTime();
+            EstadoPedido estado = new EstadoPedido(TipoEstadoPedido.valueOf(jEstado.get(JSONHelper.JSON_ESTADO).getAsString()));
+            estadosPedido.put(momento, estado);
+        }
     }
 
     public int getNumeroDePedido() {
         return numeroDePedido;
     }
 
-    public void setNumeroDePedido(int numeroDePedido) {
-        this.numeroDePedido = numeroDePedido;
-    }
-
-    public Date getFechaEnLaQueSeQuiere() {
+    public LocalDate getFechaEnLaQueSeQuiere() {
         return fechaEnLaQueSeQuiere;
-    }
-
-    public void setFechaEnLaQueSeQuiere(Date fechaEnLaQueSeQuiere) {
-        this.fechaEnLaQueSeQuiere = fechaEnLaQueSeQuiere;
     }
 
     public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     public Empleado getDependiente() {
         return dependiente;
     }
 
-    public void setDependiente(Empleado dependiente) {
-        this.dependiente = dependiente;
-    }
-
     public EstadoPedido getUltimoEstado() {
-        return estadoPedido.lastEntry().getValue();
-    }
-
-    public void setEstadoPedido(TreeMap<LocalDate, EstadoPedido> estadoPedido) {
-        this.estadoPedido = estadoPedido;
+        return estadosPedido.lastEntry().getValue();
     }
     
 }

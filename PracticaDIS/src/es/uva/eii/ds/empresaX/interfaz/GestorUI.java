@@ -7,7 +7,7 @@ import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno.CtrlVis
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno.VistaPrepararPedidoHorno;
 import es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado.VistaConsultarFacturas;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
-import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPeido;
+import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
 import java.util.EnumMap;
 import java.util.Stack;
 import javax.swing.JFrame;
@@ -133,7 +133,7 @@ public class GestorUI {
      * @param rol Rol del usuario
      * @param dni
      */
-    public void empleadoIdentificado(TipoEstadoPeido rol,String dni) {
+    public void empleadoIdentificado(TipoRol rol,String dni) {
         guardaActual();
         cifEmpleado = dni;
         java.awt.EventQueue.invokeLater(() -> {

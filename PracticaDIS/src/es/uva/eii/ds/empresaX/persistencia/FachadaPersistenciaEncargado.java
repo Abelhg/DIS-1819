@@ -3,7 +3,6 @@ package es.uva.eii.ds.empresaX.persistencia;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,8 +26,8 @@ public class FachadaPersistenciaEncargado {
     // Devuelve el año de la última fecha de emisión
     private static final String QUERY_MAX_ANIO_FAC = "SELECT YEAR(fechaDeEmision) FROM Factura WHERE ... = (?)";
     // Devuelve las facturas pendientes, en el rango de fechas especificado, para el proveedor especificado
-    private static final String QUERY_FACTURAS_PEND
-            = "SELECT * FROM "
+    private static final String QUERY_FACTURAS_PEND = 
+            "SELECT * FROM "
             + "Factura INNER JOIN PedidoAProveedor ON Factura.pedido = PedidoAProveedor.numeroDePedido "
             + "INNER JOIN proveedor ON PedidoAProveedor.proveedor = Proveedor.cif "
             + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND enTransferencia IS NULL";
@@ -105,7 +104,7 @@ public class FachadaPersistenciaEncargado {
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setDate(1, Date.valueOf(fechaI));
             pst.setDate(2, Date.valueOf(fechaF));
-            if(proveedor != null) {
+            if(proveedor != null) { 
                 pst.setString(3, proveedor);
             }
             ResultSet rs = pst.executeQuery();
