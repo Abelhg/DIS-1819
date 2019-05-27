@@ -9,7 +9,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -31,6 +33,11 @@ public class FachadaPersistenciaEmpleadoHorno {
             "SELECT * FROM OPERACIONSOBREPEDIDODEHORNO "
             + "INNER JOIN ESTADODEPEDIDODEHORNO ON TIPO = IDTIPO "
             + "WHERE PEDIDODEHORNO = (?) ORDER BY TIPO DESC";
+    
+    // Marca un pedido como preparando
+    private static final String INSERT_PEDIDO_PREPARANDO = 
+            "INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ((?), 2, (?), (?))";
+    
     
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
@@ -86,6 +93,32 @@ public class FachadaPersistenciaEmpleadoHorno {
         pedidosPendientes.add(JSONHelper.JSON_PEDIDOS_PENDIENTES, arrayPedidos);
 
         return pedidosPendientes.toString();
+    }
+    
+    
+    public static boolean cambiarEstadoPedidoAPreparando(LocalDateTime ts, String nifEmpleado, int numeroPedido) {
+        boolean res;
+        
+        try {
+            ConexionBD conn = conectarse();
+            PreparedStatement pst = conn.prepareStatement(INSERT_PEDIDO_PREPARANDO);
+            pst.setTimestamp(1, Timestamp.valueOf(ts));
+            pst.setString(2, nifEmpleado);
+            pst.setInt(3, numeroPedido);
+            
+            // Resultados: pedidos en un rango de fechas. Hay que obtener los que están registrados solo
+            if(pst.executeUpdate() > 0) {
+                // Ha actualizado el estado
+                res = true;
+            } else {
+                res = false;
+            }
+           
+        } catch (ClassNotFoundException | SQLException ex) {
+            res = false;
+        }
+        
+        return res;
     }
     
     

@@ -1,7 +1,7 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
-import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPedido;
+import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPrepararPedido;
 import javax.swing.JFrame;
 
 
@@ -27,7 +27,7 @@ public class CtrlVistaPrepararPedidoHorno {
         // Centra en la pantalla
         vista.setLocationRelativeTo(null);
         // Carga los pedidos para hoy o mañana
-        vista.cargaListaPedidos(ControladorCUPedido.getListaPedidosRegistradosHorno());
+        vista.cargaListaPedidos(ControladorCUPrepararPedido.getListaPedidosRegistradosHorno());
     }
     
     /**

@@ -1,28 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleadoHorno;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class ControladorCUPedido {
+public class ControladorCUPrepararPedido {
 
     /**
      * Devuelve una lista de pedidos en estado 'Registrado' con fechas de
@@ -53,6 +49,17 @@ public class ControladorCUPedido {
         }
         
         return listaPedidos;
+    }
+    
+    public static void cambiaPedidoAPreparando(int numeroPedido, Empleado empleado) {
+        if(FachadaPersistenciaEmpleadoHorno.cambiarEstadoPedidoAPreparando(
+                        LocalDateTime.now(), empleado.getDni(), numeroPedido)) {
+            // Lo ha actualizado con éxito, muestra mensaje
+            // TODO
+        } else {
+            // Ha ocurrido algún error, muestra mensaje
+            // TODO
+        }
     }
     
 }
