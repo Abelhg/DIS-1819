@@ -297,54 +297,20 @@ create table OPERACIONSOBREPEDIDODEHORNO
 ---------------------------------------------------------------------------------------------
 -- DATOS
 INSERT INTO EMPLEADO 
-VALUES ('12345678Z', 
-        'segura',
-        'Hermenegildo Manuel', 
-        'Ruipérez Núñe', 
-        '2014-02-25');
+VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñe','2014-02-25'),
+       ('12123434A', 'segura', 'Segura Patricio', 'Mian', '2018-12-10'),
+       ('98765432E', 'root123', 'Julian Jose', 'Marcos', '2014-02-25');
 
-INSERT INTO EMPLEADO 
-VALUES ('12123434A', 
-        'segura',
-        'Segura Patricio', 
-        'Mian', 
-        '2018-12-10');
+INSERT INTO ROLESENEMPRESA VALUES ('2018-12-10', '12123434A', 4),
+                                  ('2018-12-10', '12123434A', 2),
+                                  ('2014-02-25', '98765432E', 1),
+                                  ('2015-04-14', '98765432E', 4),
+                                  ('2014-02-25', '12345678Z', 2),
+                                  ('2015-04-14', '12345678Z', 3);
 
-INSERT INTO EMPLEADO 
-VALUES ('98765432E', 
-        'segura',
-        'Jose', 
-        'Marcos Marcos', 
-        '2014-02-25');
-
-INSERT INTO ROLESENEMPRESA
-VALUES ('2014-02-25', 
-        '12123434A',
-        4),
-       ('2015-04-14',
-        '12123434A',
-        2);
-
-       INSERT INTO ROLESENEMPRESA
-VALUES ('2014-02-25', 
-        '98765432E',
-        1),
-       ('2015-04-14',
-        '98765432E',
-        4);
-
-       INSERT INTO ROLESENEMPRESA
-VALUES ('2014-02-25', 
-        '12345678Z',
-        2),
-       ('2015-04-14',
-        '12345678Z',
-        3);
-
-INSERT INTO VINCULACIONCONLAEMPRESA
-VALUES ('2014-02-25',
-        '12345678Z',
-        1);
+INSERT INTO VINCULACIONCONLAEMPRESA VALUES ('2014-02-25', '12345678Z', 1),
+                                           ('2014-02-25', '98765432E', 1),
+                                           ('2018-12-10', '12123434A', 1);
 
 INSERT INTO DISPONIBILIDADEMPLEADO
 VALUES ('2014-02-25',
@@ -386,6 +352,25 @@ VALUES  (1, '2015-05-14', 123.45, 'ES-...', 1, NULL),
         (3, '2019-04-14', 96.69, 'ES-...', 3, NULL),
         (4, '2018-05-20', 50.01, 'ES-...', 4, 1);
 
-INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',19.50,5,null);
-INSERT INTO PRODUCTO VALUES('32005867','p2','descripcion',2,1,'ProductoDeHorno',12.50,5,null);
-INSERT INTO PRODUCTO VALUES('98718416','p3','descripcion',0,2,'ProductoDeHorno',9.25,5,null);
+INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',19.50,5,null),
+                           ('32005867','p2','descripcion',2,1,'ProductoDeHorno',12.50,5,null),
+                           ('98718416','p3','descripcion',0,2,'ProductoDeHorno',9.25,5,null);
+
+INSERT INTO CLIENTE VALUES('75264259Q','Juan Jose','Martinez Martinez',971252152,'juan@cliente.es'),
+                          ('65264100S','Pedro','Durán Durán',971252152,'pedroDuran@cliente.es');
+
+INSERT INTO PEDIDODEHORNO VALUES(1,'2019-05-27','75264259Q','12345678Z'),
+                                (2,'2019-05-28','65264100S','12345678Z'),
+                                (3,'2019-05-29','75264259Q','98765432E');
+
+
+
+INSERT INTO LINEADEPEDIDODEHORNO VALUES(2,1,'85584985'),
+                                       (1,2,'32005867'),
+                                       (4,3,'98718416');
+
+
+INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES('2019-05-27 14:55:40', 2, '12345678Z', 1),
+                                       ('2019-05-27 14:55:40', 1, '12345678Z', 2),
+                                       ('2019-05-27 14:55:40', 1, '98765432E', 3);
+                                        
