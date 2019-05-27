@@ -81,10 +81,10 @@ public class Empleado {
      */
     private void configuraRoles(JsonObject jo) {
         rolesEnLaEmpresa = new TreeMap<>();
-        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ESTADOS);
+        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ROLES);
         for(JsonElement jr : jRoles) {
             JsonObject jRol = new Gson().fromJson(jr.toString(), JsonObject.class);
-            String[] fechaComienzo = jRol.get(JSONHelper.JSON_MOMENTO).getAsString().split("-");
+            String[] fechaComienzo = jRol.get(JSONHelper.JSON_COMIENZO).getAsString().split("-");
             LocalDate comienzo = LocalDate.of(
                 Integer.valueOf(fechaComienzo[0]), // YYYY
                 Integer.valueOf(fechaComienzo[1]), // MM

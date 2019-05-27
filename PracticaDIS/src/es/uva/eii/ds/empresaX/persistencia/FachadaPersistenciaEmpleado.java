@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  */
 public class FachadaPersistenciaEmpleado {
     
+    private static final String QUERY_NIF = "SELECT * FROM Empleado WHERE nif = (?)";
     private static final String QUERY_NIF_PASS = "SELECT * FROM Empleado WHERE nif = (?) AND password = (?)";
     private static final String QUERY_ROLES = "SELECT * FROM RolesEnEmpresa WHERE empleado = (?)";
     private static final String QUERY_NOMBRE_TIPO_1 = "SELECT nombreTipo FROM ";
@@ -64,7 +65,7 @@ public class FachadaPersistenciaEmpleado {
      * @return Cadena asociada al ID
      * @throws SQLException 
      */
-    private static String obtenerNombreTipo(ConexionBD conn, String nombreTabla, int idTipo) throws SQLException {
+    public static String obtenerNombreTipo(ConexionBD conn, String nombreTabla, int idTipo) throws SQLException {
         String res = "DESCONOCIDO";
         
         PreparedStatement pst = conn.prepareStatement(QUERY_NOMBRE_TIPO_1 + nombreTabla + QUERY_NOMBRE_TIPO_2);
@@ -84,7 +85,7 @@ public class FachadaPersistenciaEmpleado {
      * @return JsonArray con los roles y su fecha de inicio asociada
      * @throws SQLException 
      */
-    private static JsonArray obtenerRolesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
+    public static JsonArray obtenerRolesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
         JsonArray roles = new JsonArray();
         
         PreparedStatement pst = conn.prepareStatement(QUERY_ROLES);
@@ -107,7 +108,7 @@ public class FachadaPersistenciaEmpleado {
      * @return JsonArray con las vinculaciones y su fecha de inicio asociada
      * @throws SQLException 
      */
-    private static JsonArray obtenerVinculacionesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
+    public static JsonArray obtenerVinculacionesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
         JsonArray vinculaciones = new JsonArray();
         
         PreparedStatement pst = conn.prepareStatement(QUERY_VINCULACIONES);
@@ -130,7 +131,7 @@ public class FachadaPersistenciaEmpleado {
      * @return JsonArray con las vinculaciones y su fecha de inicio asociada
      * @throws SQLException 
      */
-    private static JsonArray obtenerDisponibilidadesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
+    public static JsonArray obtenerDisponibilidadesEmpleado(ConexionBD conn, String dniEmpleado) throws SQLException {
         JsonArray disponibilidades = new JsonArray();
         
         PreparedStatement pst = conn.prepareStatement(QUERY_DISPONIBILIDADES);

@@ -2,14 +2,14 @@ package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPedido;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -20,19 +20,23 @@ public class FachadaPersistenciaEmpleadoHorno {
     
     // Devuelve los pedidos cuya fecha en la quese quiere está en un rango
     private static final String QUERY_PEDIDOS_POR_FECHA =
-            "SELECT * FROM PEDIDODEHORNO PDH WHERE PDH.FECHAENLAQUESEQUIERE BETWEEN (?) AND (?)";
-            
+            "SELECT * FROM PEDIDODEHORNO WHERE FECHAENLAQUESEQUIERE BETWEEN (?) AND (?)";
     
-    /*
-            "SELECT * FROM OperacionSobrePedidoDeHorno OP, EstadoDePedidoDeHorno EP, PedidoHorno PH "
-            + "INNER JOIN ON OP.tipo = EP.idTipo INNER JOIN OP.pedidoDeHorno = PH.numeroDePedido "
-            + "WHERE nombreTipo = 'Registrado' AND fechaEnLaQueSeQuiere BETWEEN (?) AND (?)";*/
-    
+    // Devuelve el dependiente asociado a un pedido de horno
+    private static final String QUERY_EMPLEADO = "SELECT * FROM EMPLEADO WHERE NIF = (?)";
+    // Devuelve el cliente asociado a un pedido de horno
+    private static final String QUERY_CLIENTE = "SELECT * FROM CLIENTE WHERE NIF = (?)";
+    // Devuelve todos los estados de un pedido de horno (orden desc)
+    private static final String QUERY_ESTADOS_PEDIDO = 
+            "SELECT * FROM OPERACIONSOBREPEDIDODEHORNO "
+            + "INNER JOIN ESTADODEPEDIDODEHORNO ON TIPO = IDTIPO "
+            + "WHERE PEDIDODEHORNO = (?) ORDER BY TIPO DESC";
     
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
     }
-    public static String getListaPedidosPendientes(LocalDate inicio, LocalDate fin) {
+    
+    public static String getListaPedidosPendientes(LocalDate inicio, LocalDate fin) throws MessageException {
         JsonArray arrayPedidos = new JsonArray();
         
         try {
@@ -41,32 +45,137 @@ public class FachadaPersistenciaEmpleadoHorno {
             pst.setDate(1, Date.valueOf(inicio));
             pst.setDate(2, Date.valueOf(fin));
             
-            // Resultados: pedidos en un rango de fechas. Hay que obtener los que están pendientes solo
+            // Resultados: pedidos en un rango de fechas. Hay que obtener los que están registrados solo
             ResultSet rs = pst.executeQuery();
             while(rs.next()){
                 JsonObject pedido = new JsonObject();
                 
+                int nPedido = rs.getInt("NUMERODEPEDIDO");
                 
+                pst = conn.prepareStatement(QUERY_ESTADOS_PEDIDO);
+                pst.setInt(1, nPedido);
+                ResultSet rsEstado = pst.executeQuery();
+                if(rsEstado.next()) {
+                    // Existe, ¿está registrado?
+                    String nTipo = rsEstado.getString("NOMBRETIPO");
+                    if(TipoEstadoPedido.valueOf(nTipo) == TipoEstadoPedido.Registrado) {
+                        // Solo está registrado, se añade
+                        pedido.addProperty(JSONHelper.JSON_NUM_PEDIDO, nPedido);
+                        pedido.addProperty(JSONHelper.JSON_FECHA_DESEADA, rs.getDate("FECHAENLAQUESEQUIERE").toString());
+                        pedido.add(JSONHelper.JSON_CLIENTE, getCliente(rs.getString("CLIENTE"), conn));
+                        pedido.add(JSONHelper.JSON_DEPENDIENTE, getEmpleado(rs.getString("DEPENDIENTE"), conn));
+                        pedido.add(JSONHelper.JSON_OPERACIONES, getOperacionesPedido(nPedido, conn));
+                        arrayPedidos.add(pedido);
+                    }
+                }
                 
-
-                // Datos básicos del pedido
-                pedido.addProperty(JSONHelper.JSON_NUM_PEDIDO, rs.getInt("NUMERODEPEDIDO"));
-                pedido.addProperty(JSONHelper.JSON_FECHA_DESEADA, rs.getDate("FECHAENLAQUESEQUIERE").toString());
-                
-                
-                
-                
-                // Cliente del pedido
-                
+                // Para cualquier otro caso, se ignora el resultado
             }
            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(FachadaPersistenciaEncargado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            if(ex instanceof MessageException) {
+                // La relanza
+                throw new MessageException(ex.getMessage());
+            } else {
+                // Otra
+                throw new MessageException("[!] Ocurrió un error al obtener la lista de pedidos registrados.");
+            }
         }
-         JsonObject pedidosPendientes = new JsonObject();
-         pedidosPendientes.add(JSONHelper.JSON_FACTURAS_PENDIENTES, arrayPedidos);
-            
-         return pedidosPendientes.toString();
+        
+        JsonObject pedidosPendientes = new JsonObject();
+        pedidosPendientes.add(JSONHelper.JSON_PEDIDOS_PENDIENTES, arrayPedidos);
+
+        return pedidosPendientes.toString();
     }
+    
+    
+    public static JsonObject getCliente(String dniCliente, ConexionBD conn) throws MessageException {
+        JsonObject res = new JsonObject();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_CLIENTE);
+            pst.setString(1, dniCliente);
+
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()) {
+                res.addProperty(JSONHelper.JSON_DNI, rs.getString("NIF"));
+                res.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+                res.addProperty(JSONHelper.JSON_APELLIDOS, rs.getString("APELLIDOS"));
+                res.addProperty(JSONHelper.JSON_TELEFONO, rs.getInt("TELEFONO"));
+                res.addProperty(JSONHelper.JSON_EMAIL, rs.getString("EMAIL"));
+            } else {
+                throw new MessageException("[!] No existe el cliente con DNI: " + dniCliente);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener el cliente con NIF: " + dniCliente);
+            }
+        }
+        
+        return res;
+    }
+    
+    public static JsonObject getEmpleado(String nifEmpleado, ConexionBD conn) throws MessageException {
+        JsonObject res = new JsonObject();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_EMPLEADO);
+            pst.setString(1, nifEmpleado);
+
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()) {
+                res.addProperty(JSONHelper.JSON_DNI, nifEmpleado);
+                res.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+                res.addProperty(JSONHelper.JSON_APELLIDOS, rs.getString("APELLIDOS"));
+                res.addProperty(JSONHelper.JSON_FECHA_INICIO, rs.getDate("FECHAINICIOENEMPRESA").toString());
+                res.add(JSONHelper.JSON_ROLES, FachadaPersistenciaEmpleado.obtenerRolesEmpleado(conn, nifEmpleado));
+                res.add(JSONHelper.JSON_VINCULACIONES, FachadaPersistenciaEmpleado.obtenerVinculacionesEmpleado(conn, nifEmpleado));
+                res.add(JSONHelper.JSON_DISPONIBILIDADES, FachadaPersistenciaEmpleado.obtenerDisponibilidadesEmpleado(conn, nifEmpleado));
+            } else {
+                throw new MessageException("[!] No existe el empleado con NIF: " + nifEmpleado);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener el empleado con NIF: " + nifEmpleado);
+            }
+        }
+        
+        return res;
+    }
+    
+    public static JsonArray getOperacionesPedido(int numeroPedido, ConexionBD conn) throws MessageException {
+        JsonArray res = new JsonArray();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_ESTADOS_PEDIDO);
+            pst.setInt(1, numeroPedido);
+
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+                JsonObject operacion = new JsonObject();
+                operacion.addProperty(JSONHelper.JSON_MOMENTO, rs.getTimestamp("MOMENTO").toString());
+                operacion.add(JSONHelper.JSON_EMPLEADO, getEmpleado(rs.getString("EMPLEADO"), conn));
+                operacion.addProperty(JSONHelper.JSON_ESTADO, rs.getString("NOMBRETIPO"));
+                res.add(operacion);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener las operaciones del pedido con nº: " + numeroPedido);
+            }
+        }
+        
+        return res;
+    }
+    
+    
     
 }

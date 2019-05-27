@@ -222,7 +222,7 @@ create table CLIENTE
     Nombre VARCHAR(20) not null,
     Apellidos VARCHAR(30) not null,
     Telefono INTEGER,
-    EMail VARCHAR(50),
+    Email VARCHAR(50),
         PRIMARY KEY(Nif)
 );
 
@@ -297,7 +297,7 @@ create table OPERACIONSOBREPEDIDODEHORNO
 ---------------------------------------------------------------------------------------------
 -- DATOS
 INSERT INTO EMPLEADO 
-VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñe','2014-02-25'),
+VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
        ('12123434A', 'segura', 'Segura Patricio', 'Mian', '2018-12-10'),
        ('98765432E', 'root123', 'Julian Jose', 'Marcos', '2014-02-25');
 

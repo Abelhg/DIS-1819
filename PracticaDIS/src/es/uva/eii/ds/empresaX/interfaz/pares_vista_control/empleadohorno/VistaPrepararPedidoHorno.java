@@ -1,6 +1,7 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
-import static es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente.VistaRegistrarVentaDirecta.cifEmpleado;
+import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
+import java.util.ArrayList;
 
 
 /**
@@ -94,9 +95,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         controlador.procesaCierre();
     }//GEN-LAST:event_formWindowClosing
-    public void getPedidosPendientes(){
-        controlador.getListaPedidosPendientes();
-        
+    
+    public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
+        // TODO
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,20 +5,22 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public class EstadoPedido {
-
-    private TipoEstadoPedido tipo;
+public class OperacionPedido {
     
-    public EstadoPedido(TipoEstadoPedido tipo){
+    private final TipoEstadoPedido tipo;
+    private final Empleado empleado;
+    
+    public OperacionPedido(TipoEstadoPedido tipo, Empleado empleado){
         this.tipo = tipo;
+        this.empleado = empleado;
     }
 
     public TipoEstadoPedido getTipo() {
         return tipo;
     }
-
-    public void setTipo(TipoEstadoPedido tipo) {
-        this.tipo = tipo;
+    
+    public Empleado getEmpleado() {
+        return empleado;
     }
     
 }

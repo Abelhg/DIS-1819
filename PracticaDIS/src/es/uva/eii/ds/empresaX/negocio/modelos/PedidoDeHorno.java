@@ -21,7 +21,7 @@ public class PedidoDeHorno {
     private LocalDate fechaEnLaQueSeQuiere;
     private Cliente cliente;
     private Empleado dependiente;
-    private TreeMap<LocalDateTime, EstadoPedido> estadosPedido;
+    private TreeMap<LocalDateTime, OperacionPedido> operacionesPedido;
 
     /**
      * Construye e inicializa un Pedido de Horno desde una string JSON.
@@ -42,26 +42,31 @@ public class PedidoDeHorno {
             
             cliente = new Cliente(jo.get(JSONHelper.JSON_CLIENTE).toString());
             dependiente = new Empleado(jo.get(JSONHelper.JSON_DEPENDIENTE).toString());
-            configuraEstados(jo);
+            configuraOperacionesPedido(jo);
         } catch(JsonSyntaxException | NumberFormatException e) {
             // Especificar excepciones
             System.out.println("[!] Excepción al crear Empleado:");
             e.printStackTrace();
+            throw new IllegalArgumentException("[!] Excepción al crear Empleado: " + e.getMessage());
         }
     }
     
     /**
-     * Obtiene los roles y los añade a la lista.
+     * Obtiene las operaciones y las añade al árbol.
      * @param jo Objeto JSON
      */
-    private void configuraEstados(JsonObject jo) {
-        estadosPedido = new TreeMap<>();
-        JsonArray jRoles = jo.getAsJsonArray(JSONHelper.JSON_ROLES);
-        for(JsonElement jr : jRoles) {
-            JsonObject jEstado = new Gson().fromJson(jr.toString(), JsonObject.class);
-            LocalDateTime momento = Timestamp.valueOf(jEstado.get(JSONHelper.JSON_COMIENZO).getAsString()).toLocalDateTime();
-            EstadoPedido estado = new EstadoPedido(TipoEstadoPedido.valueOf(jEstado.get(JSONHelper.JSON_ESTADO).getAsString()));
-            estadosPedido.put(momento, estado);
+    private void configuraOperacionesPedido(JsonObject jo) {
+        operacionesPedido = new TreeMap<>();
+        JsonArray jOperaciones = jo.getAsJsonArray(JSONHelper.JSON_OPERACIONES);
+        for(JsonElement jop : jOperaciones) {
+            JsonObject jOperacion = new Gson().fromJson(jop.toString(), JsonObject.class);
+            // Momento de generación de la operación
+            LocalDateTime momento = Timestamp.valueOf(jOperacion.get(JSONHelper.JSON_MOMENTO).getAsString()).toLocalDateTime();
+            // Estado de la operación
+            String estado = jOperacion.get(JSONHelper.JSON_ESTADO).getAsString();
+            // Empleado que realizó la operación
+            Empleado empleado = new Empleado(jOperacion.get(JSONHelper.JSON_EMPLEADO).toString());
+            operacionesPedido.put(momento, new OperacionPedido(TipoEstadoPedido.valueOf(estado), empleado));
         }
     }
 
@@ -81,8 +86,8 @@ public class PedidoDeHorno {
         return dependiente;
     }
 
-    public EstadoPedido getUltimoEstado() {
-        return estadosPedido.lastEntry().getValue();
+    public OperacionPedido getUltimoEstado() {
+        return operacionesPedido.lastEntry().getValue();
     }
     
 }

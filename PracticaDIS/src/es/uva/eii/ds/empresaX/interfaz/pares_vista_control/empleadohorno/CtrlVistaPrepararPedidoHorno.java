@@ -2,8 +2,6 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPedido;
-import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
-import java.util.List;
 import javax.swing.JFrame;
 
 
@@ -15,8 +13,6 @@ import javax.swing.JFrame;
  * @author Roberto García Antoranz    (robegar)
  */
 public class CtrlVistaPrepararPedidoHorno {
-    
-    private static String cifEmpleado;
     
     private final VistaPrepararPedidoHorno vista;
     
@@ -30,6 +26,8 @@ public class CtrlVistaPrepararPedidoHorno {
         vista.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // Centra en la pantalla
         vista.setLocationRelativeTo(null);
+        // Carga los pedidos para hoy o mañana
+        vista.cargaListaPedidos(ControladorCUPedido.getListaPedidosRegistradosHorno());
     }
     
     /**
@@ -39,18 +37,6 @@ public class CtrlVistaPrepararPedidoHorno {
         GestorUI.getInstanciaSingleton().atras();
     }
     
-    public static void setCifEmpleado(String cif) {
-        cifEmpleado = cif;
-    }
     
-    public void getProximosPedidosHorno(){
-        
-    }
-
-    public List<PedidoDeHorno> getListaPedidosPendientes() {
-        List<PedidoDeHorno> pedidoHorno = ControladorCUPedido.getListaPedidosPendientes();
-        
-        return pedidoHorno;
-    }
     
 }

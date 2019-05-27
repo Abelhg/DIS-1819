@@ -41,8 +41,9 @@ public class JSONHelper {
     public static final String JSON_FECHA_DESEADA = "fechaDeseada";
     public static final String JSON_CLIENTE = "cliente";
     public static final String JSON_DEPENDIENTE = "dependiente";
+    public static final String JSON_EMPLEADO = "empleado";
     public static final String JSON_ESTADO = "estado";
-    public static final String JSON_ESTADOS = "estados";
+    public static final String JSON_OPERACIONES = "operaciones";
     public static final String JSON_MOMENTO = "momento";
 
     
