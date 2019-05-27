@@ -1,6 +1,8 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
+import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPedido;
+import java.util.List;
 import javax.swing.JFrame;
 
 
@@ -42,6 +44,12 @@ public class CtrlVistaPrepararPedidoHorno {
     
     public void getProximosPedidosHorno(){
         
+    }
+
+    public List<PedidoDeHorno> getListaPedidosPendientes() {
+        List<PedidoDeHorno> pedidoHorno = ControladorCUPedido.getListaPedidosPendientes();
+        
+        return pedidoHorno;
     }
     
 }

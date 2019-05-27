@@ -176,7 +176,7 @@ public class GestorUI {
         guardaActual();
         CtrlVistaPrepararPedidoHorno.setCifEmpleado(cifEmpleado);
         java.awt.EventQueue.invokeLater(() -> {
-            actual = new VistaNoImplementada();
+            actual = new VistaPrepararPedidoHorno();
             actual.setVisible(true);
         });
     }

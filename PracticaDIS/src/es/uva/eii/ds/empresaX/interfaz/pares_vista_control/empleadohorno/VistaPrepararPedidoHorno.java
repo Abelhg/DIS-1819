@@ -94,7 +94,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         controlador.procesaCierre();
     }//GEN-LAST:event_formWindowClosing
- 
+    public void getPedidosPendientes(){
+        controlador.getListaPedidosPendientes();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
