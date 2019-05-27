@@ -89,7 +89,7 @@ public class Empleado {
                 Integer.valueOf(fechaComienzo[1]), // MM
                 Integer.valueOf(fechaComienzo[2])  // DD
             );
-            Rol rol = new Rol(TipoRol.valueOf(jRol.get(JSONHelper.JSON_ROL).getAsString()));
+            Rol rol = new Rol(TipoEstadoPeido.valueOf(jRol.get(JSONHelper.JSON_ROL).getAsString()));
             rolesEnLaEmpresa.put(comienzo, rol);
         }
     }

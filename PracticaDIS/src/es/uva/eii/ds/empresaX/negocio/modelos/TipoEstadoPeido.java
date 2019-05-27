@@ -5,6 +5,6 @@ package es.uva.eii.ds.empresaX.negocio.modelos;
  * @author Daniel De Vicente Garrote  (dandevi)
  * @author Roberto García Antoranz    (robegar)
  */
-public enum TipoRol {
+public enum TipoEstadoPeido {
     Supervisor,Encargado,EmpleadoDeHorno,Dependiente;
 }

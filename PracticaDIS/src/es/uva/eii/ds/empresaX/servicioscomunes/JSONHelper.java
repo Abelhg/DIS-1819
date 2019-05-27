@@ -36,4 +36,8 @@ public class JSONHelper {
     public static final String JSON_DISPONIBILIDAD = "disponibilidad";
     public static final String JSON_ERROR = "error";
     
+    //JSON PEDIDO
+    public static final String JSON_FECHA_DESEADA = "fecha";
+
+    
 }

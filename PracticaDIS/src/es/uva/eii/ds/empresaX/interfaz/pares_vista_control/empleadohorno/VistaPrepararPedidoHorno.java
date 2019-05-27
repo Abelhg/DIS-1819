@@ -96,6 +96,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
     public void getPedidosPendientes(){
         controlador.getListaPedidosPendientes();
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,7 +1,7 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
-import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
+import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPeido;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
 
@@ -15,7 +15,7 @@ public class VistaListaOpciones extends javax.swing.JFrame {
     private final CtrlVistaListaOpciones controlador;
     private GestorUI.CasosDeUso opcionSeleccionada = null;
     
-    public VistaListaOpciones(TipoRol rol) {
+    public VistaListaOpciones(TipoEstadoPeido rol) {
         initComponents();
         controlador = new CtrlVistaListaOpciones(this, rol);
     }

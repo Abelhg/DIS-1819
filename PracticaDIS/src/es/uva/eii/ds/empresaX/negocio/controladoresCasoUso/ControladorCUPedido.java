@@ -5,10 +5,24 @@
  */
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
+import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
+import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleadoHorno;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
- * @author daniel
+ * @author Abel Herrero Gómez         (abeherr)
+ * @author Daniel De Vicente Garrote  (dandevi)
+ * @author Roberto García Antoranz    (robegar)
  */
 public class ControladorCUPedido {
+
+    public static List<PedidoDeHorno> getListaPedidosPendientes() {
+        List<PedidoDeHorno> listaPedidos = new ArrayList<PedidoDeHorno>();
+        JsonObject listaPedidosJson = FachadaPersistenciaEmpleadoHorno.getListaPedidosPendientes();
+      
+        
+    }
     
 }

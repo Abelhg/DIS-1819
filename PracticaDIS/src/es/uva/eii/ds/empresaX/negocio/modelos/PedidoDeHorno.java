@@ -5,7 +5,9 @@
  */
 package es.uva.eii.ds.empresaX.negocio.modelos;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.TreeMap;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -17,6 +19,7 @@ public class PedidoDeHorno {
     private Date fechaEnLaQueSeQuiere;
     private Cliente cliente;
     private Empleado dependiente;
+    private TreeMap<LocalDate, EstadoPedido> estadoPedido;
 
     public PedidoDeHorno(int numeroDePedido, Date fechaEnLaQueSeQuiere, Cliente cliente, Empleado dependiente) {
         this.numeroDePedido = numeroDePedido;
@@ -55,6 +58,14 @@ public class PedidoDeHorno {
 
     public void setDependiente(Empleado dependiente) {
         this.dependiente = dependiente;
+    }
+
+    public EstadoPedido getUltimoEstado() {
+        return estadoPedido.lastEntry().getValue();
+    }
+
+    public void setEstadoPedido(TreeMap<LocalDate, EstadoPedido> estadoPedido) {
+        this.estadoPedido = estadoPedido;
     }
     
 }

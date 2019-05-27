@@ -2,6 +2,7 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPedido;
+import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.List;
 import javax.swing.JFrame;
 
