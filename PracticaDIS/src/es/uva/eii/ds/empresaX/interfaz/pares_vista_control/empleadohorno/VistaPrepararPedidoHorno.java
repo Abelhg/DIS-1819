@@ -2,6 +2,9 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -131,10 +134,25 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             modeloTabla.addRow(data);
             modeloTabla.addRow(data);
             modeloTabla.addRow(data);
-
         }
+        
+        jTable1.setRowSelectionAllowed(true);
+        ListSelectionModel filaSeleccionada = jTable1.getSelectionModel();
+        filaSeleccionada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    /*    filaSeleccionada.addListSelectionListener(new ListSelectionListener()){
+              public void cambioFila(ListSelectionEvent e) {
+                    System.out.println("Cambio");
+              }
+        };*/
+        filaSeleccionada.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                System.out.println("Cambio");
+            }
+        });
     }
- 
+   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
