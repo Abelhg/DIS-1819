@@ -2,6 +2,8 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
 /**
@@ -94,12 +96,24 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         controlador.procesaCierre();
+        
     }//GEN-LAST:event_formWindowClosing
     
+    /**
+     * La vista mostrara la lista de pedidos registrados al usuario.
+     * @param pedidos ArrayList de tipo Pedido Horno.
+     */
     public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
         // TODO
         //System.out.println(pedidos.size());
-     
+        DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
+        
+        for(int i = 0; i < pedidos.size(); i++){
+            int pedido = pedidos.get(i).getNumeroDePedido();
+            String fecha = pedidos.get(i).getFechaEnLaQueSeQuiere().toString();
+            Object[] data = {pedido, fecha};
+            modeloTabla.addRow(data);
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
