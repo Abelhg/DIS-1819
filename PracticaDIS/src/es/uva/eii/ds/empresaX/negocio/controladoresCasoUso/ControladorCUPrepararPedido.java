@@ -52,15 +52,15 @@ public class ControladorCUPrepararPedido {
         return listaPedidos;
     }
     
-    public static void cambiaPedidoAPreparando(int numeroPedido, Empleado empleado) {
-        if(FachadaPersistenciaEmpleadoHorno.cambiarEstadoPedidoAPreparando(
-                        LocalDateTime.now(), empleado.getDni(), numeroPedido)) {
-            // Lo ha actualizado con éxito, muestra mensaje
-            // TODO
-        } else {
-            // Ha ocurrido algún error, muestra mensaje
-            // TODO
-        }
+    /**
+     * Marca el pedido especificado como preparando.
+     * @param pedido Pedido a preparar
+     * @param empleado Empleado que realiza la preparación
+     * @return true si se ha realizado con éxito, false si no
+     */
+    public static boolean prepararPedido(PedidoDeHorno pedido, Empleado empleado) {
+        return FachadaPersistenciaEmpleadoHorno.cambiarEstadoPedidoAPreparando(
+                        LocalDateTime.now(), empleado.getDni(), pedido.getNumeroDePedido());
     }
     
     /**
@@ -71,7 +71,7 @@ public class ControladorCUPrepararPedido {
     public static ArrayList<LineaDePedidoDeHorno> getMateriasQueFaltan(PedidoDeHorno pedido) {
         ArrayList<LineaDePedidoDeHorno> faltantes = new ArrayList<>();
         
-        
+        // TODO
         
         
         return faltantes;
