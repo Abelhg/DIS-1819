@@ -36,6 +36,10 @@ public class CtrlVistaPrepararPedidoHorno {
     public void procesaCierre() {
         GestorUI.getInstanciaSingleton().atras();
     }
+
+    public void seleccionValor() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     

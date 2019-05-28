@@ -147,7 +147,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         filaSeleccionada.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                System.out.println("Cambio");
+                controlador.seleccionValor();
             }
         });
     }
