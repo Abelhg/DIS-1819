@@ -2,7 +2,9 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 
@@ -64,7 +66,8 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setRowHeight(25);
+        jTable1.setRowHeight(30);
+        jTable1.setRowMargin(2);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
@@ -107,8 +110,15 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
         // TODO
         //System.out.println(pedidos.size());
-        DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
         
+        /*Renderizamos el modelo de nuestro JTable y centramos los resultados*/
+        DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
+        DefaultTableCellRenderer rendar = new DefaultTableCellRenderer();
+        rendar.setHorizontalAlignment(lTitulo.CENTER);
+        jTable1.setDefaultRenderer(String.class, rendar);
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(rendar); 
+     
+        /*Recorremos el ArrayList de Pedidos de Horno*/
         for(int i = 0; i < pedidos.size(); i++){
             int pedido = pedidos.get(i).getNumeroDePedido();
             String fecha = pedidos.get(i).getFechaEnLaQueSeQuiere().toString();
@@ -124,10 +134,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
         }
     }
-    
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lTitulo;
     // End of variables declaration//GEN-END:variables
