@@ -336,21 +336,32 @@ VALUES ('2014-02-25',
 
 INSERT INTO PROVEEDOR
 VALUES  ('15264859N', 'Panusa', '942335708', 'comercial@panusa.es'),
-        ('35246857R', 'Ogiberri', '943721983', 'comercial@ogiberri.es');
+        ('35246857R', 'Ogiberri', '943721983', 'comercial@ogiberri.es'),
+        ('56468656T', 'ReposteriaPrueba', '946888666', 'comercial@reposteriaprueba.es');
+
 
 INSERT INTO PEDIDOAPROVEEDOR
 VALUES  (1, '2015-05-13', 'N', '15264859N'),
         (2, '2017-12-22', 'N', '15264859N'),
         (3, '2019-04-14', 'N', '15264859N'),
-        (4, '2018-12-20', 'N', '15264859N');
+        (4, '2018-12-20', 'N', '56468656T'),
+        (5, '2019-01-20', 'N', '56468656T'),
+        (6, '2019-04-22', 'N', '35246857R'),
+        (7, '2019-05-28', 'N', '35246857R');
 
-INSERT INTO TRANSFERENCIA VALUES(1, 50.01,'2018-12-20','1','12123434A');
+INSERT INTO TRANSFERENCIA VALUES(1, 50.01,'2018-12-20','1','12123434A'),
+                                (2, 122.21,'2018-01-23','1','12123434A'),
+                                (3, 70.12,'2018-04-23','1','12123434A'),
+                                (4, 88.12,'2019-05-28','0','12123434A');
 
 INSERT INTO FACTURA
 VALUES  (1, '2015-05-14', 123.45, 'ES-...', 1, NULL),
         (2, '2017-12-25', 666.66, 'ES-...', 2, NULL),
         (3, '2019-04-14', 96.69, 'ES-...', 3, NULL),
-        (4, '2018-05-20', 50.01, 'ES-...', 4, 1);
+        (4, '2018-12-20', 50.01, 'ES-...', 4, 1),
+        (5, '2019-01-22', 122.01, 'ES-...', 5, 1),
+        (6, '2019-04-22', 70.12, 'ES-...', 6, 1),
+        (7, '2019-05-28', 88.12, 'ES-...', 7, 1);
 
 INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',19.50,5,null),
                            ('32005867','p2','descripcion',2,1,'ProductoDeHorno',12.50,5,null),
@@ -370,7 +381,7 @@ INSERT INTO LINEADEPEDIDODEHORNO VALUES(2,1,'85584985'),
                                        (4,3,'98718416');
 
 
-INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ('2019-05-27 14:55:38', 1, '12345678Z', 1)
+INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ('2019-05-27 14:55:38', 1, '12345678Z', 1),
                                        ('2019-05-27 14:55:40', 2, '12345678Z', 1),
                                        ('2019-05-27 14:55:42', 1, '12345678Z', 2),
                                        ('2019-05-27 14:55:44', 1, '98765432E', 3);
