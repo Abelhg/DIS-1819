@@ -23,9 +23,9 @@ public class FachadaPersistenciaEncargado {
     // Devuelve el ID del proveedor especificado
     private static final String QUERY_ID_PROVEEDOR = "SELECT cif FROM Proveedor WHERE UPPER(nombre) = (?)";
     // Devuelve el año de la primera fecha de emisión
-    private static final String QUERY_MIN_ANIO_FAC = "SELECT YEAR(fechaDeEmision) FROM Factura WHERE ... = (?)";
+    private static final String QUERY_MIN_ANIO_FAC = "SELECT YEAR(MIN(FECHADEEMISION)) AS MINANIO FROM FACTURA";
     // Devuelve el año de la última fecha de emisión
-    private static final String QUERY_MAX_ANIO_FAC = "SELECT YEAR(fechaDeEmision) FROM Factura WHERE ... = (?)";
+    private static final String QUERY_MAX_ANIO_FAC = "SELECT YEAR(MAX(FECHADEEMISION)) AS MAXANIO FROM FACTURA";
     // Devuelve las facturas pendientes, en el rango de fechas especificado, para el proveedor especificado
     private static final String QUERY_FACTURAS_PEND = 
             "SELECT * FROM "
@@ -42,6 +42,7 @@ public class FachadaPersistenciaEncargado {
      * Devuelve el año de la primera factura.
      *
      * @return Año de la primera factura
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
     public static int getMinAnioFacturas() throws MessageException {
         int minAnio = 1970;
@@ -64,16 +65,17 @@ public class FachadaPersistenciaEncargado {
      * Devuelve el año de la última factura.
      *
      * @return Año de la última factura
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
-    public static int getMaxAnioFacturas() {
+    public static int getMaxAnioFacturas() throws MessageException {
         int maxAnio = LocalDate.now().getYear();
 
         try {
             ConexionBD conn = conectarse();
-            PreparedStatement pst = conn.prepareStatement(QUERY_MIN_ANIO_FAC);
+            PreparedStatement pst = conn.prepareStatement(QUERY_MAX_ANIO_FAC);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                maxAnio = rs.getInt("MINANIO");
+                maxAnio = rs.getInt("MAXANIO");
             }
         } catch (ClassNotFoundException | SQLException ex) {
             throw new MessageException("[!] Error al consultar el año de la primera factura.");
