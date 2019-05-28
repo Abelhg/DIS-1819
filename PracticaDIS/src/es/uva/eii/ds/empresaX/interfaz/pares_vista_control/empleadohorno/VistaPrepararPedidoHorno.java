@@ -98,6 +98,8 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     
     public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
         // TODO
+        //System.out.println(pedidos.size());
+     
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
