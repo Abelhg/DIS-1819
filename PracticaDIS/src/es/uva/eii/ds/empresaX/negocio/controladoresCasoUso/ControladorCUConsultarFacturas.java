@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -39,12 +40,13 @@ public class ControladorCUConsultarFacturas {
     }
     
     /**
-     * Devuelve el CIF para el nombre de un proveedor dado.
+     * Comprueba si existe un proveedor a partir de su nombre.
      * @param proveedor Nombre del proveedor
-     * @return CIF del proveedor
+     * @return true si existe, false si no
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
-    public static String getCIFProveedor(String proveedor) {
-        return FachadaPersistenciaEncargado.getCIFProveedor(proveedor);
+    public static boolean existeProveedor(String proveedor) throws MessageException {
+        return FachadaPersistenciaEncargado.existeProveedor(proveedor);
     }
     
     /**

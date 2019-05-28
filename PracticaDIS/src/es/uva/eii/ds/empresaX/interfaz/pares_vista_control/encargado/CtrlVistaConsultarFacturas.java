@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.encargado;
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUConsultarFacturas;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -166,9 +167,13 @@ public class CtrlVistaConsultarFacturas {
             }
             
             // Comprueba que existe el proveedor
-            String cifProveedor = ControladorCUConsultarFacturas.getCIFProveedor(proveedor);
-            if(cifProveedor == null) {
-                vista.muestraErrorProveedor("Proveedor no existente");
+            try {
+                if(!ControladorCUConsultarFacturas.existeProveedor(proveedor)) {
+                    vista.muestraErrorProveedor("Proveedor no existente");
+                    return;
+                }
+            } catch (MessageException e) {
+                vista.muestraErrorProveedor("Error inesperado");
                 return;
             }
         }
@@ -177,8 +182,8 @@ public class CtrlVistaConsultarFacturas {
         ArrayList<Factura> facturasPendientes = 
                 ControladorCUConsultarFacturas.getInstanciaSingleton().
                         obtenerFacturasPendientes(fechaI, fechaF, proveedor);
+        
         // Le manda a la vista mostrar las facturas
-        // ############### ¿Cambiar a método de añadir filas en la vista? ###############3
         vista.muestraFacturasPendientes(facturasPendientes);
     }
     

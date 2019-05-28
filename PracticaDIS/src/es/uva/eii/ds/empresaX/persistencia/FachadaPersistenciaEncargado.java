@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.persistencia;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class FachadaPersistenciaEncargado {
             + "Factura INNER JOIN PedidoAProveedor ON Factura.pedido = PedidoAProveedor.numeroDePedido "
             + "INNER JOIN proveedor ON PedidoAProveedor.proveedor = Proveedor.cif "
             + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND enTransferencia IS NULL";
-    private static final String QUERY_PLUS_PROVEEDOR = " AND proveedor = (?)";
+    private static final String QUERY_PLUS_PROVEEDOR = " AND UPPER(Proveedor.nombre) = ?";
 
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
@@ -42,9 +43,21 @@ public class FachadaPersistenciaEncargado {
      *
      * @return Año de la primera factura
      */
-    public static int getMinAnioFacturas() {
-        // TODO
-        return 2014;
+    public static int getMinAnioFacturas() throws MessageException {
+        int minAnio = 1970;
+
+        try {
+            ConexionBD conn = conectarse();
+            PreparedStatement pst = conn.prepareStatement(QUERY_MIN_ANIO_FAC);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                minAnio = rs.getInt("MINANIO");
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new MessageException("[!] Error al consultar el año de la primera factura.");
+        }
+
+        return minAnio;
     }
 
     /**
@@ -53,18 +66,31 @@ public class FachadaPersistenciaEncargado {
      * @return Año de la última factura
      */
     public static int getMaxAnioFacturas() {
-        // TODO
-        return 2019;
+        int maxAnio = LocalDate.now().getYear();
+
+        try {
+            ConexionBD conn = conectarse();
+            PreparedStatement pst = conn.prepareStatement(QUERY_MIN_ANIO_FAC);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                maxAnio = rs.getInt("MINANIO");
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new MessageException("[!] Error al consultar el año de la primera factura.");
+        }
+
+        return maxAnio;
     }
 
     /**
-     * Devuelve el id de un proveedor en la BD con el nombre especificado.
+     * Comprueba si existe un proveedor a partir de su nombre
      *
      * @param proveedor Nombre de proveedor
-     * @return ID del proveedor (null si no existe)
+     * @return true si existe, false si no
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
-    public static String getCIFProveedor(String proveedor) {
-        String cif = null;
+    public static boolean existeProveedor(String proveedor) throws MessageException {
+        boolean existe = false;
 
         try {
             ConexionBD conn = conectarse();
@@ -72,13 +98,13 @@ public class FachadaPersistenciaEncargado {
             pst.setString(1, proveedor.toUpperCase());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                cif = rs.getString("cif");
+                existe = true;
             }
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(FachadaPersistenciaEncargado.class.getName()).log(Level.SEVERE, null, ex);
+            throw new MessageException("[!] Error al consultar si existe el proveedor \"" + proveedor + "\".");
         }
 
-        return cif;
+        return existe;
     }
 
     /**
@@ -105,7 +131,7 @@ public class FachadaPersistenciaEncargado {
             pst.setDate(1, Date.valueOf(fechaI));
             pst.setDate(2, Date.valueOf(fechaF));
             if(proveedor != null) { 
-                pst.setString(3, proveedor);
+                pst.setString(3, proveedor.toUpperCase());
             }
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
