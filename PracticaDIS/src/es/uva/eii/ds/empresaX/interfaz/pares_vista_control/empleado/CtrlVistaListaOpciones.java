@@ -2,7 +2,6 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleado;
 
 import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoRol;
-import javax.swing.JFrame;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -17,8 +16,6 @@ public class CtrlVistaListaOpciones {
         vista = v;
         // Asigna el titulo de la ventana
         vista.setTitulo(rol.toString());
-        // Evita que termine el programa al cerrar la ventana
-        vista.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // Centra en la pantalla
         vista.setLocationRelativeTo(null);
         
@@ -58,9 +55,9 @@ public class CtrlVistaListaOpciones {
     
     
     /**
-     * Cuando se cierra la ventana, se vuelve a la anterior.
+     * Vuelve a la vista anterior.
      */
-    public void procesaCierre() {
+    public void procesaClickAtras() {
         GestorUI.getInstanciaSingleton().atras();
     }
     

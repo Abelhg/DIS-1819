@@ -43,8 +43,20 @@ public class JSONHelper {
     public static final String JSON_DEPENDIENTE = "dependiente";
     public static final String JSON_EMPLEADO = "empleado";
     public static final String JSON_ESTADO = "estado";
+    public static final String JSON_LINEAS = "lineas";
     public static final String JSON_OPERACIONES = "operaciones";
     public static final String JSON_MOMENTO = "momento";
-
+    public static final String JSON_CANTIDAD = "cantidad";
+    
+    // JSON PRODUCTO
+    public static final String JSON_PRODUCTO = "producto";
+    public static final String JSON_CODIGO = "codigo";
+    public static final String JSON_DESCRIPCION = "descripcion";
+    public static final String JSON_EXISTENCIAS = "existencias";
+    public static final String JSON_CANTIDAD_MIN_STOCK = "cantidadMinimaStock";
+    // Vendible
+    public static final String JSON_PRECIO_VENTA = "precioVenta";
+    
+    
     
 }

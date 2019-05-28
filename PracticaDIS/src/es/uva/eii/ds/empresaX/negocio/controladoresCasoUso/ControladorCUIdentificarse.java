@@ -26,7 +26,7 @@ public class ControladorCUIdentificarse {
             res = json.get("error").getAsString();
         } else {
             // Crea el Empleado y lo asigna a la sesión
-            Sesion.getInstanciaSingleton().setEmpleado(new Empleado(resultado));
+            Sesion.getInstancia().setEmpleado(new Empleado(resultado));
         }
         
         return res;

@@ -21,7 +21,7 @@ public class FachadaPersistenciaEncargado {
 
     // FACTURAS PENDIENTES DE PAGO
     // Devuelve el ID del proveedor especificado
-    private static final String QUERY_ID_PROVEEDOR = "SELECT cif FROM Proveedor WHERE UPPER(nombre) = (?)";
+    private static final String QUERY_EXISTE_PROVEEDOR = "SELECT cif FROM Proveedor WHERE UPPER(nombre) = (?)";
     // Devuelve el año de la primera fecha de emisión
     private static final String QUERY_MIN_ANIO_FAC = "SELECT YEAR(MIN(FECHADEEMISION)) AS MINANIO FROM FACTURA";
     // Devuelve el año de la última fecha de emisión
@@ -96,7 +96,7 @@ public class FachadaPersistenciaEncargado {
 
         try {
             ConexionBD conn = conectarse();
-            PreparedStatement pst = conn.prepareStatement(QUERY_ID_PROVEEDOR);
+            PreparedStatement pst = conn.prepareStatement(QUERY_EXISTE_PROVEEDOR);
             pst.setString(1, proveedor.toUpperCase());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {

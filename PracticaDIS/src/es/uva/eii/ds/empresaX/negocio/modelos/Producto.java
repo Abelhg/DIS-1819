@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uva.eii.ds.empresaX.negocio.modelos;
 
-/**
- *
- * @author daniel
- */
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
+
 public abstract class Producto {
 
     private String codigo;
@@ -16,11 +12,6 @@ public abstract class Producto {
     private String descripcion;
     private int existencias;
     private int cantidadMinimaEnStock;
-
-    
-    public Producto(String jsonString) {
-        // TODO
-    }
     
     public Producto(String codigo, String nombre, String descripcion, int existencias, int cantidadMinimaEnStock) {
         this.codigo = codigo;

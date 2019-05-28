@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
+import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleadoHorno;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
@@ -21,20 +22,22 @@ import java.util.ArrayList;
  */
 public class ControladorCUPrepararPedido {
 
+    private static ArrayList<PedidoDeHorno> listaPedidos; 
+    
     /**
      * Devuelve una lista de pedidos en estado 'Registrado' con fechas de
      * entrega deseada del día actual y el siguiente.
      * @return Lista o null si ha ocurrido algún error
      */
     public static ArrayList<PedidoDeHorno> getListaPedidosRegistradosHorno() {
-        ArrayList<PedidoDeHorno> listaPedidos = new ArrayList<>();
+        listaPedidos = new ArrayList<>();
         
         // Lista de pedidos de hoy y mañana
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
         
         // Consulta la BD
-        String resultadoListaPedidos = "";
+        String resultadoListaPedidos;
         try {
             resultadoListaPedidos = FachadaPersistenciaEmpleadoHorno.getListaPedidosPendientes(today, tomorrow);
         } catch(MessageException e) {
@@ -52,13 +55,35 @@ public class ControladorCUPrepararPedido {
         return listaPedidos;
     }
     
+    
+    /**
+     * Devuelve el pedido con el número de pedido especificado.
+     * @param numeroPedido Número del pedido
+     * @return Pedido (null si no existe)
+     */
+    public static PedidoDeHorno getPedido(int numeroPedido) {
+        PedidoDeHorno res = null;
+        
+        // Busca el pedido y se lo devuelve
+        for(int i = 0; res == null && i < listaPedidos.size(); i++) {
+            if(listaPedidos.get(i).getNumeroDePedido() == numeroPedido) {
+                res = listaPedidos.get(i);
+            }
+        }
+        
+        return res;
+    }
+    
+    
     /**
      * Marca el pedido especificado como preparando.
      * @param pedido Pedido a preparar
-     * @param empleado Empleado que realiza la preparación
      * @return true si se ha realizado con éxito, false si no
      */
-    public static boolean prepararPedido(PedidoDeHorno pedido, Empleado empleado) {
+    public static boolean prepararPedido(PedidoDeHorno pedido) {
+        Empleado empleado = Sesion.getInstancia().getEmpleado();
+        // new Operacion
+        // get JSON
         return FachadaPersistenciaEmpleadoHorno.cambiarEstadoPedidoAPreparando(
                         LocalDateTime.now(), empleado.getDni(), pedido.getNumeroDePedido());
     }
@@ -71,7 +96,7 @@ public class ControladorCUPrepararPedido {
     public static ArrayList<LineaDePedidoDeHorno> getMateriasQueFaltan(PedidoDeHorno pedido) {
         ArrayList<LineaDePedidoDeHorno> faltantes = new ArrayList<>();
         
-        // TODO
+        
         
         
         return faltantes;

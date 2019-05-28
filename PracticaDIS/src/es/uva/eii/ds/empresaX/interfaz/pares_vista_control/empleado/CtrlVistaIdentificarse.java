@@ -63,7 +63,7 @@ public class CtrlVistaIdentificarse {
                     identificarEmpleado(dni, pass);
             // Empleado conectado con éxito, le muestra ventana con las opciones
             GestorUI.getInstanciaSingleton().
-                    empleadoIdentificado(Sesion.getInstanciaSingleton().
+                    empleadoIdentificado(Sesion.getInstancia().
                             getEmpleado().obtenerRolActual().getTipo(),dni);
         } catch (MessageException ex) {
             // Ha ocurrido un error

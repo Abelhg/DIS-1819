@@ -25,6 +25,7 @@ public class VistaListaOpciones extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        btnAtras = new javax.swing.JButton();
         lOpciones = new javax.swing.JLabel();
         scOpciones = new javax.swing.JScrollPane();
         listaOpciones = new javax.swing.JPanel();
@@ -35,20 +36,27 @@ public class VistaListaOpciones extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(500, 400));
         setResizable(false);
         setSize(new java.awt.Dimension(500, 400));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        btnAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/uva/eii/ds/empresaX/interfaz/arrow-left.png"))); // NOI18N
+        btnAtras.setBorderPainted(false);
+        btnAtras.setContentAreaFilled(false);
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
             }
         });
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(btnAtras, gridBagConstraints);
 
         lOpciones.setFont(new java.awt.Font("Ebrima", 1, 36)); // NOI18N
         lOpciones.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lOpciones.setText("{{funcion}}");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipady = 40;
         gridBagConstraints.weightx = 1.0;
@@ -60,8 +68,9 @@ public class VistaListaOpciones extends javax.swing.JFrame {
         scOpciones.setViewportView(listaOpciones);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -70,9 +79,9 @@ public class VistaListaOpciones extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        controlador.procesaCierre();
-    }//GEN-LAST:event_formWindowClosing
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        controlador.procesaClickAtras();
+    }//GEN-LAST:event_btnAtrasActionPerformed
     
     /**
      * Añade una opcion a la lista con el texto especificado.
@@ -115,6 +124,7 @@ public class VistaListaOpciones extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtras;
     private javax.swing.JLabel lOpciones;
     private javax.swing.JPanel listaOpciones;
     private javax.swing.JScrollPane scOpciones;

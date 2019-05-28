@@ -9,6 +9,7 @@ import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
@@ -21,7 +22,8 @@ public class PedidoDeHorno {
     private LocalDate fechaEnLaQueSeQuiere;
     private Cliente cliente;
     private Empleado dependiente;
-    private TreeMap<LocalDateTime, OperacionPedido> operacionesPedido;
+    private ArrayList<LineaDePedidoDeHorno> lineas;
+    private TreeMap<LocalDateTime, OperacionPedido> operaciones;
 
     /**
      * Construye e inicializa un Pedido de Horno desde una string JSON.
@@ -42,12 +44,26 @@ public class PedidoDeHorno {
             
             cliente = new Cliente(jo.get(JSONHelper.JSON_CLIENTE).toString());
             dependiente = new Empleado(jo.get(JSONHelper.JSON_DEPENDIENTE).toString());
+            configuraLineasPedido(jo);
             configuraOperacionesPedido(jo);
         } catch(JsonSyntaxException | NumberFormatException e) {
             // Especificar excepciones
-            System.out.println("[!] Excepción al crear Empleado:");
-            e.printStackTrace();
             throw new IllegalArgumentException("[!] Excepción al crear Empleado: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Obtiene las líneas del pedido y las añade a la lista.
+     * @param jo Objeto JSON
+     */
+    private void configuraLineasPedido(JsonObject jo) {
+        lineas = new ArrayList<>();
+        JsonArray jLineas = jo.getAsJsonArray(JSONHelper.JSON_LINEAS);
+        for(JsonElement jlin : jLineas) {
+            JsonObject jLinea = new Gson().fromJson(jlin.toString(), JsonObject.class);
+            
+            // TODO
+            //lineas.add(new LineaDePedidoDeHorno(cantidad, productoPedido));
         }
     }
     
@@ -56,7 +72,7 @@ public class PedidoDeHorno {
      * @param jo Objeto JSON
      */
     private void configuraOperacionesPedido(JsonObject jo) {
-        operacionesPedido = new TreeMap<>();
+        operaciones = new TreeMap<>();
         JsonArray jOperaciones = jo.getAsJsonArray(JSONHelper.JSON_OPERACIONES);
         for(JsonElement jop : jOperaciones) {
             JsonObject jOperacion = new Gson().fromJson(jop.toString(), JsonObject.class);
@@ -66,7 +82,7 @@ public class PedidoDeHorno {
             String estado = jOperacion.get(JSONHelper.JSON_ESTADO).getAsString();
             // Empleado que realizó la operación
             Empleado empleado = new Empleado(jOperacion.get(JSONHelper.JSON_EMPLEADO).toString());
-            operacionesPedido.put(momento, new OperacionPedido(TipoEstadoPedido.valueOf(estado), empleado));
+            operaciones.put(momento, new OperacionPedido(TipoEstadoPedido.valueOf(estado), empleado));
         }
     }
 
@@ -87,7 +103,11 @@ public class PedidoDeHorno {
     }
 
     public OperacionPedido getUltimoEstado() {
-        return operacionesPedido.lastEntry().getValue();
+        return operaciones.lastEntry().getValue();
+    }
+    
+    public ArrayList<LineaDePedidoDeHorno> getLineas() {
+        return lineas;
     }
     
 }

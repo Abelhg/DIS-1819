@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -23,7 +24,12 @@ public class ConexionBD {
         password = "temp";
         
         Class.forName("org.apache.derby.jdbc.ClientDriver");
-        openConnection();
+        try {
+            openConnection();
+        } catch (SQLNonTransientConnectionException ex) {
+            System.err.println("[!] Base de datos no conectada");
+            System.exit(1);
+        }
     }
     
     

@@ -47,7 +47,7 @@ public class Sesion {
      * @return Instancia única
      */
     private static Sesion instancia;
-    public static Sesion getInstanciaSingleton() {
+    public static Sesion getInstancia() {
         if(instancia == null){
             instancia = new Sesion();
         }
