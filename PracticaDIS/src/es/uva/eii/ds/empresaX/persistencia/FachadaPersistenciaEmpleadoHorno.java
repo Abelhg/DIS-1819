@@ -122,6 +122,7 @@ public class FachadaPersistenciaEmpleadoHorno {
     }
     
     
+    
     public static JsonObject getCliente(String dniCliente, ConexionBD conn) throws MessageException {
         JsonObject res = new JsonObject();
         

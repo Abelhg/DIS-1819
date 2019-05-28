@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
+import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleadoHorno;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -60,6 +61,20 @@ public class ControladorCUPrepararPedido {
             // Ha ocurrido algún error, muestra mensaje
             // TODO
         }
+    }
+    
+    /**
+     * Devuelve las materias que faltan para poder generar un pedido con sus cantidades.
+     * @param pedido Pedido
+     * @return Lista de materias que faltan (vacía si se puede generar)
+     */
+    public static ArrayList<LineaDePedidoDeHorno> getMateriasQueFaltan(PedidoDeHorno pedido) {
+        ArrayList<LineaDePedidoDeHorno> faltantes = new ArrayList<>();
+        
+        
+        
+        
+        return faltantes;
     }
     
 }

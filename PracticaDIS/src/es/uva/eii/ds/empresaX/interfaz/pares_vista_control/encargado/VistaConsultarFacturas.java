@@ -771,8 +771,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
      * @param pendientes Facturas a mostrar
      */
     public void muestraFacturasPendientes(ArrayList<Factura> pendientes) {
-        // Borra cualquier elemento anterior
-        listaResultados.removeAll();
+        limpiaLista();
         
         if(pendientes.size() > 0) {
             GridBagConstraints gbc;
@@ -842,6 +841,14 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         casilla.setMinimumSize(new java.awt.Dimension(180, 25));
         casilla.setPreferredSize(new java.awt.Dimension(180, 25));
     }
+    
+    /**
+     * Borra todos los elementos de la lista.
+     */
+    public void limpiaLista() {
+        listaResultados.removeAll();
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;

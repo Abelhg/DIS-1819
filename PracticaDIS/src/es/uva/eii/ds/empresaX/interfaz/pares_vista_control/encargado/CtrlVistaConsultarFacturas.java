@@ -110,6 +110,7 @@ public class CtrlVistaConsultarFacturas {
     public void procesaClickConsultar() {
         vista.ocultaErrorFechas();
         vista.ocultaErrorProveedor();
+        vista.limpiaLista();
         
         boolean anioActual = vista.estaMarcadaAnioActual();
         boolean todas = vista.estaMarcadaTodas();
@@ -182,6 +183,7 @@ public class CtrlVistaConsultarFacturas {
         ArrayList<Factura> facturasPendientes = 
                 ControladorCUConsultarFacturas.getInstanciaSingleton().
                         obtenerFacturasPendientes(fechaI, fechaF, proveedor);
+        
         
         // Le manda a la vista mostrar las facturas
         vista.muestraFacturasPendientes(facturasPendientes);

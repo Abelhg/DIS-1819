@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.media.jfxmedia.logging.Logger;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -26,14 +27,19 @@ public class ControladorCUConsultarFacturas {
         ArrayList<Factura> pendientes = new ArrayList<>();
         
         // Obtiene el JSON de la BD
-        String jsonFacturas = FachadaPersistenciaEncargado.
+        try {
+            String jsonFacturas = FachadaPersistenciaEncargado.
                                 getFacturasPendientesDePago(fechaInicio, fechaFin, proveedor);
         
-        // Genera los objetos
-        JsonObject jo = new Gson().fromJson(jsonFacturas, JsonObject.class);
-        JsonArray facturasPendientes = jo.getAsJsonArray(JSONHelper.JSON_FACTURAS_PENDIENTES);
-        for(JsonElement factura : facturasPendientes) {
-            pendientes.add(new Factura(factura.toString()));
+            // Genera los objetos
+            JsonObject jo = new Gson().fromJson(jsonFacturas, JsonObject.class);
+            JsonArray facturasPendientes = jo.getAsJsonArray(JSONHelper.JSON_FACTURAS_PENDIENTES);
+            for(JsonElement factura : facturasPendientes) {
+                pendientes.add(new Factura(factura.toString()));
+            }
+        } catch (MessageException e) {
+            System.err.println("[!] Error al obtener facturas pendientes:\n\t" + e.getMessage());
+            // Devuelve la lista de pendientes vacía
         }
         
         return pendientes;

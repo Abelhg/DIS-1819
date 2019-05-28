@@ -117,8 +117,9 @@ public class FachadaPersistenciaEncargado {
      * @param fechaF Fecha máxima de emisión
      * @param proveedor Proveedor del pedido (null para cualquiera)
      * @return Facturas que cumplen los requisitos de búsqueda (JSON)
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
-    public static String getFacturasPendientesDePago(LocalDate fechaI, LocalDate fechaF, String proveedor) {
+    public static String getFacturasPendientesDePago(LocalDate fechaI, LocalDate fechaF, String proveedor) throws MessageException {
         // Obtiene la lista de facturas
         JsonArray arrayFacturas = new JsonArray();
         
@@ -149,8 +150,7 @@ public class FachadaPersistenciaEncargado {
             }
 
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(FachadaPersistenciaEncargado.class.getName()).log(Level.SEVERE, null, ex);
-            arrayFacturas = new JsonArray(); // Vacío
+            throw new MessageException("[!] Error al consultar las facturas pendientes.");
         }
 
         // Construye el objeto resultado
