@@ -3,6 +3,13 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 
 /**
@@ -24,7 +31,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private void initComponents() {
 
         lTitulo = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
 
@@ -59,7 +66,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jTable1.setRowHeight(30);
+        jTable1.setRowMargin(2);
+        jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
@@ -79,27 +88,19 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAtras)
-                        .addGap(0, 0, 0)
-                        .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnAtras)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -110,10 +111,53 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         controlador.procesaClickAtras();
     }//GEN-LAST:event_btnAtrasActionPerformed
     
+    /**
+     * La vista mostrara la lista de pedidos registrados al usuario.
+     * @param pedidos ArrayList de tipo Pedido Horno.
+     */
     public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
         // TODO
+        //System.out.println(pedidos.size());
+        
+        /*Renderizamos el modelo de nuestro JTable y centramos los resultados*/
+        DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
+        DefaultTableCellRenderer rendar = new DefaultTableCellRenderer();
+        rendar.setHorizontalAlignment(lTitulo.CENTER);
+        jTable1.setDefaultRenderer(String.class, rendar);
+        jTable1.getColumnModel().getColumn(0).setCellRenderer(rendar); 
+     
+        /*Recorremos el ArrayList de Pedidos de Horno*/
+        for(int i = 0; i < pedidos.size(); i++){
+            int pedido = pedidos.get(i).getNumeroDePedido();
+            String fecha = pedidos.get(i).getFechaEnLaQueSeQuiere().toString();
+            Object[] data = {pedido, fecha};
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+            modeloTabla.addRow(data);
+        }
+        
+        jTable1.setRowSelectionAllowed(true);
+        ListSelectionModel filaSeleccionada = jTable1.getSelectionModel();
+        filaSeleccionada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    /*    filaSeleccionada.addListSelectionListener(new ListSelectionListener()){
+              public void cambioFila(ListSelectionEvent e) {
+                    System.out.println("Cambio");
+              }
+        };*/
+        filaSeleccionada.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                controlador.seleccionValor();
+            }
+        });
     }
-    
+   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JScrollPane jScrollPane2;
