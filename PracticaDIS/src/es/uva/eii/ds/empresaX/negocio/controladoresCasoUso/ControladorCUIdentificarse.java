@@ -19,29 +19,26 @@ public class ControladorCUIdentificarse {
      * 
      * @param dni DNI del empleado
      * @param password Password del empleado
-     * @return Mensaje de error (null si no hay)
      * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error
      */
-    public String identificarEmpleado(String dni, String password) throws MessageException {
-        String res = null;
-        
+    public void identificarEmpleado(String dni, String password) throws MessageException {
         JsonObject jCreds = new JsonObject();
+        
         try {
             jCreds.addProperty(JSONHelper.JSON_DNI, dni);
             jCreds.addProperty(JSONHelper.JSON_PASSWORD, obtenerSHA256(password));
             String resultado = FachadaPersistenciaEmpleado.consultaEmpleadoPorLoginYPassword(jCreds.toString());
-            JsonObject json = new Gson().fromJson(resultado, JsonObject.class);
-            if(json.has("error")) {
-                res = json.get("error").getAsString();
-            } else {
-                // Crea el Empleado y lo asigna a la sesión
-                Sesion.getInstancia().setEmpleado(new Empleado(resultado));
+            
+            // Si no ha saltado excepción, login correcto
+            Empleado e = new Empleado(resultado);
+            if(!e.estaActivo()) {
+                throw new MessageException("Empleado inactivo");
             }
+            
+            Sesion.getInstancia().setEmpleado(new Empleado(resultado));
         } catch (NoSuchAlgorithmException ex) {
-            throw new MessageException("[!] Error al generar el SHA-2 de la contraseña.");
+            throw new MessageException("Error al generar el SHA-2 de la contraseña.");
         }
-        
-        return res;
     }
     
     /**

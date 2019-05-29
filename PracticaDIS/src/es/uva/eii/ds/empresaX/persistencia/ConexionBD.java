@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ public class ConexionBD {
     private final String password;
     private Connection connection;
     
-    private ConexionBD() throws ClassNotFoundException, SQLException {
+    private ConexionBD() throws ClassNotFoundException, SQLException, MessageException {
         url = "jdbc:derby://localhost:1527/bd_pasteleria";
         usuario = "temp";
         password = "temp";
@@ -26,9 +27,8 @@ public class ConexionBD {
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         try {
             openConnection();
-        } catch (SQLNonTransientConnectionException ex) {
-            System.err.println("[!] Base de datos no conectada");
-            System.exit(1);
+        } catch(SQLNonTransientConnectionException ex) {
+            throw new MessageException("No hay conexión con la BD");
         }
     }
     
@@ -47,7 +47,7 @@ public class ConexionBD {
 
     /** Alcance de clase **/
     private static ConexionBD theInstance;
-    public static ConexionBD getInstancia() throws ClassNotFoundException, SQLException {
+    public static ConexionBD getInstancia() throws ClassNotFoundException, SQLException, MessageException {
         if(theInstance == null){
             theInstance = new ConexionBD();
         }

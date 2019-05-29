@@ -39,7 +39,7 @@ public class FachadaPersistenciaEmpleadoHorno {
             "INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ((?), 2, (?), (?))";
     
     
-    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
+    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException, MessageException {
         return ConexionBD.getInstancia();
     }
     
@@ -96,7 +96,7 @@ public class FachadaPersistenciaEmpleadoHorno {
     }
     
     
-    public static boolean cambiarEstadoPedidoAPreparando(LocalDateTime ts, String nifEmpleado, int numeroPedido) {
+    public static boolean cambiarEstadoPedidoAPreparando(LocalDateTime ts, String nifEmpleado, int numeroPedido) throws MessageException {
         boolean res;
         
         try {

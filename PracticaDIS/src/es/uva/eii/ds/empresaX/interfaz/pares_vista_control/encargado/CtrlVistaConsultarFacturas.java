@@ -7,7 +7,6 @@ import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.swing.JFrame;
 
 
 /**

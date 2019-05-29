@@ -5,12 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.SQLNonTransientConnectionException;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)
@@ -53,7 +51,7 @@ public class FachadaPersistenciaEmpleado {
     private static final String DISP_FINAL = "FinalPrevisto";
     private static final String DISP_DISPONIBILIDAD = "Disponibilidad";
     
-    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
+    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException, MessageException {
         return ConexionBD.getInstancia();
     }
     
@@ -156,7 +154,8 @@ public class FachadaPersistenciaEmpleado {
      * 
      * @param credenciales JSON con dni y password (hash SHA-2)
      * @return JSON con atributos del empleado
-     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error inesperado al hacer la consulta
+     * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error inesperado 
+     * al hacer la consulta o el login es inválido
      */
     public static String consultaEmpleadoPorLoginYPassword(String credenciales) throws MessageException {
         // Obtiene los datos de entrada
@@ -187,7 +186,7 @@ public class FachadaPersistenciaEmpleado {
                 throw new MessageException("Credenciales inválidas");
             }
         } catch(SQLException | ClassNotFoundException ex){
-            throw new MessageException("[!] Ocurrió un error al tratar de loguear al usuario con DNI: \"" + dni + "\"");
+            throw new MessageException("Ocurrió un error al tratar de loguear al usuario con DNI: \"" + dni + "\"");
         }
         
         return jo.toString();

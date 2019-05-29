@@ -26,32 +26,11 @@ public class Empleado {
     /**
      * Construye un objeto Empleado a partir de una cadena JSON.
      * 
-     * Ejemplo de jsonString: 
-     * { "dni"              : "12345678Z",
-     *   "nombre"           : "Hermenegildo Manuel",
-     *   "apellidos"        : "Ruipérez Núñez",
-     *   "fechaInicio"      : "2014-02-25",
-     *   "roles"            : [
-     *      { "comienzo" : "2014-02-25", "rol" : "Dependiente" },
-     *      { "comienzo" : "2015-04-14", "rol" : "Supervisor" }
-     *   ],
-     *   "vinculaciones"    : [
-     *      { "comienzo" : "2014-02-25", "vinculacion" : "Contratado" }
-     *   ],
-     *   "disponibilidades" : [
-     *      { "comienzo" : "2014-02-25", "disponibilidad" : "Trabajando" },
-     *      { "comienzo" : "2014-06-23", "finalPrevisto" : "2014-08-29", "disponibilidad" : "Vacaciones" },
-     *      { "comienzo" : "2014-08-29", "disponibilidad" : "Trabajando" },
-     *      { "comienzo" : "2014-11-05", "finalPrevisto" : "2015-02-05", "disponibilidad" : "BajaTemporal" },
-     *      { "comienzo" : "2015-02-12", "disponibilidad" : "Trabajando" }
-     *   ]
-     * }
-     * 
-     * @param jsonString Cadena JSON
+     * @param jsonEmpleado Cadena JSON
      */
-    public Empleado(String jsonString) {
+    public Empleado(String jsonEmpleado) {
         try {
-            JsonObject jo = new Gson().fromJson(jsonString, JsonObject.class);
+            JsonObject jo = new Gson().fromJson(jsonEmpleado, JsonObject.class);
             // NOMBRE, APELLIDOS Y DNI
             nombre = jo.get(JSONHelper.JSON_NOMBRE).getAsString();
             apellidos = jo.get(JSONHelper.JSON_APELLIDOS).getAsString();

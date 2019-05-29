@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 public class GestorUI { 
     private final Stack<JFrame> anteriores;
     private JFrame actual;
-    private static String cifEmpleado;
     
     private static GestorUI instancia;
     private EnumMap<CasosDeUso, String> stringsCasos;
@@ -131,11 +130,9 @@ public class GestorUI {
     /**
      * Muestra la ventana con la lista de opciones del usuario según su rol.
      * @param rol Rol del usuario
-     * @param dni
      */
-    public void empleadoIdentificado(TipoRol rol,String dni) {
+    public void empleadoIdentificado(TipoRol rol) {
         guardaActual();
-        cifEmpleado = dni;
         java.awt.EventQueue.invokeLater(() -> {
             actual = new VistaListaOpciones(rol);
             actual.setVisible(true);
@@ -160,7 +157,6 @@ public class GestorUI {
      */
     private void vistaRegistrarVenta() {
         guardaActual();
-        VistaRegistrarVentaDirecta.setCifEmpleado(cifEmpleado);
         java.awt.EventQueue.invokeLater(() -> {
             actual = new VistaRegistrarVentaDirecta();
             actual.setVisible(true);

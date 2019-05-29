@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.persistencia;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +26,11 @@ public class FachadaPersistenciaDependiente {
 
     private static final String QUERY_EXISTENCIAS = "UPDATE PRODUCTO SET EXISTENCIAS = ? WHERE CODIGO = ?";
 
-    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
+    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException, MessageException {
         return ConexionBD.getInstancia();
     }
 
-    public static JsonObject getProductoBD(String codigo) {
+    public static JsonObject getProductoBD(String codigo) throws MessageException {
 
         String cif = null;
         try {
@@ -66,7 +67,7 @@ public class FachadaPersistenciaDependiente {
         return null;
     }
 
-    public static void setVentaBD(String cifEmpleado,Venta venta) {
+    public static void setVentaBD(String cifEmpleado,Venta venta) throws MessageException {
 
         try {
             ConexionBD conn = conectarse();
@@ -99,7 +100,7 @@ public class FachadaPersistenciaDependiente {
 
     }
 
-    public static void actualizarExistenciasBD(ArrayList<LineaDeVenta> lineasVenta) {
+    public static void actualizarExistenciasBD(ArrayList<LineaDeVenta> lineasVenta) throws MessageException {
 
         try {
             ConexionBD conn = conectarse();

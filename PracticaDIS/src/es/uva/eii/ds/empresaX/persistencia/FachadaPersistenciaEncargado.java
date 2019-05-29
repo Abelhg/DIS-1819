@@ -33,7 +33,7 @@ public class FachadaPersistenciaEncargado {
             + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND enTransferencia IS NULL";
     private static final String QUERY_PLUS_PROVEEDOR = " AND ( UPPER(Proveedor.nombre) = (?) OR UPPER(Proveedor.cif) = (?) )";
 
-    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
+    private static ConexionBD conectarse() throws ClassNotFoundException, SQLException, MessageException {
         return ConexionBD.getInstancia();
     }
     

@@ -73,11 +73,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         lTitulo.setFont(new java.awt.Font("Ebrima", 1, 36)); // NOI18N
         lTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -333,7 +328,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                         .addComponent(checkTodas)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(btnAtras)
                 .addGap(0, 0, 0)
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 1046, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -345,8 +339,7 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
                     .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnAtras)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(btnAtras)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -418,10 +411,6 @@ public class VistaConsultarFacturas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        controlador.procesaClickAtras();
-    }//GEN-LAST:event_formWindowClosing
 
     private void checkAnioActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAnioActualActionPerformed
         controlador.procesaClickAnioActual();
