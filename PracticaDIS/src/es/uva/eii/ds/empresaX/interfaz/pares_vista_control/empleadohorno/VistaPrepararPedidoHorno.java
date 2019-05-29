@@ -198,6 +198,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
         jTable1.setVisible(false);
         jbuttonConfirmar.setEnabled(true);
+        System.out.println("Bien");
+        System.out.println("Prueba: "+ pedidoActual.getLineas().toString());
+        
     }
 
     void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {

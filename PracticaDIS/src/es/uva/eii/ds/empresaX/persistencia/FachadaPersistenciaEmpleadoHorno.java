@@ -227,6 +227,7 @@ public class FachadaPersistenciaEmpleadoHorno {
             while(rs.next()) {
                 JsonObject lineasPedido = new JsonObject();
                 lineasPedido.addProperty(JSONHelper.JSON_CANTIDAD, rs.getInt("CANTIDAD"));
+                //System.out.println(rs.getInt("CANTIDAD"));
                // lineasPedido.add(JSONHelper.JSON_PRODUCTO, (rs.getString("PRODUCTO"), conn));
                 res.add(lineasPedido);
             }

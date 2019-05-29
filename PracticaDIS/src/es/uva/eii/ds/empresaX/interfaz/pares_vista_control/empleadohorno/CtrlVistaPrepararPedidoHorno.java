@@ -80,7 +80,7 @@ public class CtrlVistaPrepararPedidoHorno {
             // ¡No existe el pedido!
             vista.mostrarErrorSeleccionPedido();
         }
-        
+
         // Muestra los detalles al empleado
         vista.mostrarDetallesPedido(pedidoActual);
     }
