@@ -7,6 +7,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import javax.swing.JFrame;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ public class CtrlVistaRegistrarVentaDirecta {
         GestorUI.getInstanciaSingleton().atras();
     }
 
-    public void introducirProducto(String codigo, String cant) {
+    public void introducirProducto(String codigo, String cant) throws MessageException {
         
         if(lineasVenta == null) lineasVenta = new ArrayList<>();
         
@@ -96,7 +97,7 @@ public class CtrlVistaRegistrarVentaDirecta {
 
     }
     
-    public void finalizarVenta(String cifEmpleado) {
+    public void finalizarVenta(String cifEmpleado) throws MessageException {
 
         if (lineasVenta != null || lineasVenta.size() > 0) {
 

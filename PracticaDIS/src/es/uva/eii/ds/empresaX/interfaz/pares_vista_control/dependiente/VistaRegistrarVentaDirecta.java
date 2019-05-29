@@ -1,7 +1,10 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -168,11 +171,19 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void sumaElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaElementoActionPerformed
-        controlador.introducirProducto(codigo.getText(),cantidad.getText());
+        try {
+            controlador.introducirProducto(codigo.getText(),cantidad.getText());
+        } catch (MessageException ex) {
+            Logger.getLogger(VistaRegistrarVentaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_sumaElementoActionPerformed
 
     private void terminaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaActionPerformed
-        controlador.finalizarVenta(cifEmpleado);
+        try {
+            controlador.finalizarVenta(cifEmpleado);
+        } catch (MessageException ex) {
+            Logger.getLogger(VistaRegistrarVentaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_terminaVentaActionPerformed
  
     
