@@ -23,9 +23,9 @@ public class VistaIdentificarse extends javax.swing.JFrame {
         lDni = new javax.swing.JLabel();
         inputDNI = new javax.swing.JTextField();
         lPass = new javax.swing.JLabel();
-        inputPassword = new javax.swing.JTextField();
         mensajeError = new javax.swing.JLabel();
         btnEnviar = new javax.swing.JButton();
+        inputPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -53,6 +53,7 @@ public class VistaIdentificarse extends javax.swing.JFrame {
         getContentPane().add(lDni, gridBagConstraints);
 
         inputDNI.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
+        inputDNI.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         inputDNI.setToolTipText("Usuario");
         inputDNI.setPreferredSize(new java.awt.Dimension(200, 26));
         inputDNI.addActionListener(new java.awt.event.ActionListener() {
@@ -77,22 +78,6 @@ public class VistaIdentificarse extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 30, 0, 15);
         getContentPane().add(lPass, gridBagConstraints);
-
-        inputPassword.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
-        inputPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        inputPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPasswordActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.weightx = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 30);
-        getContentPane().add(inputPassword, gridBagConstraints);
 
         mensajeError.setFont(new java.awt.Font("Ebrima", 0, 18)); // NOI18N
         mensajeError.setForeground(new java.awt.Color(255, 0, 0));
@@ -122,6 +107,24 @@ public class VistaIdentificarse extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 30, 30, 30);
         getContentPane().add(btnEnviar, gridBagConstraints);
+
+        inputPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        inputPassword.setMaximumSize(new java.awt.Dimension(200, 26));
+        inputPassword.setMinimumSize(new java.awt.Dimension(200, 26));
+        inputPassword.setPreferredSize(new java.awt.Dimension(200, 26));
+        inputPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputPasswordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 30);
+        getContentPane().add(inputPassword, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -190,7 +193,7 @@ public class VistaIdentificarse extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
     private javax.swing.JTextField inputDNI;
-    private javax.swing.JTextField inputPassword;
+    private javax.swing.JPasswordField inputPassword;
     private javax.swing.JLabel lDni;
     private javax.swing.JLabel lIdentificate;
     private javax.swing.JLabel lPass;

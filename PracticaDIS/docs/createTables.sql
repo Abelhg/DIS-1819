@@ -74,7 +74,7 @@ VALUES  (1,'Vacaciones'),
 create table EMPLEADO
 (
     Nif VARCHAR(9) not null,
-    Password VARCHAR(20) not null,
+    Password VARCHAR(65) not null,
     Nombre VARCHAR(20) not null,
     Apellidos VARCHAR(30) not null,
     FechaInicioEnEmpresa DATE not null,
@@ -296,11 +296,13 @@ create table OPERACIONSOBREPEDIDODEHORNO
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 -- DATOS
+
+-- Las contraseñas son 'segura'
 INSERT INTO EMPLEADO 
-VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
-       ('12123434A', 'segura', 'Segura Patricio', 'Mian', '2018-12-10'),
-       ('98765432E', 'root123', 'Julian Jose', 'Marcos', '2014-02-25'),
-       ('22213434B', 'segura', 'Martinez Martinez', 'Jose Carlos', '2019-05-05');
+VALUES ('12345678Z', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
+       ('12123434A', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Segura Patricio', 'Mian', '2018-12-10'),
+       ('98765432E', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Julian Jose', 'Marcos', '2014-02-25'),
+       ('22213434B', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Martinez Martinez', 'Jose Carlos', '2019-05-05');
 
 INSERT INTO ROLESENEMPRESA VALUES ('2018-09-10', '12123434A', 4),
                                   ('2018-12-10', '12123434A', 2),

@@ -5,7 +5,11 @@ import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEmpleado;
+import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class ControladorCUIdentificarse {
     
@@ -20,16 +24,43 @@ public class ControladorCUIdentificarse {
      */
     public String identificarEmpleado(String dni, String password) throws MessageException {
         String res = null;
-        String resultado = FachadaPersistenciaEmpleado.consultaEmpleadoPorLoginYPassword(dni, password);
-        JsonObject json = new Gson().fromJson(resultado, JsonObject.class);
-        if(json.has("error")) {
-            res = json.get("error").getAsString();
-        } else {
-            // Crea el Empleado y lo asigna a la sesión
-            Sesion.getInstancia().setEmpleado(new Empleado(resultado));
+        
+        JsonObject jCreds = new JsonObject();
+        try {
+            jCreds.addProperty(JSONHelper.JSON_DNI, dni);
+            jCreds.addProperty(JSONHelper.JSON_PASSWORD, obtenerSHA256(password));
+            String resultado = FachadaPersistenciaEmpleado.consultaEmpleadoPorLoginYPassword(jCreds.toString());
+            JsonObject json = new Gson().fromJson(resultado, JsonObject.class);
+            if(json.has("error")) {
+                res = json.get("error").getAsString();
+            } else {
+                // Crea el Empleado y lo asigna a la sesión
+                Sesion.getInstancia().setEmpleado(new Empleado(resultado));
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            throw new MessageException("[!] Error al generar el SHA-2 de la contraseña.");
         }
         
         return res;
+    }
+    
+    /**
+     * Devuelve el hash SHA-256 para una cadena de entrada.
+     * @param str Entrada
+     * @return Hash correspondiente
+     * @throws NoSuchAlgorithmException 
+     */
+    public static String obtenerSHA256(String str) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedhash = digest.digest(str.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < encodedhash.length; i++) {
+            String hex = Integer.toHexString(0xff & encodedhash[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        
+        return hexString.toString();
     }
     
     

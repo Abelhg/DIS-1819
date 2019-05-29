@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -9,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Abel Herrero Gómez (abeherr)
@@ -21,7 +20,7 @@ public class FachadaPersistenciaEncargado {
 
     // FACTURAS PENDIENTES DE PAGO
     // Devuelve el ID del proveedor especificado
-    private static final String QUERY_EXISTE_PROVEEDOR = "SELECT cif FROM Proveedor WHERE UPPER(nombre) = (?)";
+    private static final String QUERY_EXISTE_PROVEEDOR = "SELECT cif FROM Proveedor WHERE UPPER(nombre) = (?) OR UPPER(cif) = (?)";
     // Devuelve el año de la primera fecha de emisión
     private static final String QUERY_MIN_ANIO_FAC = "SELECT YEAR(MIN(FECHADEEMISION)) AS MINANIO FROM FACTURA";
     // Devuelve el año de la última fecha de emisión
@@ -32,7 +31,7 @@ public class FachadaPersistenciaEncargado {
             + "Factura INNER JOIN PedidoAProveedor ON Factura.pedido = PedidoAProveedor.numeroDePedido "
             + "INNER JOIN proveedor ON PedidoAProveedor.proveedor = Proveedor.cif "
             + "WHERE fechaDeEmision >= (?) AND fechaDeEmision <= (?) AND enTransferencia IS NULL";
-    private static final String QUERY_PLUS_PROVEEDOR = " AND UPPER(Proveedor.nombre) = ?";
+    private static final String QUERY_PLUS_PROVEEDOR = " AND ( UPPER(Proveedor.nombre) = (?) OR UPPER(Proveedor.cif) = (?) )";
 
     private static ConexionBD conectarse() throws ClassNotFoundException, SQLException {
         return ConexionBD.getInstancia();
@@ -98,6 +97,7 @@ public class FachadaPersistenciaEncargado {
             ConexionBD conn = conectarse();
             PreparedStatement pst = conn.prepareStatement(QUERY_EXISTE_PROVEEDOR);
             pst.setString(1, proveedor.toUpperCase());
+            pst.setString(2, proveedor.toUpperCase());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 existe = true;
@@ -112,30 +112,44 @@ public class FachadaPersistenciaEncargado {
     /**
      * Devuelve un JSON con las facturas pendientes de pago en el rango de fechas
      * seleccionado y para el proveedor requerido.
-     *
-     * @param fechaI Fecha mínima de emisión
-     * @param fechaF Fecha máxima de emisión
-     * @param proveedor Proveedor del pedido (null para cualquiera)
+     * 
+     * Estructura del JSON de entrada:
+     *  {
+     *      "fechaInicio" : "2019-05-29", "fechaF": "2019-05-31", "proveedor" : "15264859N"
+     *  }
+     * 
+     * Para buscar cualquier proveedor, proporcionar valor vacío ("proveedor" : "")
+     * 
+     * @param filtros JSON con las fechas de inicio/fin y el proveedor a buscar
      * @return Facturas que cumplen los requisitos de búsqueda (JSON)
      * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException
      */
-    public static String getFacturasPendientesDePago(LocalDate fechaI, LocalDate fechaF, String proveedor) throws MessageException {
+    public static String getFacturasPendientesDePago(String filtros) throws MessageException {
+        // Obtiene los datos de entrada
+        JsonObject jo = new Gson().fromJson(filtros, JsonObject.class);
+        Date fechaI = Date.valueOf(jo.get(JSONHelper.JSON_FECHA_INICIO).getAsString());
+        Date fechaF = Date.valueOf(jo.get(JSONHelper.JSON_FECHA_FIN).getAsString());
+        String cifProveedor = jo.get(JSONHelper.JSON_PROVEEDOR).getAsString();
+        if(cifProveedor.isEmpty()) cifProveedor = null;
+        
         // Obtiene la lista de facturas
         JsonArray arrayFacturas = new JsonArray();
-        
         try {
             ConexionBD conn = conectarse();
             String query = QUERY_FACTURAS_PEND;
-            if(proveedor != null) {
+            if(cifProveedor != null) {
                 // Proveedor especificado
                 query += QUERY_PLUS_PROVEEDOR;
             }
             PreparedStatement pst = conn.prepareStatement(query);
-            pst.setDate(1, Date.valueOf(fechaI));
-            pst.setDate(2, Date.valueOf(fechaF));
-            if(proveedor != null) { 
-                pst.setString(3, proveedor.toUpperCase());
+            pst.setDate(1, fechaI);
+            pst.setDate(2, fechaF);
+            if(cifProveedor != null) { 
+                pst.setString(3, cifProveedor.toUpperCase());
+                pst.setString(4, cifProveedor.toUpperCase());
             }
+            
+            // Realiza la consulta
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 JsonObject factura = new JsonObject();

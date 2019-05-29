@@ -31,7 +31,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private void initComponents() {
 
         lTitulo = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        spLista = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
 
@@ -68,7 +68,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         });
         jTable1.setRowHeight(30);
         jTable1.setRowMargin(2);
-        jScrollPane1.setViewportView(jTable1);
+        spLista.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
@@ -92,7 +92,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -100,7 +100,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -160,9 +160,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lTitulo;
+    private javax.swing.JScrollPane spLista;
     // End of variables declaration//GEN-END:variables
 
     void mostrarMensajeSinPedidos() {

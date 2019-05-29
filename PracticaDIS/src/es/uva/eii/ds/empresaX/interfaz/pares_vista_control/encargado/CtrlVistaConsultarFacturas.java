@@ -157,7 +157,7 @@ public class CtrlVistaConsultarFacturas {
         }
         
         // Luego obtiene el proveedor
-        String proveedor = null;
+        String proveedor = "";
         if(!cualquier) {
             proveedor = vista.getProveedor();
             if(proveedor == null || proveedor.isEmpty()) {
@@ -173,6 +173,7 @@ public class CtrlVistaConsultarFacturas {
                 }
             } catch (MessageException e) {
                 vista.muestraErrorProveedor("Error inesperado");
+                System.err.println(e.getMessage());
                 return;
             }
         }

@@ -24,8 +24,10 @@ public class JSONHelper {
     
     // JSON EMPLEADO
     public static final String JSON_DNI = "dni";
+    public static final String JSON_PASSWORD = "password";
     public static final String JSON_APELLIDOS = "apellidos";
     public static final String JSON_FECHA_INICIO = "fechaInicio";
+    public static final String JSON_FECHA_FIN = "fechaFin";
     public static final String JSON_COMIENZO = "comienzo";
     public static final String JSON_FINAL_PREVISTO = "finalPrevisto";
     public static final String JSON_ROLES = "roles";

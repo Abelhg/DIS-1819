@@ -18,7 +18,7 @@ public class ControladorCUConsultarFacturas {
      * Devuelve la lista de facturas pendientes para los datos introducidos.
      * @param fechaInicio Fecha de inicio
      * @param fechaFin Fecha de fin
-     * @param proveedor Proveedor (null para cualquiera)
+     * @param proveedor Proveedor (vacío para cualquiera)
      * @return Lista de facturas pendientes
      */
     public ArrayList<Factura> obtenerFacturasPendientes(LocalDate fechaInicio, 
@@ -28,8 +28,13 @@ public class ControladorCUConsultarFacturas {
         
         // Obtiene el JSON de la BD
         try {
+            // Genera el JSON de los parámetros
+            JsonObject filtros = new JsonObject();
+            filtros.addProperty(JSONHelper.JSON_FECHA_INICIO, fechaInicio.toString());
+            filtros.addProperty(JSONHelper.JSON_FECHA_FIN, fechaFin.toString());
+            filtros.addProperty(JSONHelper.JSON_PROVEEDOR, proveedor);
             String jsonFacturas = FachadaPersistenciaEncargado.
-                                getFacturasPendientesDePago(fechaInicio, fechaFin, proveedor);
+                                getFacturasPendientesDePago(filtros.toString());
         
             // Genera los objetos
             JsonObject jo = new Gson().fromJson(jsonFacturas, JsonObject.class);

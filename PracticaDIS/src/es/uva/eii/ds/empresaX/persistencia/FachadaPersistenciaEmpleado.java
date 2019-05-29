@@ -1,5 +1,6 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -18,7 +19,6 @@ import java.util.logging.Logger;
  */
 public class FachadaPersistenciaEmpleado {
     
-    private static final String QUERY_NIF = "SELECT * FROM Empleado WHERE nif = (?)";
     private static final String QUERY_NIF_PASS = "SELECT * FROM Empleado WHERE nif = (?) AND password = (?)";
     private static final String QUERY_ROLES = "SELECT * FROM RolesEnEmpresa WHERE empleado = (?)";
     private static final String QUERY_NOMBRE_TIPO_1 = "SELECT nombreTipo FROM ";
@@ -65,7 +65,7 @@ public class FachadaPersistenciaEmpleado {
      * @return Cadena asociada al ID
      * @throws SQLException 
      */
-    public static String obtenerNombreTipo(ConexionBD conn, String nombreTabla, int idTipo) throws SQLException {
+    private static String obtenerNombreTipo(ConexionBD conn, String nombreTabla, int idTipo) throws SQLException {
         String res = "DESCONOCIDO";
         
         PreparedStatement pst = conn.prepareStatement(QUERY_NOMBRE_TIPO_1 + nombreTabla + QUERY_NOMBRE_TIPO_2);
@@ -153,19 +153,24 @@ public class FachadaPersistenciaEmpleado {
     
     /**
      * Devuelve una String JSON con los atributos de un empleado, o bien un mensaje de error.
-     * @param nif DNI del empleado
-     * @param password Contraseña utilizada
+     * 
+     * @param credenciales JSON con dni y password (hash SHA-2)
      * @return JSON con atributos del empleado
      * @throws es.uva.eii.ds.empresaX.servicioscomunes.MessageException Si ha ocurrido un error inesperado al hacer la consulta
      */
-    public static String consultaEmpleadoPorLoginYPassword(String nif, String password) throws MessageException {
-        JsonObject jo = new JsonObject();
+    public static String consultaEmpleadoPorLoginYPassword(String credenciales) throws MessageException {
+        // Obtiene los datos de entrada
+        JsonObject jCreds = new Gson().fromJson(credenciales, JsonObject.class);
+        String dni = jCreds.get(JSONHelper.JSON_DNI).getAsString();
+        String password = jCreds.get(JSONHelper.JSON_PASSWORD).getAsString();
         
+        // Comprueba si son válidas las credenciales
+        JsonObject jo = new JsonObject();
         try {
             ConexionBD conn = conectarse();
             // Ejecuta la selección
             PreparedStatement pst = conn.prepareStatement(QUERY_NIF_PASS);
-            pst.setString(1, nif);
+            pst.setString(1, dni);
             pst.setString(2, password);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
@@ -174,18 +179,15 @@ public class FachadaPersistenciaEmpleado {
                 jo.addProperty(JSONHelper.JSON_NOMBRE, rs.getString(EMPL_NOMBRE));
                 jo.addProperty(JSONHelper.JSON_APELLIDOS, rs.getString(EMPL_APELLIDOS));
                 jo.addProperty(JSONHelper.JSON_FECHA_INICIO, rs.getDate(EMPL_FECHA_INICIO).toString());
-                jo.add(JSONHelper.JSON_ROLES, obtenerRolesEmpleado(conn, nif));
-                jo.add(JSONHelper.JSON_VINCULACIONES, obtenerVinculacionesEmpleado(conn, nif));
-                jo.add(JSONHelper.JSON_DISPONIBILIDADES, obtenerDisponibilidadesEmpleado(conn, nif));
+                jo.add(JSONHelper.JSON_ROLES, obtenerRolesEmpleado(conn, dni));
+                jo.add(JSONHelper.JSON_VINCULACIONES, obtenerVinculacionesEmpleado(conn, dni));
+                jo.add(JSONHelper.JSON_DISPONIBILIDADES, obtenerDisponibilidadesEmpleado(conn, dni));
             } else {
                 // Credenciales inválidas
                 throw new MessageException("Credenciales inválidas");
             }
-        } catch(SQLException ex){
-            Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-            throw new MessageException("Error inesperado");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FachadaPersistenciaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(SQLException | ClassNotFoundException ex){
+            throw new MessageException("[!] Ocurrió un error al tratar de loguear al usuario con DNI: \"" + dni + "\"");
         }
         
         return jo.toString();
