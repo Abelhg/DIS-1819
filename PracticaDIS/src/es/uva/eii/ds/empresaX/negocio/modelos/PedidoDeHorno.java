@@ -61,7 +61,7 @@ public class PedidoDeHorno {
         JsonObject json1 = new JsonObject();
         //System.out.print(JSONHelper.JSON_LINEAS);
         
-            JsonArray jLineas = jo.getAsJsonArray(JSONHelper.JSON_LINEAS);
+        JsonArray jLineas = jo.getAsJsonArray(JSONHelper.JSON_LINEAS);
         
         for(JsonElement jlin : jLineas) {
             JsonObject jLinea = new Gson().fromJson(jlin.toString(), JsonObject.class);

@@ -1,6 +1,7 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPedido;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -72,6 +73,7 @@ public class FachadaPersistenciaEmpleadoHorno {
                         pedido.add(JSONHelper.JSON_CLIENTE, getCliente(rs.getString("CLIENTE"), conn));
                         pedido.add(JSONHelper.JSON_DEPENDIENTE, getEmpleado(rs.getString("DEPENDIENTE"), conn));
                         pedido.add(JSONHelper.JSON_OPERACIONES, getOperacionesPedido(nPedido, conn));
+                        pedido.add(JSONHelper.JSON_LINEAS, getLineasPedido(nPedido, conn));
                         arrayPedidos.add(pedido);
                     }
                 }
@@ -208,6 +210,10 @@ public class FachadaPersistenciaEmpleadoHorno {
         }
         
         return res;
+    }
+
+    public static JsonElement getLineasPedido(int nPedido, ConexionBD conn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
