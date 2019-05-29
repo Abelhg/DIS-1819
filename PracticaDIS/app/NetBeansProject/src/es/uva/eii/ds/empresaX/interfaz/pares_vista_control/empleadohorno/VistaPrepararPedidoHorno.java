@@ -161,8 +161,8 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(139, 139, 139)
-                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))
+                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,14 +182,10 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 12, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,34 +303,17 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             modeloTabla.addRow(data);
         }
     }
-    
-    /**
-     * Muestra los materiales que faltán para completar el pedido.
-     * @param faltantes ArrayList con las materias que faltan para seguir con el pedido.
-     */
+
     public void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
-        String codigo = "";
-        for(int i = 0; i<faltantes.size(); i++){
-            codigo += faltantes.get(0).getProductoPedido().getCodigo() + ",";
-             
-        }
-        labelErrores.setText("Error, faltan materiales:"+ codigo);
+        labelErrores.setText("Error, faltan Materias");
         labelErrores.setVisible(true);
     }
 
-    /**
-     * Mensaje de error estándar.
-     */
     public void mostrarMensajeError() {
-        labelErrores.setText("Error, algo ha ido mal.");
-        labelErrores.setVisible(true);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-    /**
-     * Muestra mensaje de exito si el Caso de Uso se ha completado satisfactoriamente.
-     */
-    public void mostrarMensajeExito() {
+    void mostrarMensajeExito() {
         labelErrores.setText("Pedido Registrado correctamente");
         labelErrores.setForeground(Color.green);
         labelErrores.setVisible(true);
