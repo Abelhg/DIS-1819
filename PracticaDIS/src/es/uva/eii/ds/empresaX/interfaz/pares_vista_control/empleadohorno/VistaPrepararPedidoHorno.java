@@ -35,6 +35,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
+        jbuttonConfirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -84,6 +85,15 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             }
         });
 
+        jbuttonConfirmar.setText("Confirmar");
+        jbuttonConfirmar.setActionCommand("Seleccionar");
+        jbuttonConfirmar.setEnabled(false);
+        jbuttonConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbuttonConfirmarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,7 +103,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -102,7 +114,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -111,6 +125,10 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         controlador.procesaClickAtras();
     }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void jbuttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonConfirmarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbuttonConfirmarActionPerformed
     
     /**
      * La vista mostrara la lista de pedidos registrados al usuario.
@@ -155,6 +173,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private javax.swing.JButton btnAtras;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbuttonConfirmar;
     private javax.swing.JLabel lTitulo;
     // End of variables declaration//GEN-END:variables
 
@@ -178,6 +197,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
     void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
         jTable1.setVisible(false);
+        jbuttonConfirmar.setEnabled(true);
     }
 
     void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
