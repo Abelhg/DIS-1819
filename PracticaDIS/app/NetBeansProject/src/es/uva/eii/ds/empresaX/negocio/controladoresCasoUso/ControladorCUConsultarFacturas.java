@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sun.media.jfxmedia.logging.Logger;
 import es.uva.eii.ds.empresaX.negocio.modelos.Factura;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaEncargado;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
