@@ -1,9 +1,13 @@
+
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -29,7 +33,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         lTitulo = new javax.swing.JLabel();
@@ -167,15 +171,19 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         controlador.procesaClickAtras();
-    }                                        
+    }//GEN-LAST:event_btnAtrasActionPerformed
 
-    private void jbuttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
-    }                                                
+    private void jbuttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonConfirmarActionPerformed
+        try {
+            controlador.procesaPedidoConfirmado();
+        } catch (MessageException ex) {
+            Logger.getLogger(VistaPrepararPedidoHorno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbuttonConfirmarActionPerformed
     
     /**
      * La vista mostrara la lista de pedidos registrados al usuario.
@@ -211,7 +219,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     }
    
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
@@ -220,7 +228,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private javax.swing.JLabel labelErrores;
     private javax.swing.JTable listaDetalles;
     private javax.swing.JScrollPane spLista;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 
     /**
      * Muestra el mensaje de que no hay pedidos si no hay el controlador lo indica.
