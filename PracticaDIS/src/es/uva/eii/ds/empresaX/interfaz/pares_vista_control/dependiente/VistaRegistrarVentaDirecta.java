@@ -1,13 +1,9 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
-<<<<<<< HEAD
-import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
-import java.util.ArrayList;
-=======
+
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
->>>>>>> origin/Daniel
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
