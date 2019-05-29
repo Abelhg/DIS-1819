@@ -5,6 +5,7 @@ import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ControladorCURegistrarVenta {
 
-    public static JsonObject compruebaExistenciaProducto(String codigo) {
+    public static JsonObject compruebaExistenciaProducto(String codigo) throws MessageException {
         
         JsonObject prod = FachadaPersistenciaDependiente.getProductoBD(codigo);
         return prod;
@@ -32,12 +33,12 @@ public class ControladorCURegistrarVenta {
         return lineasVenta;
     }
     
-    public static void registrarVenta(ArrayList<LineaDeVenta> lineasVenta,String cifEmpleado){
+    public static void registrarVenta(ArrayList<LineaDeVenta> lineasVenta,String cifEmpleado) throws MessageException{
         Venta venta = new Venta(cifEmpleado,lineasVenta);
         FachadaPersistenciaDependiente.setVentaBD(cifEmpleado,venta);
     }
     
-    public static void actualizarExistencias(ArrayList<LineaDeVenta> lineasVenta){
+    public static void actualizarExistencias(ArrayList<LineaDeVenta> lineasVenta) throws MessageException{
         FachadaPersistenciaDependiente.actualizarExistenciasBD(lineasVenta);
     }
 

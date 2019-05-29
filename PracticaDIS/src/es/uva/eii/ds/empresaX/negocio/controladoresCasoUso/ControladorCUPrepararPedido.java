@@ -29,7 +29,7 @@ public class ControladorCUPrepararPedido {
      * entrega deseada del día actual y el siguiente.
      * @return Lista o null si ha ocurrido algún error
      */
-    public static ArrayList<PedidoDeHorno> getListaPedidosRegistradosHorno() {
+    public static ArrayList<PedidoDeHorno> getListaPedidosPendientesHorno() {
         listaPedidos = new ArrayList<>();
         
         // Lista de pedidos de hoy y mañana
@@ -80,7 +80,7 @@ public class ControladorCUPrepararPedido {
      * @param pedido Pedido a preparar
      * @return true si se ha realizado con éxito, false si no
      */
-    public static boolean prepararPedido(PedidoDeHorno pedido) {
+    public static boolean prepararPedido(PedidoDeHorno pedido) throws MessageException {
         Empleado empleado = Sesion.getInstancia().getEmpleado();
         // new Operacion
         // get JSON

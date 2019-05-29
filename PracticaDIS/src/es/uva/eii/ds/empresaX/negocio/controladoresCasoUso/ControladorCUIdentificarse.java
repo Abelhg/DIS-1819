@@ -1,6 +1,5 @@
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.Sesion;

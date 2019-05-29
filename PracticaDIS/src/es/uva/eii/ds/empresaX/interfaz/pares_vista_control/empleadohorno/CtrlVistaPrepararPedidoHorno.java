@@ -29,7 +29,7 @@ public class CtrlVistaPrepararPedidoHorno {
         // Centra en la pantalla
         vista.setLocationRelativeTo(null);
         // Carga los pedidos para hoy o mañana
-        ArrayList<PedidoDeHorno> pedidos = ControladorCUPrepararPedido.getListaPedidosRegistradosHorno();
+        ArrayList<PedidoDeHorno> pedidos = ControladorCUPrepararPedido.getListaPedidosPendientesHorno();
         if(pedidos.isEmpty()) {
             vista.mostrarMensajeSinPedidos();
         } else {
