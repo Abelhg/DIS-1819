@@ -67,10 +67,6 @@ public class CtrlVistaPrepararPedidoHorno {
         }
         
     }
-
-    public void seleccionValor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     /**
      * El empleado a ha seleccionado un pedido de la lista.
