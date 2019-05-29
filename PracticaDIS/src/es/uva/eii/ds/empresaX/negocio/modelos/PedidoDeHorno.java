@@ -62,11 +62,11 @@ public class PedidoDeHorno {
         JsonArray jLineas = jo.getAsJsonArray(JSONHelper.JSON_LINEAS);
         for(JsonElement jlin : jLineas) {
             JsonObject jLinea = new Gson().fromJson(jlin.toString(), JsonObject.class);
-            
+          //  Producto producto = new Producto(jLinea.get(JsonHelper.JSON_PRODUCTO).toString());
+
             int cantidad =  jLinea.get(JSONHelper.JSON_CANTIDAD).getAsInt();
-            //JsonElement producto = jLinea.get(JSONHelper.JSON_PRODUCTO);
-            System.out.println(cantidad);
-            // TODO
+          //  LineaDePedidoDeHorno lineaPedidoHorno = new LineaDePedidoDeHorno(cantidad, producto);
+           // lineas.add(lineaPedidoHorno);
             //lineas.add(new LineaDePedidoDeHorno(cantidad, productoPedido));
         }
         

@@ -24,6 +24,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     
     public VistaPrepararPedidoHorno() {
         initComponents();
+        configuraComponentes();
         controlador = new CtrlVistaPrepararPedidoHorno(this);
     }
 
@@ -36,6 +37,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
         jbuttonConfirmar = new javax.swing.JButton();
+        labelErrores = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -94,6 +96,10 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             }
         });
 
+        labelErrores.setFont(new java.awt.Font("Noto Sans", 0, 18)); // NOI18N
+        labelErrores.setForeground(new java.awt.Color(241, 38, 38));
+        labelErrores.setText("No hay pedidos para seleccionar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,7 +111,10 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95)
+                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -115,7 +124,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                    .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -174,12 +185,14 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JButton jbuttonConfirmar;
     private javax.swing.JLabel lTitulo;
+    private javax.swing.JLabel labelErrores;
     private javax.swing.JScrollPane spLista;
     // End of variables declaration//GEN-END:variables
 
     public void mostrarMensajeSinPedidos() {
-  
-        System.out.print("Sin pedidos");
+        System.out.println("Sin pedidos");
+        labelErrores.setText("No hay pedidos para seleccionar");
+        labelErrores.setVisible(true);
     }
 
     public int getPedidoSeleccionado() {
@@ -198,8 +211,6 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
         jTable1.setVisible(false);
         jbuttonConfirmar.setEnabled(true);
-        System.out.println("Bien");
-        System.out.println("Prueba: "+ pedidoActual.getLineas().toString());
         
     }
 
@@ -213,5 +224,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
     void mostrarMensajeExito() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void configuraComponentes() {
+        labelErrores.setVisible(false);
     }
 }
