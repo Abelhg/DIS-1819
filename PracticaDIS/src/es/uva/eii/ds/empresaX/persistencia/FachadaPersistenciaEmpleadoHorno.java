@@ -35,6 +35,10 @@ public class FachadaPersistenciaEmpleadoHorno {
             + "INNER JOIN ESTADODEPEDIDODEHORNO ON TIPO = IDTIPO "
             + "WHERE PEDIDODEHORNO = (?) ORDER BY TIPO DESC";
     
+    // Devuelve todos los estados de un pedido de horno (orden desc)
+    private static final String QUERY_LINEAS_PEDIDO = 
+            "SELECT * FROM LINEADEPEDIDODEHORNO  WHERE PEDIDO = (?)";
+    
     // Marca un pedido como preparando
     private static final String INSERT_PEDIDO_PREPARANDO = 
             "INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ((?), 2, (?), (?))";
@@ -212,10 +216,31 @@ public class FachadaPersistenciaEmpleadoHorno {
         return res;
     }
 
-    public static JsonElement getLineasPedido(int nPedido, ConexionBD conn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public static JsonElement getLineasPedido(int nPedido, ConexionBD conn) throws MessageException {
+        JsonArray res = new JsonArray();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_LINEAS_PEDIDO);
+            pst.setInt(1, nPedido);
+
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+                JsonObject lineasPedido = new JsonObject();
+                lineasPedido.addProperty(JSONHelper.JSON_CANTIDAD, rs.getInt("CANTIDAD"));
+               // lineasPedido.add(JSONHelper.JSON_PRODUCTO, (rs.getString("PRODUCTO"), conn));
+                res.add(lineasPedido);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener las operaciones del pedido con nº: " + nPedido);
+            }
+        }
+        
+        return res;
     
     
-    
+         }
 }

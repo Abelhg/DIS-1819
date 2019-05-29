@@ -3,6 +3,7 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -132,15 +133,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
             String fecha = pedidos.get(i).getFechaEnLaQueSeQuiere().toString();
             Object[] data = {pedido, fecha};
             modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
-            modeloTabla.addRow(data);
         }
-        
         jTable1.setRowSelectionAllowed(true);
         ListSelectionModel filaSeleccionada = jTable1.getSelectionModel();
         filaSeleccionada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -165,16 +158,22 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private javax.swing.JLabel lTitulo;
     // End of variables declaration//GEN-END:variables
 
-    void mostrarMensajeSinPedidos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void mostrarMensajeSinPedidos() {
+  
+        System.out.print("Sin pedidos");
     }
 
-    int getPedidoSeleccionado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getPedidoSeleccionado() {
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
+        int pedidoSelec = (int) ((Vector) modeloTabla.getDataVector().get(jTable1.getSelectedRow())).elementAt(0);
+//        System.out.println(pedidoSelec);
+        return pedidoSelec;
     }
 
-    void mostrarErrorSeleccionPedido() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void mostrarErrorSeleccionPedido() {
+        System.out.print("Error en la seleccion del pedido");
+
     }
 
     void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {

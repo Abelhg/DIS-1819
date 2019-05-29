@@ -297,7 +297,7 @@ create table OPERACIONSOBREPEDIDODEHORNO
 ---------------------------------------------------------------------------------------------
 -- DATOS
 INSERT INTO EMPLEADO 
-VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
+    VALUES ('12345678Z', 'segura', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
        ('12123434A', 'segura', 'Segura Patricio', 'Mian', '2018-12-10'),
        ('98765432E', 'root123', 'Julian Jose', 'Marcos', '2014-02-25'),
        ('22213434B', 'segura', 'Martinez Martinez', 'Jose Carlos', '2019-05-05');
@@ -379,8 +379,8 @@ INSERT INTO PEDIDODEHORNO VALUES(1,'2019-05-27','75264259Q','12345678Z'),
                                 (2,'2019-05-28','65264100S','12345678Z'),
                                 (3,'2019-05-28','65264100S','12345678Z'),
                                 (4,'2019-05-29','75264259Q','98765432E'),
-                                (5, CURRENT_DATE,'65264100S','12345678Z'),
-                                (6, CURRENT_DATE,'89264210Y','98765432E');
+                                (5, CURRENT_DATE,'65264100S','12345678Z');
+                               /* (6, CURRENT_DATE,'89264210Y','98765432E');*/
 
 
 
@@ -389,15 +389,13 @@ INSERT INTO LINEADEPEDIDODEHORNO VALUES(2,1,'85584985'),
                                        (4,3,'98718416'),
                                        (9,4,'98718416'),
                                        (2,5,'32005867');
-                                       (7,6,'85584985');
-
+                                    /*   (7,6,'85584985');
+*/
 
 INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ('2019-05-27 14:55:38', 1, '12345678Z', 1),
                                        ('2019-05-27 14:55:40', 2, '12345678Z', 2),
                                        ('2019-05-27 14:55:42', 1, '12345678Z', 3),
                                        ('2019-05-27 14:55:44', 1, '98765432E', 4),
                                        (CURRENT_TIMESTAMP, 1, '12345678Z', 5);
-                                       (CURRENT_TIMESTAMP, 1, '98765432E', 6);
-                                        /*((DATE_ADD(CURRENT_TIMESTAMP, INTERVAL + 1 DAY)), 1, '12345678Z', 5);
-                                       ((DATE_ADD(CURRENT_TIMESTAMP, INTERVAL + 1 DAY)), 1, '12345678Z', 5);
+                                       /*(CURRENT_TIMESTAMP, 1, '98765432E', 6);*/
                                         
