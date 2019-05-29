@@ -64,6 +64,7 @@ public class PedidoDeHorno {
             JsonObject jLinea = new Gson().fromJson(jlin.toString(), JsonObject.class);
             
             int cantidad =  jLinea.get(JSONHelper.JSON_CANTIDAD).getAsInt();
+            //JsonElement producto = jLinea.get(JSONHelper.JSON_PRODUCTO);
             System.out.println(cantidad);
             // TODO
             //lineas.add(new LineaDePedidoDeHorno(cantidad, productoPedido));

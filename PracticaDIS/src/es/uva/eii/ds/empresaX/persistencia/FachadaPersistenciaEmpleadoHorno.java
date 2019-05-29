@@ -41,7 +41,7 @@ public class FachadaPersistenciaEmpleadoHorno {
     
         // Devuelve todas las lineas de pedidos
     private static final String QUERY_PRODUCTO = 
-            "SELECT * FROM PRODUCTO  WHERE CODIGO = (?)";
+            "SELECT * FROM PRODUCTO WHERE CODIGO = (?)";
     
     // Marca un pedido como preparando
     private static final String INSERT_PEDIDO_PREPARANDO = 
@@ -263,7 +263,7 @@ public class FachadaPersistenciaEmpleadoHorno {
                 res.addProperty(JSONHelper.JSON_DESCRIPCION, rs.getString("DESCRIPCION"));
                 res.addProperty(JSONHelper.JSON_EXISTENCIAS, rs.getInt("EXISTENCIAS"));
                 res.addProperty(JSONHelper.JSON_SUBTIPO, rs.getString("SUBTIPO"));
-                res.addProperty(JSONHelper.JSON_CANTIDAD_MIN_STOCK, rs.getInt("CANTIDAD_MIN_STOCK"));
+                res.addProperty(JSONHelper.JSON_CANTIDAD_MIN_STOCK, rs.getInt("CANTIDADMINIMAENSTOCK"));
 
             } else {
                 throw new MessageException("[!] No existe el producto con codigo: " + codigoProducto);
