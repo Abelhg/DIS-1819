@@ -82,6 +82,7 @@ public class CtrlVistaPrepararPedidoHorno {
         }
 
         // Muestra los detalles al empleado
+       // System.out.println(pedidoActual.getLineas().get(0).getProductoPedido().getCodigo());
         vista.mostrarDetallesPedido(pedidoActual);
     }
     

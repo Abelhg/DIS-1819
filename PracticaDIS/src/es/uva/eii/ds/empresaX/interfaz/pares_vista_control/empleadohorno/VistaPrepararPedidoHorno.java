@@ -38,6 +38,8 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         btnAtras = new javax.swing.JButton();
         jbuttonConfirmar = new javax.swing.JButton();
         labelErrores = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaDetalles = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -100,32 +102,66 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         labelErrores.setForeground(new java.awt.Color(241, 38, 38));
         labelErrores.setText("No hay pedidos para seleccionar");
 
+        listaDetalles.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Producto", "Cantidad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(listaDetalles);
+        if (listaDetalles.getColumnModel().getColumnCount() > 0) {
+            listaDetalles.getColumnModel().getColumn(0).setResizable(false);
+            listaDetalles.getColumnModel().getColumn(1).setResizable(false);
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(50, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(95, 95, 95)
-                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(97, 97, 97)
+                        .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(spLista, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                    .addComponent(jbuttonConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                     .addComponent(labelErrores, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -177,10 +213,12 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton jbuttonConfirmar;
     private javax.swing.JLabel lTitulo;
     private javax.swing.JLabel labelErrores;
+    private javax.swing.JTable listaDetalles;
     private javax.swing.JScrollPane spLista;
     // End of variables declaration//GEN-END:variables
 
@@ -215,8 +253,24 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
      * @param pedidoActual Un objeto de tipo PedidoDeHorno seleccionado por el cliente.
      */
     public void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
-        jTable1.setVisible(false);
         jbuttonConfirmar.setEnabled(true);
+        listaDetalles.setVisible(true);
+        
+        /*Renderizamos el modelo de nuestro JTable y centramos los resultados*/
+        DefaultTableModel modeloTabla = (DefaultTableModel) listaDetalles.getModel();
+        modeloTabla.setRowCount(0);
+        DefaultTableCellRenderer rendar = new DefaultTableCellRenderer();
+        rendar.setHorizontalAlignment(lTitulo.CENTER);
+        listaDetalles.setDefaultRenderer(String.class, rendar);
+        listaDetalles.getColumnModel().getColumn(0).setCellRenderer(rendar); 
+     
+        /*Recorremos el ArrayList de Pedidos de Horno*/
+        for(int i = 0; i < pedidoActual.getLineas().size(); i++){
+            int cantidad = pedidoActual.getLineas().get(i).getCantidad();
+            String codigo = pedidoActual.getLineas().get(i).getProductoPedido().getCodigo();
+            Object[] data = {codigo, cantidad};
+            modeloTabla.addRow(data);
+        }
     }
 
     public void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
@@ -237,5 +291,6 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
      */
     private void configuraComponentes() {
         labelErrores.setVisible(false);
+        listaDetalles.setVisible(false);
     }
 }
