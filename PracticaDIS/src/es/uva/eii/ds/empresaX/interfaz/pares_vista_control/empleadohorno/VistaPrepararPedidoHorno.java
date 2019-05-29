@@ -189,36 +189,47 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     private javax.swing.JScrollPane spLista;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Muestra el mensaje de que no hay pedidos si no hay el controlador lo indica.
+     */
     public void mostrarMensajeSinPedidos() {
-        System.out.println("Sin pedidos");
         labelErrores.setText("No hay pedidos para seleccionar");
         labelErrores.setVisible(true);
     }
 
+    /**
+     * Devuelve el pedido que ha seleccionado el cliente
+     * @return Un entero con el número de pedido seleccionado.
+     */
     public int getPedidoSeleccionado() {
-
         DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
         int pedidoSelec = (int) ((Vector) modeloTabla.getDataVector().get(jTable1.getSelectedRow())).elementAt(0);
-//        System.out.println(pedidoSelec);
         return pedidoSelec;
     }
 
+    /**
+     * Muestra el mensaje de de error en la seleccion de pedido si el controlador lo indica.
+     */
     public void mostrarErrorSeleccionPedido() {
-        System.out.print("Error en la seleccion del pedido");
-
+        labelErrores.setText("Error al seleccionar pedido");
+        labelErrores.setVisible(true);
     }
 
-    void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
+    /**
+     * Muestra los detalles del pedido seleccionado.
+     * @param pedidoActual Un objeto de tipo PedidoDeHorno seleccionado por el cliente.
+     */
+    public void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
         jTable1.setVisible(false);
         jbuttonConfirmar.setEnabled(true);
-        
     }
 
-    void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
+        labelErrores.setText("Error, faltan Materias");
+        labelErrores.setVisible(true);
     }
 
-    void mostrarMensajeError() {
+    public void mostrarMensajeError() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
