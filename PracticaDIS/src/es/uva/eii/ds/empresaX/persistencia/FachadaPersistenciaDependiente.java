@@ -1,6 +1,7 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
@@ -67,7 +68,7 @@ public class FachadaPersistenciaDependiente {
         return null;
     }
 
-    public static void setVentaBD(String cifEmpleado,Venta venta) throws MessageException {
+    public static void setVentaBD(Venta venta,Empleado empleado) throws MessageException {
 
         try {
             ConexionBD conn = conectarse();
@@ -78,11 +79,9 @@ public class FachadaPersistenciaDependiente {
             
             Date hoy = java.sql.Date.valueOf(venta.getFechaDeVenta());
             PreparedStatement pst = conn.prepareStatement(QUERY_ID_VENTA_VENTA);
-            System.out.println(cifEmpleado);
-            System.out.println("Lineas: "+venta.getLineas());
             pst.setInt(1, rsCount.getInt("rowcount")+1);
             pst.setDate(2, hoy);
-            pst.setString(3, cifEmpleado);
+            pst.setString(3, empleado.getDni());
             int rs = pst.executeUpdate();
 
             
@@ -100,11 +99,11 @@ public class FachadaPersistenciaDependiente {
 
     }
 
-    public static void actualizarExistenciasBD(ArrayList<LineaDeVenta> lineasVenta) throws MessageException {
+    public static void actualizarExistenciasBD(Venta venta) throws MessageException {
 
         try {
             ConexionBD conn = conectarse();
-            for (LineaDeVenta lp : lineasVenta) {
+            for (LineaDeVenta lp : venta.getLineas()) {
                 PreparedStatement pst1 = conn.prepareStatement(QUERY_ID_PRODUCTO);
                 pst1.setString(1, lp.getProducto().getCodigo());
                 ResultSet rs1 = pst1.executeQuery();

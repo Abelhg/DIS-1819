@@ -8,7 +8,6 @@ import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLNonTransientConnectionException;
 
 /**
  * @author Abel Herrero Gómez         (abeherr)

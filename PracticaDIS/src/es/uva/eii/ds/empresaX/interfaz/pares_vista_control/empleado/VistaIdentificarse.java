@@ -156,7 +156,7 @@ public class VistaIdentificarse extends javax.swing.JFrame {
      * @return Password
      */
     public String getPassword() {
-        return inputPassword.getText();
+        return new String(inputPassword.getPassword());
     }
     
     /**
