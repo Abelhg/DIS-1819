@@ -19,10 +19,10 @@ public class Venta {
     private ArrayList<LineaDeVenta> lineas;
     private String empleado;
 
-    public Venta(String empleado, ArrayList<LineaDeVenta> lineas) {
+    public Venta(String empleado) {
         this.fechaDeVenta = LocalDate.now();
         this.idDeVenta = -1;
-        this.lineas = lineas;
+        this.lineas = new ArrayList<>();
         this.empleado = empleado;
     }
     

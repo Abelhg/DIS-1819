@@ -41,6 +41,9 @@ public class CtrlVistaRegistrarVentaDirecta {
         vista.setLocationRelativeTo(null);
 
         empleado = Sesion.getInstancia().getEmpleado();
+        
+        venta = new Venta(empleado.getDni());
+
     }
 
     /**
