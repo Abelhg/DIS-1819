@@ -372,7 +372,7 @@ INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',
 
 INSERT INTO CLIENTE VALUES('75264259Q','Juan Jose','Martinez Martinez',971252152,'juan@cliente.es'),
                           ('65264100S','Pedro','Durán Durán',971252152,'pedroDuran@cliente.es'),
-                          ('89264210Y','Pedro','Durán Durán',971252152,'pedroDuran@cliente.es');
+                          ('89264210Y','Carlos','Medrán Solo',981252352,'carlosMedrán@cliente.es');
 
 
 INSERT INTO PEDIDODEHORNO VALUES(1,'2019-05-27','75264259Q','12345678Z'),

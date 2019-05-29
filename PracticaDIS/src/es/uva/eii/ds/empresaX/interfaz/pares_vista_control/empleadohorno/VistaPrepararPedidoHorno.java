@@ -147,7 +147,6 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
      */
     public void cargaListaPedidos(ArrayList<PedidoDeHorno> pedidos) {
         // TODO
-        //System.out.println(pedidos.size());
         
         /*Renderizamos el modelo de nuestro JTable y centramos los resultados*/
         DefaultTableModel modeloTabla = (DefaultTableModel) jTable1.getModel();
@@ -166,11 +165,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         jTable1.setRowSelectionAllowed(true);
         ListSelectionModel filaSeleccionada = jTable1.getSelectionModel();
         filaSeleccionada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    /*    filaSeleccionada.addListSelectionListener(new ListSelectionListener()){
-              public void cambioFila(ListSelectionEvent e) {
-                    System.out.println("Cambio");
-              }
-        };*/
+ 
         filaSeleccionada.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -237,6 +232,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Configura componentes ocultando los que sean necesarios.
+     */
     private void configuraComponentes() {
         labelErrores.setVisible(false);
     }
