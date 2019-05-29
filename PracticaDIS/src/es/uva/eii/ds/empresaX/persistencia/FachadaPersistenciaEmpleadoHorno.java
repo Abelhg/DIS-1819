@@ -35,9 +35,13 @@ public class FachadaPersistenciaEmpleadoHorno {
             + "INNER JOIN ESTADODEPEDIDODEHORNO ON TIPO = IDTIPO "
             + "WHERE PEDIDODEHORNO = (?) ORDER BY TIPO DESC";
     
-    // Devuelve todos los estados de un pedido de horno (orden desc)
+    // Devuelve todas las lineas de pedidos
     private static final String QUERY_LINEAS_PEDIDO = 
             "SELECT * FROM LINEADEPEDIDODEHORNO  WHERE PEDIDO = (?)";
+    
+        // Devuelve todas las lineas de pedidos
+    private static final String QUERY_PRODUCTO = 
+            "SELECT * FROM PRODUCTO  WHERE CODIGO = (?)";
     
     // Marca un pedido como preparando
     private static final String INSERT_PEDIDO_PREPARANDO = 
@@ -228,7 +232,7 @@ public class FachadaPersistenciaEmpleadoHorno {
                 JsonObject lineasPedido = new JsonObject();
                 lineasPedido.addProperty(JSONHelper.JSON_CANTIDAD, rs.getInt("CANTIDAD"));
                 //System.out.println(rs.getInt("CANTIDAD"));
-               // lineasPedido.add(JSONHelper.JSON_PRODUCTO, (rs.getString("PRODUCTO"), conn));
+                lineasPedido.add(JSONHelper.JSON_PRODUCTO, getProducto(rs.getString("PRODUCTO"), conn));
                 res.add(lineasPedido);
             }
         } catch(Exception e) {
@@ -236,7 +240,7 @@ public class FachadaPersistenciaEmpleadoHorno {
                 // La relanza
                 throw new MessageException(e.getMessage());
             } else {
-                throw new MessageException("[!] Ocurrió un error al obtener las operaciones del pedido con nº: " + nPedido);
+                throw new MessageException("[!] Ocurrió un error al obtener las lineas del pedido: " + nPedido);
             }
         }
         
@@ -244,4 +248,35 @@ public class FachadaPersistenciaEmpleadoHorno {
     
     
          }
+
+    public static JsonElement getProducto(String codigoProducto, ConexionBD conn) throws MessageException {
+         JsonObject res = new JsonObject();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_PRODUCTO);
+            pst.setString(1, codigoProducto);
+
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()) {
+                res.addProperty(JSONHelper.JSON_CODIGO, rs.getString("CODIGO"));
+                res.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+                res.addProperty(JSONHelper.JSON_DESCRIPCION, rs.getString("DESCRIPCION"));
+                res.addProperty(JSONHelper.JSON_EXISTENCIAS, rs.getInt("EXISTENCIAS"));
+                res.addProperty(JSONHelper.JSON_SUBTIPO, rs.getString("SUBTIPO"));
+                res.addProperty(JSONHelper.JSON_CANTIDAD_MIN_STOCK, rs.getInt("CANTIDAD_MIN_STOCK"));
+
+            } else {
+                throw new MessageException("[!] No existe el producto con codigo: " + codigoProducto);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener el codigo del Producto: " + codigoProducto);
+            }
+        }
+        
+        return res;
+    }
 }
