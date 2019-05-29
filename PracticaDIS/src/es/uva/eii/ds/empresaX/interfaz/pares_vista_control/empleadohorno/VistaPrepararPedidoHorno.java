@@ -4,6 +4,7 @@ package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.empleadohorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
 import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -291,7 +292,9 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     }
 
     void mostrarMensajeExito() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        labelErrores.setText("Pedido Registrado correctamente");
+        labelErrores.setForeground(Color.green);
+        labelErrores.setVisible(true);
     }
 
     /**
