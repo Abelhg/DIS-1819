@@ -34,7 +34,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jScrollPane1" min="-2" pref="739" max="-2" attributes="0"/>
+                  <Component id="spLista" min="-2" pref="739" max="-2" attributes="0"/>
                   <Component id="jbuttonConfirmar" min="-2" pref="133" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -46,7 +46,7 @@
           <Group type="102" attributes="0">
               <Component id="lTitulo" min="-2" pref="84" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="314" max="-2" attributes="0"/>
+              <Component id="spLista" min="-2" pref="314" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jbuttonConfirmar" pref="47" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -64,7 +64,7 @@
         <Property name="text" type="java.lang.String" value="Preparar Pedido"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="spLista">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
