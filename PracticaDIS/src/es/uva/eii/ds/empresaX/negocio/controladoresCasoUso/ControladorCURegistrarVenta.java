@@ -1,10 +1,12 @@
 package es.uva.eii.ds.empresaX.negocio.controladoresCasoUso;
 
 import com.google.gson.JsonObject;
+import es.uva.eii.ds.empresaX.negocio.modelos.Empleado;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
 import es.uva.eii.ds.empresaX.negocio.modelos.ProductoVendible;
 import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
 import es.uva.eii.ds.empresaX.persistencia.FachadaPersistenciaDependiente;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
 
 /**
@@ -14,37 +16,31 @@ import java.util.ArrayList;
  */
 public class ControladorCURegistrarVenta {
 
-    public static JsonObject compruebaExistenciaProducto(String codigo) {
-        
-        JsonObject prod = FachadaPersistenciaDependiente.getProductoBD(codigo);
-        return prod;
-        
-    }
-
     public static ProductoVendible crearProducto(JsonObject prod) {
         ProductoVendible pv = new ProductoVendible(prod.get("codigo").getAsString(),prod.get("nombre").getAsString(),prod.get("descripcion").getAsString(),prod.get("existencias").getAsInt(),prod.get("cantMin").getAsInt(),prod.get("precio").getAsDouble());
         return pv;
     }
 
-    public static ArrayList<LineaDeVenta> crearLineaDeVenta(ProductoVendible prod, int cantidad,ArrayList<LineaDeVenta> lineasVenta) {
-        LineaDeVenta lv = new LineaDeVenta(cantidad,prod);
-        lineasVenta.add(lv);
-        return lineasVenta;
+    public static LineaDeVenta crearLineaDeVenta(String codigo,int cantidad) throws MessageException {
+        JsonObject prod = FachadaPersistenciaDependiente.getProductoBD(codigo);
+        ProductoVendible pv = new ProductoVendible(prod.get("codigo").getAsString(),prod.get("nombre").getAsString(),prod.get("descripcion").getAsString(),prod.get("existencias").getAsInt(),prod.get("cantMin").getAsInt(),prod.get("precio").getAsDouble());
+        LineaDeVenta lv = new LineaDeVenta(cantidad,pv);
+        return lv;
     }
     
-    public static void registrarVenta(ArrayList<LineaDeVenta> lineasVenta,String cifEmpleado){
-        Venta venta = new Venta(cifEmpleado,lineasVenta);
-        FachadaPersistenciaDependiente.setVentaBD(cifEmpleado,venta);
+    public static void registrarVenta(Venta venta,Empleado empleado) throws MessageException{
+        FachadaPersistenciaDependiente.setVentaBD(venta,empleado);
     }
     
-    public static void actualizarExistencias(ArrayList<LineaDeVenta> lineasVenta){
-        FachadaPersistenciaDependiente.actualizarExistenciasBD(lineasVenta);
+    public static void actualizarExistencias(Venta venta) throws MessageException{
+        FachadaPersistenciaDependiente.actualizarExistenciasBD(venta);
     }
 
-    public static int getCantidadDisponible(ProductoVendible pVendible, ArrayList<LineaDeVenta> lineasVenta) {
-        int res = pVendible.getExistencias();
-        for(LineaDeVenta lv : lineasVenta){
-            if(lv.getProducto().getCodigo().equals(pVendible.getCodigo()))
+    public static int getCantidadDisponible(Venta venta,LineaDeVenta linea) {
+        ProductoVendible pv = linea.getProducto();
+        int res = pv.getExistencias();
+        for(LineaDeVenta lv : venta.getLineas()){
+            if(lv.getProducto().getCodigo().equals(pv.getCodigo()))
                 res -= lv.getCantidad();
         }
         return res;

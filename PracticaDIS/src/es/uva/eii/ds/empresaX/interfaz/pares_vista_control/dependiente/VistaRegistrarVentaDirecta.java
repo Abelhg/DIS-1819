@@ -1,7 +1,10 @@
 package es.uva.eii.ds.empresaX.interfaz.pares_vista_control.dependiente;
 
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDeVenta;
-import java.util.ArrayList;
+import es.uva.eii.ds.empresaX.negocio.modelos.Venta;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -10,14 +13,12 @@ import javax.swing.table.DefaultTableModel;
  * @author Roberto García Antoranz    (robegar)
  */
 public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
-    
-    public static String cifEmpleado;
-    
-    public void mostrarDatosVenta(ArrayList<LineaDeVenta> lineasVenta) {
+        
+    public void mostrarDatosVenta(Venta venta) {
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
-        for(int i=0;i<lineasVenta.size();i++){
-            model.addRow(new Object[]{lineasVenta.get(i).getCantidad(),lineasVenta.get(i).getProducto().getPrecioVenta(),lineasVenta.get(i).getCantidad()*lineasVenta.get(i).getProducto().getPrecioVenta()});
+        for(LineaDeVenta lv : venta.getLineas()){
+            model.addRow(new Object[]{lv.getCantidad(),lv.getProducto().getPrecioVenta(),lv.getCantidad()*lv.getProducto().getPrecioVenta()});
         }
     }
 
@@ -44,6 +45,7 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
         terminaVenta = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaProductos = new javax.swing.JTable();
+        textoError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -106,6 +108,9 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
             tablaProductos.getColumnModel().getColumn(2).setResizable(false);
         }
 
+        textoError.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
+        textoError.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,7 +135,10 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                             .addComponent(terminaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(textoError, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -156,7 +164,9 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
                         .addComponent(terminaVenta)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoError, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -168,11 +178,19 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void sumaElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaElementoActionPerformed
-        controlador.introducirProducto(codigo.getText(),cantidad.getText());
+        try {
+            controlador.introducirProducto(codigo.getText(),cantidad.getText());
+        } catch (MessageException ex) {
+            Logger.getLogger(VistaRegistrarVentaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_sumaElementoActionPerformed
 
     private void terminaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminaVentaActionPerformed
-        controlador.finalizarVenta(cifEmpleado);
+        try {
+            controlador.finalizarVenta();
+        } catch (MessageException ex) {
+            Logger.getLogger(VistaRegistrarVentaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_terminaVentaActionPerformed
  
     
@@ -186,15 +204,16 @@ public class VistaRegistrarVentaDirecta extends javax.swing.JFrame {
     private javax.swing.JButton sumaElemento;
     private javax.swing.JTable tablaProductos;
     private javax.swing.JButton terminaVenta;
+    private javax.swing.JLabel textoError;
     // End of variables declaration//GEN-END:variables
 
     public void borrarLista() {
         DefaultTableModel model = (DefaultTableModel) tablaProductos.getModel();
         model.setRowCount(0);
     }
-    
-    public static void setCifEmpleado(String cif){
-        cifEmpleado = cif;
+
+    void mostrarMensajeError(String errorCantidadIncorrecta) {
+        textoError.setText(errorCantidadIncorrecta);
     }
 
 }

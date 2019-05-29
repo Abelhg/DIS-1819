@@ -80,7 +80,7 @@ public class ControladorCUPrepararPedido {
      * @param pedido Pedido a preparar
      * @return true si se ha realizado con éxito, false si no
      */
-    public static boolean prepararPedido(PedidoDeHorno pedido) {
+    public static boolean prepararPedido(PedidoDeHorno pedido) throws MessageException {
         Empleado empleado = Sesion.getInstancia().getEmpleado();
         // new Operacion
         // get JSON

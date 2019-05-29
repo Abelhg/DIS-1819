@@ -4,6 +4,7 @@ import es.uva.eii.ds.empresaX.interfaz.GestorUI;
 import es.uva.eii.ds.empresaX.negocio.controladoresCasoUso.ControladorCUPrepararPedido;
 import es.uva.eii.ds.empresaX.negocio.modelos.LineaDePedidoDeHorno;
 import es.uva.eii.ds.empresaX.negocio.modelos.PedidoDeHorno;
+import es.uva.eii.ds.empresaX.servicioscomunes.MessageException;
 import java.util.ArrayList;
 
 
@@ -43,7 +44,7 @@ public class CtrlVistaPrepararPedidoHorno {
     /**
      * El empleado ha confirmado el pedido a preparar.
      */
-    public void procesaPedidoConfirmado() {
+    public void procesaPedidoConfirmado() throws MessageException {
         if(pedidoActual == null) {
             return;
         }
