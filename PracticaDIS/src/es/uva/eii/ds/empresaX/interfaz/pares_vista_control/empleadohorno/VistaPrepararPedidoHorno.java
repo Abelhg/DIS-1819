@@ -177,7 +177,7 @@ public class VistaPrepararPedidoHorno extends javax.swing.JFrame {
     }
 
     void mostrarDetallesPedido(PedidoDeHorno pedidoActual) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        jTable1.setVisible(false);
     }
 
     void mostrarMensajeFaltanMaterias(ArrayList<LineaDePedidoDeHorno> faltantes) {
