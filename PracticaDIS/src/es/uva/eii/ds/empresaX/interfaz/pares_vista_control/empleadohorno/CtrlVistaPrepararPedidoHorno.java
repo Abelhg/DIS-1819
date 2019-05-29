@@ -67,10 +67,6 @@ public class CtrlVistaPrepararPedidoHorno {
         }
         
     }
-
-    public void seleccionValor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     /**
      * El empleado a ha seleccionado un pedido de la lista.
@@ -84,8 +80,9 @@ public class CtrlVistaPrepararPedidoHorno {
             // ¡No existe el pedido!
             vista.mostrarErrorSeleccionPedido();
         }
-        
+
         // Muestra los detalles al empleado
+       // System.out.println(pedidoActual.getLineas().get(0).getProductoPedido().getCodigo());
         vista.mostrarDetallesPedido(pedidoActual);
     }
     

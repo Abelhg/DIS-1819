@@ -299,11 +299,13 @@ create table OPERACIONSOBREPEDIDODEHORNO
 
 -- Las contraseñas son 'segura'
 INSERT INTO EMPLEADO 
+
 VALUES ('12345678Z', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Hermenegildo Manuel', 'Ruipérez Núñez','2014-02-25'),
        ('12123434A', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Segura Patricio', 'Mian', '2018-12-10'),
        ('98765432E', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Julian Jose', 'Marcos', '2014-02-25'),
        ('22213434B', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'Martinez Martinez', 'Jose Carlos', '2019-05-05'),
        ('12345679J', '22bed3883ae12120caccff1d3e18343f2db878016fb5e54dcb8dab72df6f1dd6', 'García Forca', 'Fede', '2019-05-28');
+
 
 INSERT INTO ROLESENEMPRESA VALUES ('2018-09-10', '12123434A', 4),
                                   ('2018-12-10', '12123434A', 2),
@@ -374,23 +376,32 @@ INSERT INTO PRODUCTO VALUES('85584985','p1','descripcion',5,2,'ProductoDeHorno',
                            ('98718416','p3','descripcion',0,2,'ProductoDeHorno',9.25,5,null);
 
 INSERT INTO CLIENTE VALUES('75264259Q','Juan Jose','Martinez Martinez',971252152,'juan@cliente.es'),
-                          ('65264100S','Pedro','Durán Durán',971252152,'pedroDuran@cliente.es');
+                          ('65264100S','Pedro','Durán Durán',971252152,'pedroDuran@cliente.es'),
+                          ('89264210Y','Carlos','Medrán Solo',981252352,'carlosMedrán@cliente.es');
+
 
 INSERT INTO PEDIDODEHORNO VALUES(1,'2019-05-27','75264259Q','12345678Z'),
                                 (2,'2019-05-28','65264100S','12345678Z'),
                                 (3,'2019-05-28','65264100S','12345678Z'),
-                                (4,'2019-05-29','75264259Q','98765432E');
+                                (4,'2019-05-29','75264259Q','98765432E'),
+                                (5, CURRENT_DATE,'65264100S','12345678Z');
+                               /* (6, CURRENT_DATE,'89264210Y','98765432E');*/
 
 
 
 INSERT INTO LINEADEPEDIDODEHORNO VALUES(2,1,'85584985'),
                                        (1,2,'32005867'),
                                        (4,3,'98718416'),
-                                       (9,4,'98718416');
-
+                                       (9,4,'98718416'),
+                                       (8,5,'98718416'),
+                                       (2,5,'32005867');
+                                    /*   (7,6,'85584985');
+*/
 
 INSERT INTO OPERACIONSOBREPEDIDODEHORNO VALUES ('2019-05-27 14:55:38', 1, '12345678Z', 1),
                                        ('2019-05-27 14:55:40', 2, '12345678Z', 2),
                                        ('2019-05-27 14:55:42', 1, '12345678Z', 3),
-                                       ('2019-05-27 14:55:44', 1, '98765432E', 4);
+                                       ('2019-05-27 14:55:44', 1, '98765432E', 4),
+                                       (CURRENT_TIMESTAMP, 1, '12345678Z', 5);
+                                       /*(CURRENT_TIMESTAMP, 1, '98765432E', 6);*/
                                         

@@ -55,7 +55,9 @@ public class JSONHelper {
     public static final String JSON_CODIGO = "codigo";
     public static final String JSON_DESCRIPCION = "descripcion";
     public static final String JSON_EXISTENCIAS = "existencias";
+    public static final String JSON_SUBTIPO = "subtipo";
     public static final String JSON_CANTIDAD_MIN_STOCK = "cantidadMinimaStock";
+    
     // Vendible
     public static final String JSON_PRECIO_VENTA = "precioVenta";
     

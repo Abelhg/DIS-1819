@@ -1,6 +1,7 @@
 package es.uva.eii.ds.empresaX.persistencia;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import es.uva.eii.ds.empresaX.negocio.modelos.TipoEstadoPedido;
 import es.uva.eii.ds.empresaX.servicioscomunes.JSONHelper;
@@ -33,6 +34,14 @@ public class FachadaPersistenciaEmpleadoHorno {
             "SELECT * FROM OPERACIONSOBREPEDIDODEHORNO "
             + "INNER JOIN ESTADODEPEDIDODEHORNO ON TIPO = IDTIPO "
             + "WHERE PEDIDODEHORNO = (?) ORDER BY TIPO DESC";
+    
+    // Devuelve todas las lineas de pedidos
+    private static final String QUERY_LINEAS_PEDIDO = 
+            "SELECT * FROM LINEADEPEDIDODEHORNO  WHERE PEDIDO = (?)";
+    
+        // Devuelve todas las lineas de pedidos
+    private static final String QUERY_PRODUCTO = 
+            "SELECT * FROM PRODUCTO WHERE CODIGO = (?)";
     
     // Marca un pedido como preparando
     private static final String INSERT_PEDIDO_PREPARANDO = 
@@ -72,6 +81,7 @@ public class FachadaPersistenciaEmpleadoHorno {
                         pedido.add(JSONHelper.JSON_CLIENTE, getCliente(rs.getString("CLIENTE"), conn));
                         pedido.add(JSONHelper.JSON_DEPENDIENTE, getEmpleado(rs.getString("DEPENDIENTE"), conn));
                         pedido.add(JSONHelper.JSON_OPERACIONES, getOperacionesPedido(nPedido, conn));
+                        pedido.add(JSONHelper.JSON_LINEAS, getLineasPedido(nPedido, conn));
                         arrayPedidos.add(pedido);
                     }
                 }
@@ -209,7 +219,64 @@ public class FachadaPersistenciaEmpleadoHorno {
         
         return res;
     }
+
+    public static JsonElement getLineasPedido(int nPedido, ConexionBD conn) throws MessageException {
+        JsonArray res = new JsonArray();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_LINEAS_PEDIDO);
+            pst.setInt(1, nPedido);
+
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+                JsonObject lineasPedido = new JsonObject();
+                lineasPedido.addProperty(JSONHelper.JSON_CANTIDAD, rs.getInt("CANTIDAD"));
+                //System.out.println(rs.getInt("CANTIDAD"));
+                lineasPedido.add(JSONHelper.JSON_PRODUCTO, getProducto(rs.getString("PRODUCTO"), conn));
+                res.add(lineasPedido);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener las lineas del pedido: " + nPedido);
+            }
+        }
+        
+        return res;
     
     
-    
+         }
+
+    public static JsonElement getProducto(String codigoProducto, ConexionBD conn) throws MessageException {
+         JsonObject res = new JsonObject();
+        
+        try {
+            PreparedStatement pst = conn.prepareStatement(QUERY_PRODUCTO);
+            pst.setString(1, codigoProducto);
+
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()) {
+                res.addProperty(JSONHelper.JSON_CODIGO, rs.getString("CODIGO"));
+                res.addProperty(JSONHelper.JSON_NOMBRE, rs.getString("NOMBRE"));
+                res.addProperty(JSONHelper.JSON_DESCRIPCION, rs.getString("DESCRIPCION"));
+                res.addProperty(JSONHelper.JSON_EXISTENCIAS, rs.getInt("EXISTENCIAS"));
+                res.addProperty(JSONHelper.JSON_SUBTIPO, rs.getString("SUBTIPO"));
+                res.addProperty(JSONHelper.JSON_CANTIDAD_MIN_STOCK, rs.getInt("CANTIDADMINIMAENSTOCK"));
+
+            } else {
+                throw new MessageException("[!] No existe el producto con codigo: " + codigoProducto);
+            }
+        } catch(Exception e) {
+            if(e instanceof MessageException) {
+                // La relanza
+                throw new MessageException(e.getMessage());
+            } else {
+                throw new MessageException("[!] Ocurrió un error al obtener el codigo del Producto: " + codigoProducto);
+            }
+        }
+        
+        return res;
+    }
 }
