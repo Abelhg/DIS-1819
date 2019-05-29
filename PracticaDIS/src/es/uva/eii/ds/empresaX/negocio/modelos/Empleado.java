@@ -152,10 +152,14 @@ public class Empleado {
      * @return true si está activo
      */
     public boolean estaActivo() {
-        boolean activoDisponible  = estadoDeDisponibilidad.lastEntry().
-                                    getValue().estaEnActivo();
-        boolean activoVinculacion = estadoDeVinculacion.lastEntry().
-                                    getValue().estaEnActivo();
+        boolean activoDisponible = false;
+        boolean activoVinculacion = false;
+        if(estadoDeDisponibilidad.size() > 0 && estadoDeVinculacion.size() > 0) {
+            activoDisponible  = estadoDeDisponibilidad.lastEntry().
+                                        getValue().estaEnActivo();
+            activoVinculacion = estadoDeVinculacion.lastEntry().
+                                        getValue().estaEnActivo();
+        }
         
         return activoDisponible && activoVinculacion;
     }
